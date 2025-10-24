@@ -4,12 +4,32 @@ const routes = [
   {
     path: '/',
     name: 'Home',
-    component: () => import('@/pages/Home.vue'),
+    component: () => import('@/Home/HeroSection.vue'),
+  },
+  {
+    path: '/HealthCheckupDetails',
+    name: 'HealthCheckupDetails',
+    component: () => import('@/HealthCheckupDetails/HealthCheckupDetails.vue'),
+  },
+  {
+    path: '/HealthCheckupList',
+    name: 'HealthCheckupList',
+    component: () => import('@/HealthCheckupDetails/HealthCheckupList.vue'),
+  },
+  {
+    path: '/BloodTestList',
+    name: 'BloodTestList',
+    component: () => import('@/BloodTest/BloodTestList.vue'),
+  },
+  {
+    path: '/SinglePackageBook',
+    name: 'SinglePackageBook',
+    component: () => import('@/SinglePackageBook/SinglePackageBook.vue'),
   },
 ]
 
 let router = createRouter({
-  history: createWebHistory('/frontend'),
+  history: createWebHistory(''),
   routes,
 })
 
