@@ -26,6 +26,11 @@ const routes = [
     name: 'SinglePackageBook',
     component: () => import('@/SinglePackageBook/SinglePackageBook.vue'),
   },
+  {
+    path: '/CartPage',
+    name: 'CartPage',
+    component: () => import('@/CartPage/CartPage.vue'),
+  },
 ]
 
 let router = createRouter({

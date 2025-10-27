@@ -30,9 +30,9 @@
 
                     <div class="p-3 pt-2">
                         <div class="flex justify-between items-center mb-1">
-                            <h3 class="text-sm font-semibold text-gray-800 leading-tight truncate">
+                            <h6 class="text-sm font-semibold bold-test-color leading-tight truncate">
                                 {{ pkg.title }}
-                            </h3>
+                            </h6>
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1"
                                 stroke="currentColor" class="w-5 h-5 text-indigo-900">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 
