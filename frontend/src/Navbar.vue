@@ -63,8 +63,8 @@
           Health Checkups
         </router-link>
 
-        <!-- Cart Icon -->
-        <button class="transition-colors duration-200">
+        <!-- 🛒 Cart Icon with Badge -->
+        <router-link to="/CartPage" class="relative">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
             stroke="currentColor" class="w-6 h-6 text-white">
             <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343
@@ -76,7 +76,13 @@
               .75.75 0 0 1 1.5 0Zm12.75 0a.75.75
               0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
           </svg>
-        </button>
+
+          <!-- 🔴 Badge -->
+          <span v-if="cartCount > 0"
+            class="absolute -top-2 -right-2 bg-red-600 text-white text-[10px] font-bold rounded-full w-4 h-4 flex items-center justify-center">
+            {{ cartCount }}
+          </span>
+        </router-link>
       </div>
 
       <!-- Mobile Dropdown Menu -->
@@ -93,7 +99,8 @@
             Health Checkups
           </router-link>
 
-          <button class="flex items-center space-x-2 py-1 text-white">
+          <!-- 🛒 Cart with Badge in Mobile Menu -->
+          <router-link to="/CartPage" class="flex items-center space-x-2 py-1 text-white relative" @click="closeMenu">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
               stroke="currentColor" class="w-6 h-6 text-white">
               <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343
@@ -106,7 +113,12 @@
                 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
             </svg>
             <span>Cart</span>
-          </button>
+
+            <span v-if="cartCount > 0"
+              class="absolute -top-1 left-10 bg-red-600 text-white text-[10px] font-bold rounded-full w-4 h-4 flex items-center justify-center">
+              {{ cartCount }}
+            </span>
+          </router-link>
         </div>
       </transition>
     </nav>
@@ -114,8 +126,14 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onBeforeUnmount, watch } from 'vue'
+import { ref, onBeforeUnmount, watch } from 'vue'
 import { useRoute } from 'vue-router'
+import { useCartStore } from '@/stores/cartStore'
+import { storeToRefs } from 'pinia'
+
+// ✅ Access Pinia cart store (reactive)
+const cartStore = useCartStore()
+const { cartCount } = storeToRefs(cartStore)
 
 const menuOpen = ref(false)
 const dropdownRef = ref(null)
@@ -130,44 +148,12 @@ const handleClickOutside = (e) => {
   }
 }
 
+document.addEventListener('click', handleClickOutside)
+
+onBeforeUnmount(() => {
+  document.removeEventListener('click', handleClickOutside)
+})
+
+// Close menu when route changes
 watch(() => route.fullPath, () => closeMenu())
-
-onMounted(() => document.addEventListener('click', handleClickOutside))
-onBeforeUnmount(() => document.removeEventListener('click', handleClickOutside))
 </script>
-
-<style scoped>
-.nav-link {
-  color: white !important;
-  text-decoration: none !important;
-  font-size: 14px;
-  transition: all 0.2s ease;
-  padding: 6px 10px;
-  border-radius: 6px;
-}
-
-/* Hover effect */
-.nav-link:hover {
-  opacity: 0.9;
-  text-decoration: underline;
-}
-
-/* ✅ Active link: bold + underline only */
-.active-link {
-  font-weight: 700 !important;
-  text-decoration: underline !important;
-  text-underline-offset: 4px;
-}
-
-/* Animation for mobile dropdown */
-.slide-fade-enter-active,
-.slide-fade-leave-active {
-  transition: all 0.3s ease;
-}
-
-.slide-fade-enter-from,
-.slide-fade-leave-to {
-  opacity: 0;
-  transform: translateY(-10px);
-}
-</style>

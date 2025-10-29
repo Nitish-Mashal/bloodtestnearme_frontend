@@ -9,7 +9,7 @@
                         Most Booked Blood Tests
                     </h2>
 
-                    <div class="text-sm font-medium  sm:mt-0 whitespace-nowrap">
+                    <div class="text-sm font-medium sm:mt-0 whitespace-nowrap">
                         <router-link to="/BloodTestList"
                             class="flex items-center gap-1 no-underline bold-test-color hover:underline">
                             <span>View All</span>
@@ -23,7 +23,7 @@
                 </div>
 
                 <!-- ✅ Carousel Section -->
-                <div class=" sm:p-3 rounded-xl w-full">
+                <div class="sm:p-3 rounded-xl w-full">
                     <el-carousel :interval="4000" arrow="hover" trigger="click" indicator-position="none"
                         class="sm:h-[200px] h-[250px]">
 
@@ -56,24 +56,30 @@
                                                     ₹ {{ pkg.discounted_price }}
                                                 </p>
                                             </div>
-                                            <!-- Cart Icon -->
-                                            <div>
+
+                                            <!-- 🛒 Cart Icon -->
+                                            <button @click="addToCart(pkg)"
+                                                class="p-1 rounded-full hover:bg-gray-100 transition"
+                                                :title="isInCart(pkg.name) ? 'Already in Cart' : 'Add to Cart'">
                                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                                    stroke-width="1" stroke="currentColor"
-                                                    class="w-5 h-5 text-indigo-900">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 
-                              .955.343 1.087.835l.383 
-                              1.437M7.5 14.25a3 3 0 0 
-                              0-3 3h15.75m-12.75-3h11.218
-                              c1.121-2.3 2.1-4.684 
-                              2.924-7.138a60.114 
-                              60.114 0 0 0-16.536-1.84M7.5 
-                              14.25 5.106 5.272M6 20.25a.75.75 
-                              0 1 1-1.5 0 .75.75 0 0 1 
-                              1.5 0Zm12.75 0a.75.75 0 1 
-                              1-1.5 0 .75.75 0 0 1 1.5 0Z" />
+                                                    stroke-width="1.5" stroke="currentColor" :class="[
+                                                        'w-5 h-5',
+                                                        isInCart(pkg.name)
+                                                            ? 'text-green-600'
+                                                            : 'text-indigo-900',
+                                                    ]">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 
+                                                        1.437M7.5 14.25a3 3 0 0 0-3 
+                                                        3h15.75m-12.75-3h11.218
+                                                        c1.121-2.3 2.1-4.684 
+                                                        2.924-7.138a60.114 
+                                                        60.114 0 0 0-16.536-1.84M7.5 
+                                                        14.25 5.106 5.272M6 20.25a.75.75 
+                                                        0 1 1-1.5 0 .75.75 0 0 1 
+                                                        1.5 0Zm12.75 0a.75.75 0 1 
+                                                        1-1.5 0 .75.75 0 0 1 1.5 0Z" />
                                                 </svg>
-                                            </div>
+                                            </button>
                                         </div>
 
                                         <!-- Buttons -->
@@ -86,6 +92,7 @@
                                                     Book Now
                                                 </button>
                                             </router-link>
+
                                             <router-link :to="`/HealthCheckupDetails/${encodeURIComponent(pkg.name)}`"
                                                 class="no-underline">
                                                 <button
@@ -114,10 +121,30 @@
 <script setup>
 import { ref, computed, onMounted, onUnmounted } from "vue";
 import axios from "axios";
+import { useCartStore } from "@/stores/cartStore"; // ✅ Import cart store
 
-// Reactive states
+const cartStore = useCartStore();
 const packages = ref([]);
 const screenWidth = ref(window.innerWidth);
+
+// ✅ Add to cart
+const addToCart = (pkg) => {
+    if (!isInCart(pkg.name)) {
+        const cartItem = {
+            name1: pkg.name,
+            actual_price: pkg.actual_price,
+            discounted_price: pkg.discounted_price,
+        };
+        cartStore.addToCart(cartItem);
+    } else {
+        alert("This test is already in your cart!");
+    }
+};
+
+// ✅ Check if item already in cart
+const isInCart = (pkgName) => {
+    return cartStore.cartItems.some((item) => item.name1 === pkgName);
+};
 
 // ✅ Fetch Most Booked Blood Tests
 const fetchMostBookedTests = async () => {
@@ -141,12 +168,8 @@ const fetchMostBookedTests = async () => {
     }
 };
 
-// ✅ Handle screen width responsiveness
-const updateWidth = () => {
-    screenWidth.value = window.innerWidth;
-};
-
-// ✅ Group packages into chunks (4 per slide)
+// ✅ Responsive chunks
+const updateWidth = () => (screenWidth.value = window.innerWidth);
 const cardChunks = computed(() => {
     const size = screenWidth.value < 640 ? 1 : screenWidth.value < 1024 ? 2 : 4;
     const chunks = [];
@@ -160,7 +183,6 @@ onMounted(() => {
     fetchMostBookedTests();
     window.addEventListener("resize", updateWidth);
 });
-
 onUnmounted(() => {
     window.removeEventListener("resize", updateWidth);
 });

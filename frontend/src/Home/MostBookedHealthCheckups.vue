@@ -35,31 +35,33 @@
                       <h3 class="text-sm font-semibold bold-test-color leading-tight truncate">
                         {{ pkg.title }} {{ pkg.tests }}
                       </h3>
-                      <!-- Cart Icon -->
-                      <router-link to="/CartPage">
+
+                      <!-- 🛒 Add to Cart Icon -->
+                      <button :disabled="isInCart(pkg)" @click="addToCart(pkg)" :class="[
+                        'p-2 rounded-full transition',
+                        isInCart(pkg)
+                          ? 'bg-gray-200 cursor-not-allowed'
+                          : 'hover:bg-gray-100 text-indigo-900',
+                      ]">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1"
-                          stroke="currentColor" class="w-5 h-5 text-indigo-900">
+                          stroke="currentColor" class="w-5 h-5">
                           <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 
-                    1.087.835l.383 1.437M7.5 
-                    14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218
-                    c1.121-2.3 2.1-4.684 
-                    2.924-7.138a60.114 
-                    60.114 0 0 0-16.536-1.84M7.5 
-                    14.25 5.106 5.272M6 20.25a.75.75 
-                    0 1 1-1.5 0 .75.75 0 0 1 
-                    1.5 0Zm12.75 0a.75.75 0 1 
-                    1-1.5 0 .75.75 0 0 1 1.5 0Z" />
+                              1.087.835l.383 1.437M7.5 
+                              14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218
+                              c1.121-2.3 2.1-4.684 
+                              2.924-7.138a60.114 
+                              60.114 0 0 0-16.536-1.84M7.5 
+                              14.25 5.106 5.272M6 20.25a.75.75 
+                              0 1 1-1.5 0 .75.75 0 0 1 
+                              1.5 0Zm12.75 0a.75.75 0 1 
+                              1-1.5 0 .75.75 0 0 1 1.5 0Z" />
                         </svg>
-                      </router-link>
+                      </button>
                     </div>
 
                     <div class="flex items-center gap-2 flex-wrap mb-1">
-                      <p class="text-gray-400 line-through">
-                        ₹ {{ pkg.originalPrice }}
-                      </p>
-                      <p class="bold-test-color">
-                        ₹ {{ pkg.discountedPrice }}
-                      </p>
+                      <p class="text-gray-400 line-through">₹ {{ pkg.originalPrice }}</p>
+                      <p class="bold-test-color">₹ {{ pkg.discountedPrice }}</p>
                     </div>
 
                     <div
@@ -71,14 +73,15 @@
                           Book Now
                         </button>
                       </router-link>
+
                       <router-link :to="`/HealthCheckupDetails/${encodeURIComponent(pkg.title)}`" class="no-underline">
                         <button
-                          class="border-1 border-[#001D55] font-semibold text-xs bold-test-color px-2 py-1 rounded-full hover:bg-gray-100 transition flex items-center justify-center gap-1 w-full sm:w-auto">
+                          class="border border-[#001D55] font-semibold text-xs bold-test-color px-2 py-1 rounded-full hover:bg-gray-100 transition flex items-center justify-center gap-1 w-full sm:w-auto">
                           View Details
                           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
                             stroke="currentColor" class="w-3 h-3 mt-[1px]">
                             <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 19.5 15-15m0 
-                      0H8.25m11.25 0v11.25" />
+                              0H8.25m11.25 0v11.25" />
                           </svg>
                         </button>
                       </router-link>
@@ -89,7 +92,6 @@
             </el-carousel-item>
           </el-carousel>
         </div>
-
       </div>
     </div>
   </div>
@@ -98,9 +100,11 @@
 <script setup>
 import { ref, computed, onMounted, onUnmounted } from "vue";
 import axios from "axios";
+import { useCartStore } from "@/stores/cartStore"; // 🛒 Import Pinia cart store
 
 const packages = ref([]);
 const screenWidth = ref(window.innerWidth);
+const cartStore = useCartStore(); // 🛒 Initialize cart store
 
 // ✅ Fetch most booked packages
 const fetchMostBookedPackages = async () => {
@@ -108,26 +112,37 @@ const fetchMostBookedPackages = async () => {
     const response = await axios.get(
       "/api/method/bloodtestnearme.api.packages.get_most_booking_packages"
     );
-    const data =
-      response.data.message || response.data.data || response.data || [];
+    const data = response.data.message || response.data.data || [];
     packages.value = data.map((pkg) => ({
       image: pkg.image,
       title: pkg.name,
       originalPrice: pkg.actual_price,
       discountedPrice: pkg.discounted_price,
       tests: pkg.tests || "",
+      name1: pkg.name, // 🛒 needed for unique cart identification
+      discounted_price: pkg.discounted_price, // 🛒 store-compatible field
     }));
   } catch (error) {
     console.error("❌ Error fetching most booked packages:", error);
   }
 };
 
-// ✅ Handle screen width responsiveness
+// ✅ Add to cart
+const addToCart = (pkg) => {
+  cartStore.addToCart(pkg);
+};
+
+// ✅ Check if package is already in cart
+const isInCart = (pkg) => {
+  return cartStore.cartItems.some((item) => item.name1 === pkg.name1);
+};
+
+// ✅ Responsive logic
 const updateWidth = () => {
   screenWidth.value = window.innerWidth;
 };
 
-// ✅ Group cards into chunks (1 / 2 / 4 per slide)
+// ✅ Group packages for carousel
 const cardChunks = computed(() => {
   const size = screenWidth.value < 640 ? 1 : screenWidth.value < 1024 ? 2 : 4;
   const chunks = [];
@@ -146,6 +161,3 @@ onUnmounted(() => {
   window.removeEventListener("resize", updateWidth);
 });
 </script>
-
-
-

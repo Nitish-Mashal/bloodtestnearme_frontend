@@ -44,6 +44,16 @@
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                                 <select class="border rounded-md px-3 py-[1px] text-sm w-full">
                                     <option>Select Number of Person *</option>
+                                    <option>1</option>
+                                    <option>2</option>
+                                    <option>3</option>
+                                    <option>4</option>
+                                    <option>5</option>
+                                    <option>6</option>
+                                    <option>7</option>
+                                    <option>8</option>
+                                    <option>9</option>
+                                    <option>10</option>
                                 </select>
                                 <input type="text" placeholder="Beneficiary Name *"
                                     class="border rounded-md px-3 py-[1px] text-sm w-full" />
@@ -55,6 +65,9 @@
                                     class="border rounded-md px-3 py-[1px] text-sm w-full" />
                                 <select class="border rounded-md px-3 py-[1px] text-sm w-full">
                                     <option>Select Gender *</option>
+                                    <option>Male</option>
+                                    <option>Female</option>
+                                    <option>Others</option>
                                 </select>
                             </div>
 

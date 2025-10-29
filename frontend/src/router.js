@@ -25,7 +25,7 @@ const routes = [
   {
     path: '/SinglePackageBook/:name1',
     name: 'HealthCheckupDetails',
-    component: () => import('@/SinglePackageBook/SinglePackageBook.vue'), // ✅ Use SinglePackageBook.vue here
+    component: () => import('@/SinglePackageBook/SinglePackageBook.vue'), 
     props: true,
   },
   {

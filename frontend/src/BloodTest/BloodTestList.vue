@@ -11,7 +11,7 @@
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                     stroke="currentColor" class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500">
                     <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 
-                        5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+            5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
                 </svg>
                 <input v-model="searchQuery" type="text" placeholder="Search Your Tests.."
                     class="w-full border border-gray-300 rounded-full py-2.5 pl-12 pr-4 text-gray-700 focus:outline-none focus:ring-2 focus:ring-[#001D55]" />
@@ -23,7 +23,7 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
                 <div v-for="(pkg, index) in filteredPackages" :key="index"
                     class="rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-shadow">
-                    <!-- Blue Gradient Top -->
+                    <!-- Blue Gradient -->
                     <div class="px-3 py-3 text-white rounded-xl shadow-[0_4px_10px_rgba(0,0,0,0.25)]" :style="{
                         background: 'linear-gradient(180deg, #2077BF 0%, #0040BB 100%)',
                         height: '80px',
@@ -35,37 +35,39 @@
 
                     <!-- White Bottom -->
                     <div class="p-3 bg-white rounded-b-xl">
-                        <!-- Price + Cart -->
                         <div class="flex justify-between items-center">
                             <div class="flex items-center gap-2">
-                                <p class="text-gray-400 line-through">
-                                    ₹ {{ pkg.actual_price }}
-                                </p>
-                                <p class=" font-semibold bold-test-color">
-                                    ₹ {{ pkg.discounted_price }}
-                                </p>
+                                <p class="text-gray-400 line-through">₹ {{ pkg.actual_price }}</p>
+                                <p class="font-semibold bold-test-color">₹ {{ pkg.discounted_price }}</p>
                             </div>
+
                             <!-- Cart Icon -->
-                            <div>
+                            <button :disabled="isInCart(pkg)" @click="addToCart(pkg)" :class="[
+                                'p-2 rounded-full transition',
+                                isInCart(pkg)
+                                    ? 'bg-gray-200 cursor-not-allowed'
+                                    : 'hover:bg-gray-100 text-indigo-900',
+                            ]">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1"
-                                    stroke="currentColor" class="w-5 h-5 text-indigo-900">
+                                    stroke="currentColor" class="w-5 h-5">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 
-                                        1.437M7.5 14.25a3 3 0 0 
-                                        0-3 3h15.75m-12.75-3h11.218
-                                        c1.121-2.3 2.1-4.684 
-                                        2.924-7.138a60.114 
-                                        60.114 0 0 0-16.536-1.84M7.5 
-                                        14.25 5.106 5.272M6 20.25a.75.75 
-                                        0 1 1-1.5 0 .75.75 0 0 1 
-                                        1.5 0Zm12.75 0a.75.75 0 1 
-                                        1-1.5 0 .75.75 0 0 1 1.5 0Z" />
+      1.437M7.5 14.25a3 3 0 0 
+      0-3 3h15.75m-12.75-3h11.218
+      c1.121-2.3 2.1-4.684 
+      2.924-7.138a60.114 
+      60.114 0 0 0-16.536-1.84M7.5 
+      14.25 5.106 5.272M6 20.25a.75.75 
+      0 1 1-1.5 0 .75.75 0 0 1 
+      1.5 0Zm12.75 0a.75.75 0 1 
+      1-1.5 0 .75.75 0 0 1 1.5 0Z" />
                                 </svg>
-                            </div>
+                            </button>
+
                         </div>
 
                         <!-- Buttons -->
                         <div
-                            class="flex flex-col sm:flex-row sm:justify-between items-stretch sm:items-center gap-2 sm:gap-0">
+                            class="flex flex-col sm:flex-row sm:justify-between items-stretch sm:items-center gap-2 sm:gap-0 mt-2">
                             <router-link :to="`/SinglePackageBook/${encodeURIComponent(pkg.name1)}`"
                                 class="w-full sm:w-auto no-underline">
                                 <button
@@ -97,21 +99,19 @@
 <script setup>
 import { ref, computed, onMounted } from "vue";
 import axios from "axios";
+import { useCartStore } from '@/stores/cartStore'
 
+const cartStore = useCartStore();
 const searchQuery = ref("");
 const packages = ref([]);
 const loading = ref(true);
 
-// ✅ Fetch data from your backend API
 const fetchPackages = async () => {
     try {
         const response = await axios.get(
             "/api/method/bloodtestnearme.api.packages.get_individual_packages"
         );
 
-        console.log("API Response:", response.data); // 👈 check structure in browser console
-
-        // Handle possible structures from Frappe
         if (response.data.message) {
             if (Array.isArray(response.data.message)) {
                 packages.value = response.data.message;
@@ -130,14 +130,23 @@ const fetchPackages = async () => {
     }
 };
 
-// Fetch on mount
-onMounted(fetchPackages);
+// ✅ Add to Cart
+const addToCart = (pkg) => {
+    cartStore.addToCart(pkg);
+};
 
-// ✅ Filter by search text
+// ✅ Check if already added (based on unique name)
+const isInCart = (pkg) => {
+    return cartStore.cartItems.some((item) => item.name1 === pkg.name1);
+};
+
+// ✅ Filtered Search
 const filteredPackages = computed(() => {
     if (!searchQuery.value.trim()) return packages.value;
     return packages.value.filter((pkg) =>
         pkg.name1?.toLowerCase().includes(searchQuery.value.toLowerCase())
     );
 });
+
+onMounted(fetchPackages);
 </script>
