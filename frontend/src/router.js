@@ -33,6 +33,28 @@ const routes = [
     name: 'CartPage',
     component: () => import('@/CartPage/CartPage.vue'),
   },
+  {
+    path:'/qrcodedata',
+    name:'QRcodeData',
+    component: () => import('@/QRscan/QRcodeData.vue'),
+  },
+  
+  {
+    path:'/blogspreview',
+    name:'BlogsPreview',
+    component: () => import('@/Blogs/BlogsPreview.vue'),
+  },
+  {
+    path:'/blogdetails',
+    name:'BlogDetails',
+    component: () => import('@/Blogs/BlogDetails.vue'),
+  },
+  {
+    path: '/address',
+    name: 'Address',
+    component: () => import('@/Blogs/Address.vue'),
+  }
+
 ]
 
 const router = createRouter({

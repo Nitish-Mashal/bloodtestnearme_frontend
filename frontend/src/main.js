@@ -5,6 +5,9 @@ import { createPinia } from 'pinia'
 import router from './router'
 import App from './App.vue'
 
+// 🧩 Import Pinia
+import { createPinia } from 'pinia'
+
 // Frappe UI imports
 import { Button, setConfig, frappeRequest, resourcesPlugin } from 'frappe-ui'
 
