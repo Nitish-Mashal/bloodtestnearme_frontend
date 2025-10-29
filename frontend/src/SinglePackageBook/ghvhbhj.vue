@@ -4,52 +4,35 @@
             <div class="container">
                 <div class="px-5 py-4 row">
                     <div class="col-12 col-md-6 col-sm-12 mb-2">
+                        <h3 class="bold-test-color pb-2">Basic Health Checkup (94 Tests)</h3>
 
-                        <!-- Header -->
-                        <div class="flex justify-between items-center mb-4">
-                            <h5 class="text-[#001D55] font-semibold">Cart Items</h5>
-                            <button class="flex items-center text-red-700 font-medium">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                    stroke-width="1.5" stroke="currentColor" class="w-4 h-4 mr-1">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-                                </svg>
-                                Add more tests
-                            </button>
-                        </div>
-
-                        <!-- Divider -->
-                        <hr class="border-gray-300 mb-3">
-
-                        <!-- Cart Items -->
-                        <div class="space-y-3">
-                            <!-- Single Cart Item -->
-                            <div class="flex justify-between items-center rounded-lg">
-                                <div>
-                                    <h6 class="font-semibold text-[#001D55]">Basic Health Checkup (94 Tests)</h6>
-                                    <div class="text-gray-500">
-                                        <span class="line-through">₹ 1949</span>
-                                        <span class="font-semibold text-[#001D55]">₹ 1299</span>
-                                    </div>
-                                </div>
-                                <button
-                                    class="bg-[#0040BB] text-white px-4 py-2 rounded-full hover:bg-[#0040BB]">Remove</button>
+                        <!-- description -->
+                        <div class="bold-test-color">
+                            <div class="pt-2">
+                                <strong>Thyrocare Medical Laboratory - Your Trusted Health Partner</strong>
+                                Our comprehensive <strong>Basic Health Checkup Package</strong> includes <strong>94
+                                    blood
+                                    tests</strong>, covering CBC,
+                                diabetes
+                                screening, thyroid, liver, and kidney function tests. It also assesses lipid profile,
+                                sodium,
+                                chloride,
+                                and iron levels. Benefit from <strong>home sample collection</strong> and accurate lab
+                                testing.
                             </div>
-
-                            <!-- Another Cart Item -->
-                            <div class="flex justify-between items-center rounded-lg">
-                                <div>
-                                    <h6 class="font-semibold text-[#001D55]">Basic Health Checkup (94 Tests)</h6>
-                                    <div class="text-gray-500">
-                                        <span class="line-through">₹ 1949</span> <span
-                                            class="font-semibold text-[#001D55]">₹ 1299</span>
-                                    </div>
-                                </div>
-                                <button
-                                    class="bg-[#0040BB] text-white px-4 py-2 rounded-full hover:bg-[#0040BB]">Remove</button>
+                            <div class="pt-3">
+                                <strong> Prioritize Your Health</strong>
+                                Regular checkups help detect health issues early, enabling timely treatment and better
+                                outcomes.
+                                Choose
+                                the <strong>Thyrocare Basic Health Checkup Package</strong> for proactive health
+                                management.
+                            </div>
+                            <div class="pt-4">
+                                <strong>Sample Type:</strong> <span class="text-red-600">Blood & Urine</span>
                             </div>
                         </div>
                     </div>
-
 
                     <!-- Form Card -->
                     <div class="col-12 col-md-6">
@@ -180,8 +163,5 @@
 <script>
 import MostBookedHealthCheckups from '../Home/MostBookedHealthCheckups.vue';
 export default {
-    name: "CartPage",
-    components: {
-        MostBookedHealthCheckups,
-    },
+    name: " SinglePackageBook", components: { MostBookedHealthCheckups, },
 } </script>

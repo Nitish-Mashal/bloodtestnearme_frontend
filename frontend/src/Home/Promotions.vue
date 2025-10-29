@@ -1,15 +1,17 @@
 <template>
-  <div class="mt-4 flex justify-center">
-    <div class="bg-gray-100 py-4 px-4 rounded-xl w-[95%] md:w-[90%]">
-      <el-carousel :loop="true" :autoplay="true" :interval="3000" height="200px" indicator-position="none">
-        <el-carousel-item v-for="(group, index) in groupedImages" :key="index">
-          <div class="flex justify-center gap-4">
-            <div v-for="img in group" :key="img" class="w-full md:w-1/2">
-              <img :src="img" class="w-full h-[180px] object-cover rounded-xl shadow-md" />
+  <div class="mt-4">
+    <div class="container px-2 sm:px-8 mt-6">
+      <div class=" bg-gray-100 py-4 px-4 rounded-xl">
+        <el-carousel :loop="true" :autoplay="true" :interval="3000" height="200px" indicator-position="none">
+          <el-carousel-item v-for="(group, index) in groupedImages" :key="index">
+            <div class="flex justify-center gap-4">
+              <div v-for="img in group" :key="img" class="w-full md:w-1/2">
+                <img :src="img" class="w-full h-[180px] object-cover rounded-xl shadow-md" />
+              </div>
             </div>
-          </div>
-        </el-carousel-item>
-      </el-carousel>
+          </el-carousel-item>
+        </el-carousel>
+      </div>
     </div>
   </div>
 </template>

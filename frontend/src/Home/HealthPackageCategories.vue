@@ -9,15 +9,17 @@
                         Health Package Categories
                     </h2>
 
-                    <a href="#"
-                        class="text-sm bold-test-color font-medium flex items-center gap-1 hover:underline mt-2 sm:mt-0 whitespace-nowrap">
-                        <span>View All</span>
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
-                            stroke="currentColor" class="w-3 h-3 mt-[1px]">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                d="m4.5 19.5 15-15m0 0H8.25m11.25 0v11.25" />
-                        </svg>
-                    </a>
+                    <div class="text-sm font-medium mt-2 sm:mt-0 whitespace-nowrap">
+                        <router-link to="/HealthCheckupList"
+                            class="flex items-center gap-1 no-underline bold-test-color hover:underline">
+                            <span>View All</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                                stroke="currentColor" class="w-3 h-3 mt-[1px]">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="m4.5 19.5 15-15m0 0H8.25m11.25 0v11.25" />
+                            </svg>
+                        </router-link>
+                    </div>
                 </div>
 
                 <div class="text-center my-8">

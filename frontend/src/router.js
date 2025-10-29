@@ -7,9 +7,10 @@ const routes = [
     component: () => import('@/Home/HeroSection.vue'),
   },
   {
-    path: '/HealthCheckupDetails',
+    path: '/HealthCheckupDetails/:name1',
     name: 'HealthCheckupDetails',
     component: () => import('@/HealthCheckupDetails/HealthCheckupDetails.vue'),
+    props: true,
   },
   {
     path: '/HealthCheckupList',
@@ -22,9 +23,10 @@ const routes = [
     component: () => import('@/BloodTest/BloodTestList.vue'),
   },
   {
-    path: '/SinglePackageBook',
-    name: 'SinglePackageBook',
-    component: () => import('@/SinglePackageBook/SinglePackageBook.vue'),
+    path: '/SinglePackageBook/:name1',
+    name: 'HealthCheckupDetails',
+    component: () => import('@/SinglePackageBook/SinglePackageBook.vue'), // ✅ Use SinglePackageBook.vue here
+    props: true,
   },
   {
     path: '/CartPage',
@@ -33,9 +35,13 @@ const routes = [
   },
 ]
 
-let router = createRouter({
+const router = createRouter({
   history: createWebHistory(''),
   routes,
+  scrollBehavior(to, from, savedPosition) {
+    // Always scroll to top when navigating to a new route
+    return { top: 0 }
+  },
 })
 
 export default router

@@ -1,114 +1,76 @@
 <template>
     <div>
-        <div class="bold-test-color">
+        <div class="bold-test-color" v-if="packageData">
             <!-- heading -->
             <div class="pt-4">
-                <h3 class="">
-                    Basic Health Checkup (94 Tests)
-                </h3>
+                <h3>{{ packageData.name1 }} ({{ packageData.number_of_test }} Tests)</h3>
             </div>
 
             <!-- description -->
-            <div class="">
-                <div class="pt-2">
-                    <strong>Thyrocare Medical Laboratory - Your Trusted Health Partner</strong>
-                    Our comprehensive <strong>Basic Health Checkup Package</strong> includes <strong>94 blood
-                        tests</strong>, covering CBC,
-                    diabetes
-                    screening, thyroid, liver, and kidney function tests. It also assesses lipid profile, sodium,
-                    chloride,
-                    and iron levels. Benefit from <strong>home sample collection</strong> and accurate lab testing.
-                </div>
-                <div class="pt-3">
-                    <strong> Prioritize Your Health</strong>
-                    Regular checkups help detect health issues early, enabling timely treatment and better outcomes.
-                    Choose
-                    the <strong>Thyrocare Basic Health Checkup Package</strong> for proactive health management.
-                </div>
-                <div class="pt-4">
-                    <strong>Sample Type:</strong> <span class="text-red-600">Blood & Urine</span>
-                </div>
+            <div class="pt-2" v-html="packageData.description"></div>
+
+            <!-- Sample Type -->
+            <div class="pt-2">
+                <strong>Sample Type: </strong>
+                <span class="text-red-600">{{ packageData.sample_type }}</span>
             </div>
 
-            <!-- Precautionary Measures: -->
-            <!-- heading -->
+            <!-- Precautionary Measures -->
             <div class="pt-4">
-                <h5 class="font-semibold pb-4">
-                    Precautionary Measures:
-                </h5>
+                <h5 class="font-semibold pb-4">Precautionary Measures:</h5>
                 <div class="row">
-                    <div class="col-md-4 col-lg-3 col-sm-12 pb-3">
-                        <div
-                            class="card shadow border-0 rounded-4 bold-test-color p-4 text-[90%] font-regular justify-center items-center text-center pb-5">
-                            <img src="/watch.png" alt="time" class="w-16 pb-2">
-                            <div> 10-12 hours fasting is required.
-                                Water is allowed.</div>
-                        </div>
-                    </div>
-                    <div class="col-md-4 col-lg-3 col-sm-12 pb-3">
-                        <div
-                            class="card shadow border-0 rounded-4 bold-test-color p-4 text-[90%] font-regular justify-center items-center text-center pb-5">
-                            <img src="/glass.png" alt="time" class="w-16 pb-2">
-                            <div>Keeps yourself well-hydrated.</div>
-                        </div>
-                    </div>
-                    <div class="col-md-4 col-lg-3 col-sm-12 pb-3">
-                        <div
-                            class="card shadow border-0 rounded-4 bold-test-color p-4 text-[90%] font-regular justify-center items-center text-center pb-5">
-                            <img src="/bed.png" alt="time" class="w-16 pb-2">
-                            <div>Enough rest for mind and body.</div>
-                        </div>
-                    </div>
-                    <div class="col-md-4 col-lg-3 col-sm-12 pb-3">
+                    <div v-for="(measure, index) in precautionaryMeasures" :key="index"
+                        class="col-md-4 col-lg-3 col-sm-12 pb-3">
                         <div
                             class="card shadow border-0 rounded-4 bold-test-color p-4 text-[90%] font-regular justify-center items-center text-center">
-                            <img src="/gym.png" alt="time" class="w-16 pb-2">
-                            <div>Avoid performing heavy exercise
-                                a day before the blood test.</div>
+                            <img :src="measure.image" :alt="measure.alt" class="w-16 pb-2" />
+                            <div>{{ measure.text }}</div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Booking Procedure -->
-            <!-- heading -->
-            <div class="pt-4">
-                <h5 class="font-semibold pb-4">
-                    Precautionary Measures:
-                </h5>
-                <div>
-                    <div>
-                        1. Fill the booking form on right side with Name, Address, Mobile no.
-                    </div>
-
-                    <div>
-                        2. Thyrocare agent will inform you about the appointment date and time via sms or email.
-                    </div>
-
-                    <div>
-                        3. Samples will be collected from your Home address. 10-12 hrs fasting is required.
-                    </div>
-
-                    <div>
-                        4. You will get a payment link before sample collection. You can also make the payment by Scan
-                        QR code at the time of collection or pay cash to the technician.
-                    </div>
-
-                    <div>
-                        5. We will email the reports within 24 hrs[For most of the pincodes] on your email address
-                        mentioned while booking.
-                    </div>
-                </div>
+            <!-- ✅ Booking Procedure -->
+            <div class="pt-4" v-if="parsedBookingProcedure.length">
+                <h5 class="font-semibold pb-4">Booking Procedure:</h5>
+                <ol class="list-decimal pl-6 space-y-1">
+                    <li v-for="(step, index) in parsedBookingProcedure" :key="index">
+                        {{ step }}
+                    </li>
+                </ol>
             </div>
-
         </div>
     </div>
 </template>
 
-<script>
-export default {
-    name: "HealthCheckupDescription",
-};
-</script>
+<script setup>
+import { computed } from "vue";
 
-<style scoped></style>
+const props = defineProps({
+    packageData: { type: Object, required: true },
+});
+
+const precautionaryMeasures = [
+    { image: "/watch.png", alt: "time", text: "10-12 hours fasting is required. Water is allowed." },
+    { image: "/glass.png", alt: "water", text: "Keep yourself well-hydrated. Water is important." },
+    { image: "/bed.png", alt: "rest", text: "Get enough rest for mind and body." },
+    { image: "/gym.png", alt: "exercise", text: "Avoid heavy exercise a day before the blood test." },
+];
+
+// ✅ booking procedure parser
+const parsedBookingProcedure = computed(() => {
+    const raw = props.packageData?.booking_procedure;
+    if (!raw) return [];
+    try {
+        const parsed = JSON.parse(raw);
+        if (Array.isArray(parsed)) return parsed.map((s) => s.trim());
+    } catch {
+        return raw
+            .replace(/^\[|\]$/g, "")
+            .split(/"\s*,\s*"/g)
+            .map((s) => s.replace(/(^"|"$)/g, "").replace(/^\d+\.\s*/, "").trim())
+            .filter((s) => s.length > 0);
+    }
+    return [];
+});
+</script>

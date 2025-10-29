@@ -21,72 +21,103 @@
 
             <!-- Testimonial Section -->
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-3">
-                <!-- Element Plus Carousel -->
+                <!-- Carousel -->
                 <div class="lg:col-span-2">
-                    <el-carousel :interval="4000" arrow="always" indicator-position="none" height="280px">
-                        <el-carousel-item v-for="(pair, index) in chunkedTestimonials" :key="index">
-                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 h-full">
-                                <div v-for="(testimonial, i) in pair" :key="i"
-                                    class="bg-gray-100 px-6 py-2 rounded-xl shadow-sm flex flex-col justify-between h-full">
-                                    <div class="flex items-center gap-4">
+                    <el-carousel :interval="4000" arrow="always" indicator-position="none" height="300px">
+                        <!-- Mobile: show 1 testimonial per slide -->
+                        <template v-if="isMobile">
+                            <el-carousel-item v-for="(testimonial, index) in testimonials" :key="'mobile-' + index"
+                                class="h-full">
+                                <div
+                                    class="bg-gray-100 px-5 py-4 rounded-xl shadow-sm flex flex-col justify-between h-full overflow-hidden min-h-[260px]">
+                                    <div class="flex items-center justify-between gap-3">
                                         <img :src="testimonial.image" alt="User"
-                                            class="w-14 h-14 rounded-full object-cover" />
-
-                                        <span class="ml-auto text-4xl text-blue-900">&rdquo;</span>
+                                            class="w-14 h-14 rounded-full object-cover flex-shrink-0" />
+                                        <span class="text-[50px] text-blue-900 leading-none">&rdquo;</span>
                                     </div>
 
-                                    <div class="mt-2 flex-1">
-                                        <div class="pb-3">
-                                            <p class="font-semibold text-blue-900">
+                                    <div class="mt-3 flex-1 overflow-hidden">
+                                        <div class="">
+                                            <p class="font-semibold text-blue-900 truncate">
                                                 {{ testimonial.name }}
                                             </p>
                                             <p class="text-sm text-blue-500">{{ testimonial.role }}</p>
                                         </div>
 
-                                        <p class="font-semibold text-blue-900">
+                                        <p class="font-semibold text-blue-900 text-sm sm:text-base leading-snug">
                                             {{ testimonial.highlight }}
                                         </p>
-                                        <p class="text-gray-600 text-sm mt-2">
+                                        <p
+                                            class="text-gray-600 text-xs sm:text-sm overflow-hidden text-ellipsis line-clamp-3">
                                             {{ testimonial.description }}
                                         </p>
                                     </div>
                                 </div>
-                            </div>
-                        </el-carousel-item>
+                            </el-carousel-item>
+                        </template>
+
+                        <!-- Desktop: show 2 testimonials per slide -->
+                        <template v-else>
+                            <el-carousel-item v-for="(pair, index) in chunkedTestimonials" :key="'desktop-' + index"
+                                class="h-full">
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 h-full">
+                                    <div v-for="(testimonial, i) in pair" :key="i"
+                                        class="bg-gray-100 px-5 py-4 rounded-xl shadow-sm flex flex-col justify-between h-full overflow-hidden min-h-[260px]">
+                                        <div class="flex items-center justify-between gap-3">
+                                            <img :src="testimonial.image" alt="User"
+                                                class="w-14 h-14 rounded-full object-cover flex-shrink-0" />
+                                            <span class="text-4xl text-blue-900 leading-none">&rdquo;</span>
+                                        </div>
+
+                                        <div class="mt-3 flex-1 overflow-hidden">
+                                            <div class="pb-2">
+                                                <div class="font-semibold text-blue-900 truncate pb-1">
+                                                    {{ testimonial.name }}
+                                                </div>
+                                                <div class="text-sm text-blue-500 pb-2">{{ testimonial.role }}</div>
+                                            </div>
+
+                                            <div class="font-semibold text-blue-900 text-sm sm:text-base leading-snug">
+                                                {{ testimonial.highlight }}
+                                            </div>
+                                            <div
+                                                class="text-gray-600 text-xs sm:text-sm mt-2 overflow-hidden text-ellipsis line-clamp-3">
+                                                {{ testimonial.description }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </el-carousel-item>
+                        </template>
                     </el-carousel>
                 </div>
 
                 <!-- Fixed Rating Card -->
-                <div class="bg-gray-100 p-6 rounded-xl shadow-sm flex flex-col items-center justify-center">
+                <div
+                    class="bg-gray-100 p-6 rounded-xl shadow-sm flex flex-col items-center justify-center min-h-[300px]">
                     <div class="text-left w-full max-w-sm">
-                        <p class="text-[45px] font-bold text-blue-900">
+                        <div class="text-[45px] font-bold text-blue-900">
                             4.9
                             <span class="text-yellow-400 text-2xl align-middle ml-1">★★★★★</span>
-                        </p>
-                        <p class=" text-blue-900 font-semibold">
+                        </div>
+                        <p class="text-blue-900 font-semibold">
                             Top-Rated Online Pathology Service
                         </p>
                     </div>
                 </div>
-
             </div>
-
         </div>
 
-        <div class="w-full bg-gray-100 flex justify-center items-center mt-4">
+        <!-- WhatsApp Section -->
+        <div class="w-full flex justify-center items-center mt-4">
             <div class="global-bg-color text-white p-6 rounded-3xl text-left flex justify-between items-center gap-10">
                 <div class="">
-                    <div class="text-[30px]">
-                        Can't find what you're looking for?
-                    </div>
+                    <div class="text-[30px]"> Can't find what you're looking for? </div>
                     <p class="bold-test-color text-2xl">We are here to help. Say 'Hi' on WhatsApp</p>
                 </div>
-                <div>
-                    <img src="/whatsapp.png" alt="whatsappLogo" class="h-20" />
-                </div>
+                <div> <img src="/whatsapp.png" alt="whatsappLogo" class="h-20" /> </div>
             </div>
         </div>
-
     </div>
 </template>
 
@@ -95,6 +126,7 @@ export default {
     name: "TestimonialsSection",
     data() {
         return {
+            isMobile: false,
             testimonials: [
                 {
                     name: "Amber Morales",
@@ -154,7 +186,6 @@ export default {
         };
     },
     computed: {
-        // Groups testimonials in pairs of 2
         chunkedTestimonials() {
             const chunks = [];
             for (let i = 0; i < this.testimonials.length; i += 2) {
@@ -163,24 +194,17 @@ export default {
             return chunks;
         },
     },
+    mounted() {
+        this.checkScreen();
+        window.addEventListener("resize", this.checkScreen);
+    },
+    beforeUnmount() {
+        window.removeEventListener("resize", this.checkScreen);
+    },
+    methods: {
+        checkScreen() {
+            this.isMobile = window.innerWidth < 640; // Tailwind's sm breakpoint
+        },
+    },
 };
 </script>
-
-<style scoped>
-.el-carousel__arrow {
-    background-color: #1e3a8a !important;
-    /* blue-900 */
-    color: white !important;
-    border-radius: 50%;
-}
-
-.el-carousel__arrow:hover {
-    background-color: #1d4ed8 !important;
-    /* blue-700 */
-}
-
-.bg-gray-100 {
-    min-height: 260px;
-    /* ✅ ensures same height for all testimonial cards */
-}
-</style>
