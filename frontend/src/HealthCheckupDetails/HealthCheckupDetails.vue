@@ -94,79 +94,51 @@
     </div>
 </template>
 
-<script>
-import axios from "axios";
+<script setup>
+import { ref, onMounted } from "vue";
 import { useRoute } from "vue-router";
+import axios from "axios";
 import HealthCheckupDescription from "../HealthCheckupDetails/HealthCheckupDescription.vue";
 import MostBookedHealthCheckups from "../Home/MostBookedHealthCheckups.vue";
 
-export default {
-    name: "HealthCheckupDetails",
-    components: { HealthCheckupDescription, MostBookedHealthCheckups },
-    data() {
-        return {
-            listInclude: [],
-            packageData: null,
-        };
-    },
-    mounted() {
-        this.fetchPackageData();
-    },
-    methods: {
-        async fetchPackageData() {
-            const route = useRoute();
-            const pkgName = decodeURIComponent(route.params.name1);
+const route = useRoute();
+const listInclude = ref([]);
+const packageData = ref(null);
 
+const fetchPackageData = async () => {
+    const pkgName = decodeURIComponent(route.params.name1);
+
+    try {
+        const [packageBasedResp, individualResp] = await Promise.all([
+            axios.get("/api/method/bloodtestnearme.api.packages.get_package_based_tests"),
+            axios.get("/api/method/bloodtestnearme.api.packages.get_individual_packages"),
+        ]);
+
+        const packageBasedList = packageBasedResp.data?.message?.data || [];
+        const individualList = individualResp.data?.message?.data || individualResp.data?.message || [];
+
+        const basePkg = packageBasedList.find((p) => p.name1 === pkgName);
+        const individualPkg = individualList.find((p) => p.name1 === pkgName);
+
+        if (!basePkg && !individualPkg) {
+            console.warn("Package not found:", pkgName);
+            return;
+        }
+
+        packageData.value = { ...basePkg, ...individualPkg };
+
+        const listStr = packageData.value.list_include;
+        if (listStr) {
             try {
-                // ✅ Fetch both APIs in parallel
-                const [packageBasedResp, individualResp] = await Promise.all([
-                    axios.get("/api/method/bloodtestnearme.api.packages.get_package_based_tests"),
-                    axios.get("/api/method/bloodtestnearme.api.packages.get_individual_packages"),
-                ]);
-
-                // ✅ Extract data arrays safely
-                const packageBasedList = packageBasedResp.data?.message?.data || [];
-                const individualList = individualResp.data?.message?.data || individualResp.data?.message || [];
-
-                // ✅ Find the matching package by name1
-                const basePkg = packageBasedList.find((p) => p.name1 === pkgName);
-                const individualPkg = individualList.find((p) => p.name1 === pkgName);
-
-                if (!basePkg && !individualPkg) {
-                    console.warn("Package not found:", pkgName);
-                    return;
-                }
-
-                // ✅ Merge data (individual fields overwrite base fields if exist)
-                this.packageData = {
-                    ...basePkg,
-                    ...individualPkg,
-                };
-
-                // ✅ Parse list_include (from either API)
-                const listStr = this.packageData.list_include;
-                if (listStr) {
-                    try {
-                        this.listInclude = JSON.parse(listStr);
-                    } catch {
-                        this.listInclude = [];
-                    }
-                }
-            } catch (error) {
-                console.error("Error fetching package data:", error);
+                listInclude.value = JSON.parse(listStr);
+            } catch {
+                listInclude.value = [];
             }
-        },
-    },
+        }
+    } catch (error) {
+        console.error("Error fetching package data:", error);
+    }
 };
+
+onMounted(fetchPackageData);
 </script>
-
-<style scoped>
-.accordion-button:focus {
-    box-shadow: none !important;
-}
-
-.accordion-button:not(.collapsed) {
-    color: #001d55;
-    background-color: #f8fafc;
-}
-</style>

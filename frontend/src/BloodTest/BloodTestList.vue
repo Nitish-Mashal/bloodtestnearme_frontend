@@ -42,26 +42,51 @@
                             </div>
 
                             <!-- Cart Icon -->
-                            <button :disabled="isInCart(pkg)" @click="addToCart(pkg)" :class="[
-                                'p-2 rounded-full transition',
-                                isInCart(pkg)
-                                    ? 'bg-gray-200 cursor-not-allowed'
-                                    : 'hover:bg-gray-100 text-indigo-900',
-                            ]">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1"
-                                    stroke="currentColor" class="w-5 h-5">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 
-      1.437M7.5 14.25a3 3 0 0 
-      0-3 3h15.75m-12.75-3h11.218
-      c1.121-2.3 2.1-4.684 
-      2.924-7.138a60.114 
-      60.114 0 0 0-16.536-1.84M7.5 
-      14.25 5.106 5.272M6 20.25a.75.75 
-      0 1 1-1.5 0 .75.75 0 0 1 
-      1.5 0Zm12.75 0a.75.75 0 1 
-      1-1.5 0 .75.75 0 0 1 1.5 0Z" />
+                            <button :disabled="isInCart(pkg)" @click="addToCart(pkg)"
+                                :title="isInCart(pkg) ? 'Item already in cart' : 'Add to cart'"
+                                class="relative group p-2 rounded-full transition" :class="[
+                                    isInCart(pkg)
+                                        ? 'bg-gray-200 cursor-not-allowed'
+                                        : 'hover:bg-gray-100 text-indigo-900',
+                                ]">
+                                <!-- 🛒 Normal cart icon -->
+                                <svg v-if="!isInCart(pkg)" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                    viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" class="w-5 h-5">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 
+            1.087.835l.383 1.437M7.5 14.25a3 3 0 0 
+            0-3 3h15.75m-12.75-3h11.218
+            c1.121-2.3 2.1-4.684 
+            2.924-7.138a60.114 
+            60.114 0 0 0-16.536-1.84M7.5 
+            14.25 5.106 5.272M6 20.25a.75.75 
+            0 1 1-1.5 0 .75.75 0 0 1 
+            1.5 0Zm12.75 0a.75.75 0 1 
+            1-1.5 0 .75.75 0 0 1 1.5 0Z" />
+                                </svg>
+
+                                <!-- ❌ X symbol appears on hover when item already in cart -->
+                                <span v-if="isInCart(pkg)"
+                                    class="absolute inset-0 flex items-center justify-center text-red-500 opacity-0 group-hover:opacity-100 transition-opacity duration-200 text-lg font-bold">
+                                    ×
+                                </span>
+
+                                <!-- Disabled gray cart icon (background icon) -->
+                                <svg v-if="isInCart(pkg)" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                    viewBox="0 0 24 24" stroke-width="1" stroke="currentColor"
+                                    class="w-5 h-5 text-gray-400">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 
+            1.087.835l.383 1.437M7.5 14.25a3 3 0 0 
+            0-3 3h15.75m-12.75-3h11.218
+            c1.121-2.3 2.1-4.684 
+            2.924-7.138a60.114 
+            60.114 0 0 0-16.536-1.84M7.5 
+            14.25 5.106 5.272M6 20.25a.75.75 
+            0 1 1-1.5 0 .75.75 0 0 1 
+            1.5 0Zm12.75 0a.75.75 0 1 
+            1-1.5 0 .75.75 0 0 1 1.5 0Z" />
                                 </svg>
                             </button>
+
 
                         </div>
 
@@ -76,7 +101,7 @@
                                 </button>
                             </router-link>
 
-                            <router-link :to="`/HealthCheckupDetails/${encodeURIComponent(pkg.name1)}`"
+                            <router-link :to="{ name: 'HealthCheckupDetails', params: { name1: pkg.name1 } }"
                                 class="no-underline">
                                 <button
                                     class="border-1 border-[#001D55] font-semibold text-xs bold-test-color px-3 py-1.5 rounded-full hover:bg-gray-100 transition flex items-center justify-center gap-1 w-full sm:w-auto">

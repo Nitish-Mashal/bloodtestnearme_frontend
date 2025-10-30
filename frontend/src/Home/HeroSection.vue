@@ -7,7 +7,7 @@
         <!-- Hero Section -->
         <div
           class="relative bg-cover bg-center bg-no-repeat flex flex-col sm:flex-row items-center justify-center sm:justify-end py-10 sm:py-22 md:py-[100px] px-4 sm:px-6 md:pr-10 order-2 sm:order-1"
-          style="background-image: url('/Stickyimage.png')">
+          style="background-image: url('/Stickyimage.jpg')">
           <div class="absolute inset-0"></div>
 
           <div class="relative z-10 text-left max-w-3xl sm:mr-[150px]">
