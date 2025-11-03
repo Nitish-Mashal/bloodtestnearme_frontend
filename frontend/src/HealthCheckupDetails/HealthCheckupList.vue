@@ -138,44 +138,65 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from "vue";
+import { ref, computed, onMounted, watch } from "vue";
 import axios from "axios";
+import { useRoute } from "vue-router";
 import { useCartStore } from "@/stores/cartStore";
 
 const searchQuery = ref("");
 const packages = ref([]);
 const isLoading = ref(true);
-
-// 🛒 Pinia Cart Store
+const route = useRoute();
 const cartStore = useCartStore();
 
-// ✅ Add to Cart
 const addToCart = (pkg) => {
     cartStore.addToCart(pkg);
 };
 
-// ✅ Check if already in cart
 const isInCart = (pkg) => {
     return cartStore.cartItems.some((item) => item.name1 === pkg.name1);
 };
 
-// ✅ Fetch packages from API
+// ✅ Fetch packages dynamically based on category
 const fetchPackages = async () => {
     try {
-        const response = await axios.get("/api/method/bloodtestnearme.api.packages.get_package_based_tests");
+        isLoading.value = true; // Start loader before API call
+
+        const category = route.query.category || "";
+        let apiUrl = "/api/method/bloodtestnearme.api.packages.get_package_based_tests";
+
+        // If category param exists → use category API
+        if (category) {
+            apiUrl = `/api/method/bloodtestnearme.api.packages.get_packages?category=${category}`;
+        }
+
+        const response = await axios.get(apiUrl);
+
         if (response.data?.message?.data) {
             packages.value = response.data.message.data;
+        } else if (response.data?.data) {
+            packages.value = response.data.data;
+        } else {
+            packages.value = [];
         }
     } catch (error) {
         console.error("Error fetching packages:", error);
+        packages.value = [];
     } finally {
-        setTimeout(() => {
-            isLoading.value = false;
-        }, 1000);
+        // Loader stops only when API response (success or error) completes
+        isLoading.value = false;
     }
 };
 
-// ✅ Filtered search
+// ✅ Watch for category changes
+watch(
+    () => route.query.category,
+    () => {
+        fetchPackages();
+    }
+);
+
+// ✅ Filter search
 const filteredPackages = computed(() => {
     if (!searchQuery.value.trim()) return packages.value;
     return packages.value.filter((pkg) =>
