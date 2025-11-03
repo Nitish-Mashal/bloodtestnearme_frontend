@@ -1,9 +1,9 @@
 <template>
     <div>
         <div class="container">
-            <div class="px-5 py-4 row" v-if="packageData">
+            <div class="px-5 py-4 row" v-if="!isLoading && packageData">
                 <!-- Accordion Section -->
-                <div class="col-12 col-md-8 col-sm-12 mb-2">
+                <div class="col-12 col-md-8 mb-2">
                     <h5 class="font-bold bold-test-color pb-2">List Of Tests Included:</h5>
 
                     <div class="accordion" id="accordionExample">
@@ -22,7 +22,7 @@
                                 :class="{ show: index === 0 }" :aria-labelledby="`heading${index}`"
                                 data-bs-parent="#accordionExample">
                                 <div class="accordion-body text-sm bold-test-color">
-                                    <ul v-if="item.values && item.values.length" class="list-disc pl-5">
+                                    <ul v-if="item.values?.length" class="list-disc pl-5">
                                         <li v-for="(test, i) in item.values" :key="i">{{ test }}</li>
                                     </ul>
                                     <p v-else class="text-gray-500 italic">
@@ -43,9 +43,7 @@
 
                         <div class="flex justify-between font-semibold pb-2 text-lg">
                             <div>Package Price:</div>
-                            <div class="text-red-600 line-through">
-                                ₹ {{ packageData.actual_price }}
-                            </div>
+                            <div class="text-red-600 line-through">₹ {{ packageData.actual_price }}</div>
                         </div>
 
                         <div class="flex justify-between font-semibold pb-2 text-lg">
@@ -58,35 +56,55 @@
                             <div class="text-green-600">₹ {{ packageData.discounted_price }}</div>
                         </div>
 
+                        <!-- Buttons -->
                         <div class="flex flex-col sm:flex-row justify-center mb-4 gap-4">
-                            <button class="global-bg-color text-white text-sm px-3 py-2 rounded-full hover:bg-blue-700">
-                                Book Now
-                            </button>
+                            <router-link v-if="packageData"
+                                :to="{ name: 'SinglePackageBook', params: { slug: packageData.url } }"
+                                class="w-full sm:w-auto no-underline">
+                                <button
+                                    class="global-bg-color text-white text-sm px-3 py-2 rounded-full hover:bg-blue-700 transition w-full sm:w-auto">
+                                    Book Now
+                                </button>
+                            </router-link>
 
-                            <button
-                                class="border border-[#001D55] text-sm bold-test-color px-3 py-2 rounded-full hover:bg-gray-100 flex items-center justify-center gap-1">
-                                <span>Add to Cart</span>
+                            <button :disabled="isInCart(packageData)" @click="toggleCart(packageData)"
+                                class="relative group border border-[#001D55] text-sm bold-test-color px-3 py-2 rounded-full hover:bg-gray-100 flex items-center justify-center gap-1 transition"
+                                :class="{ 'bg-gray-200 cursor-not-allowed': isInCart(packageData) }">
+                                <span>{{ isInCart(packageData) ? 'Added' : 'Add to Cart' }}</span>
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                     stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 
-                    1.087.835l.383 1.437M7.5 
-                    14.25a3 3 0 0 0-3 
-                    3h15.75m-12.75-3h11.218
-                    c1.121-2.3 2.1-4.684 
-                    2.924-7.138a60.114 
-                    60.114 0 0 0-16.536-1.84M7.5 
-                    14.25 5.106 5.272M6 20.25a.75.75 
-                    0 1 1-1.5 0 .75.75 0 0 1 
-                    1.5 0Zm12.75 0a.75.75 0 1 
-                    1-1.5 0 .75.75 0 0 1 1.5 0Z" />
+                      1.087.835l.383 1.437M7.5 
+                      14.25a3 3 0 0 0-3 
+                      3h15.75m-12.75-3h11.218
+                      c1.121-2.3 2.1-4.684 
+                      2.924-7.138a60.114 
+                      60.114 0 0 0-16.536-1.84M7.5 
+                      14.25 5.106 5.272M6 20.25a.75.75 
+                      0 1 1-1.5 0 .75.75 0 0 1 
+                      1.5 0Zm12.75 0a.75.75 0 1 
+                      1-1.5 0 .75.75 0 0 1 1.5 0Z" />
                                 </svg>
                             </button>
                         </div>
                     </div>
                 </div>
 
-                <!-- Description -->
                 <HealthCheckupDescription :packageData="packageData" />
+            </div>
+
+            <div v-if="isLoading" class="flex justify-center items-center h-60">
+                <div class="flex flex-col items-center">
+                    <svg class="animate-spin h-8 w-8 text-[#001D55]" xmlns="http://www.w3.org/2000/svg" fill="none"
+                        viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4">
+                        </circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
+                    </svg>
+                    <p class="text-[#001D55] mt-3 font-semibold">
+                        Loading package details...
+                    </p>
+                </div>
             </div>
         </div>
 
@@ -95,50 +113,61 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, watch } from "vue";
 import { useRoute } from "vue-router";
 import axios from "axios";
+import { useCartStore } from "@/stores/cartStore";
 import HealthCheckupDescription from "../HealthCheckupDetails/HealthCheckupDescription.vue";
 import MostBookedHealthCheckups from "../Home/MostBookedHealthCheckups.vue";
 
 const route = useRoute();
-const listInclude = ref([]);
+const isLoading = ref(true);
 const packageData = ref(null);
+const listInclude = ref([]);
+const cartStore = useCartStore();
 
-const fetchPackageData = async () => {
-    const pkgName = decodeURIComponent(route.params.name1);
+const isInCart = (pkg) =>
+    cartStore.cartItems.some((item) => item.name1 === pkg.name1);
 
+const toggleCart = (pkg) => {
+    if (isInCart(pkg)) cartStore.removeFromCart(pkg.name1);
+    else cartStore.addToCart(pkg);
+};
+
+const fetchPackageDetails = async () => {
     try {
-        const [packageBasedResp, individualResp] = await Promise.all([
-            axios.get("/api/method/bloodtestnearme.api.packages.get_package_based_tests"),
-            axios.get("/api/method/bloodtestnearme.api.packages.get_individual_packages"),
-        ]);
+        isLoading.value = true;
+        const packageUrl = route.params.url || route.params.slug || route.params.id;
 
-        const packageBasedList = packageBasedResp.data?.message?.data || [];
-        const individualList = individualResp.data?.message?.data || individualResp.data?.message || [];
-
-        const basePkg = packageBasedList.find((p) => p.name1 === pkgName);
-        const individualPkg = individualList.find((p) => p.name1 === pkgName);
-
-        if (!basePkg && !individualPkg) {
-            console.warn("Package not found:", pkgName);
+        if (!packageUrl) {
+            console.warn("❗No package URL parameter found in route.");
             return;
         }
 
-        packageData.value = { ...basePkg, ...individualPkg };
+        const response = await axios.get(
+            "/api/method/bloodtestnearme.api.packages.get_packages",
+            { params: { url: decodeURIComponent(packageUrl) } }
+        );
 
-        const listStr = packageData.value.list_include;
-        if (listStr) {
-            try {
-                listInclude.value = JSON.parse(listStr);
-            } catch {
-                listInclude.value = [];
-            }
+        const msg = response.data?.message;
+        const data =
+            Array.isArray(msg?.data) && msg.data.length ? msg.data[0] : msg?.data || msg;
+
+        if (!data) {
+            console.warn("❗No data found for:", packageUrl);
+            return;
         }
-    } catch (error) {
-        console.error("Error fetching package data:", error);
+
+        packageData.value = data;
+        listInclude.value = data.list_include ? JSON.parse(data.list_include) : [];
+    } catch (err) {
+        console.error("❌ Error fetching package details:", err);
+    } finally {
+        isLoading.value = false;
     }
 };
 
-onMounted(fetchPackageData);
+// ✅ Fetch data when component mounts or URL param changes
+onMounted(fetchPackageDetails);
+watch(() => route.params.url, fetchPackageDetails);
 </script>

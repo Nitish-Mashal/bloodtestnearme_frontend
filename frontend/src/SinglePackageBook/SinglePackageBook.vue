@@ -221,9 +221,11 @@
 import { ref, watch, onMounted, computed } from "vue";
 import { useRoute } from "vue-router";
 import axios from "axios";
+import MostBookedHealthCheckups from "../Home/MostBookedHealthCheckups.vue";
 
 const route = useRoute();
-const packageName = route.params.name1;
+// const packageName = route.params.name1;
+const packageName = decodeURIComponent(route.params.slug);
 const packageData = ref({});
 const isLoading = ref(true);
 const totalAmount = ref(0);
@@ -338,9 +340,10 @@ const fetchPackageDetails = async () => {
         for (const endpoint of endpoints) {
             const response = await axios.get(endpoint);
             const data = response.data?.message?.data || [];
-            const found = data.find(
-                (pkg) => pkg.name1?.toLowerCase() === packageName.toLowerCase()
-            );
+            const found = data.find((pkg) => {
+            const normalizedName = pkg.name1?.toLowerCase().replace(/\s+/g, '-');
+            return normalizedName === packageName.toLowerCase();
+            });
             if (found) {
                 packageData.value = found;
                 totalAmount.value =

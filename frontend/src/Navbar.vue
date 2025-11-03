@@ -54,12 +54,12 @@
 
       <!-- Desktop Links -->
       <div class="hidden md:flex items-center space-x-8 font-normal">
-        <router-link to="/BloodTestList" class="nav-link" :class="{ 'active-link': route.path === '/BloodTestList' }">
+        <router-link to="/blood-test-online-bangalore" class="nav-link" :class="{ 'active-link': route.path === '/blood-test-online-bangalore' }">
           Book a Test
         </router-link>
 
-        <router-link to="/HealthCheckupList" class="nav-link"
-          :class="{ 'active-link': route.path === '/HealthCheckupList' }">
+        <router-link to="/health-checkup-packages-bangalore" class="nav-link"
+          :class="{ 'active-link': route.path === '/health-checkup-packages-bangalore' }">
           Health Checkups
         </router-link>
 
@@ -89,13 +89,13 @@
       <transition name="slide-fade">
         <div v-if="menuOpen" ref="dropdownRef" @click.stop
           class="w-full bg-[#0077c8] px-6 py-4 space-y-3 md:hidden z-50">
-          <router-link to="/BloodTestList" class="nav-link block"
-            :class="{ 'active-link': route.path === '/BloodTestList' }" @click="closeMenu">
+          <router-link to="/blood-test-online-bangalore" class="nav-link block"
+            :class="{ 'active-link': route.path === '/blood-test-online-bangalore' }" @click="closeMenu">
             Book a Test
           </router-link>
 
-          <router-link to="/HealthCheckupList" class="nav-link block"
-            :class="{ 'active-link': route.path === '/HealthCheckupList' }" @click="closeMenu">
+          <router-link to="/health-checkup-packages-bangalore" class="nav-link block"
+            :class="{ 'active-link': route.path === '/health-checkup-packages-bangalore' }" @click="closeMenu">
             Health Checkups
           </router-link>
 

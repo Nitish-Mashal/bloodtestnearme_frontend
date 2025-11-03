@@ -95,7 +95,7 @@
                                         <!-- Buttons -->
                                         <div
                                             class="flex flex-col sm:flex-row sm:justify-between items-stretch sm:items-center gap-2 sm:gap-0 mt-2">
-                                            <router-link :to="`/SinglePackageBook/${encodeURIComponent(pkg.name)}`"
+                                            <router-link :to="{ name: 'SinglePackageBook', params: { slug: pkg.name.replace(/\s+/g, '-') } }"
                                                 class="w-full sm:w-auto no-underline">
                                                 <button
                                                     class="bg-[#2077BF] text-white text-sm px-3 py-1.5 rounded-full hover:bg-blue-700 transition w-full sm:w-auto">
@@ -103,8 +103,7 @@
                                                 </button>
                                             </router-link>
 
-                                            <router-link
-                                                :to="{ name: 'HealthCheckupDetails', params: { name1: pkg.name } }"
+                                            <router-link :to="`/${pkg.url}`"
                                                 class="no-underline">
                                                 <button
                                                     class="border-1 border-[#001D55] font-semibold text-xs bold-test-color px-2 py-1 rounded-full hover:bg-gray-100 transition flex items-center justify-center gap-1 w-full sm:w-auto">
@@ -117,6 +116,7 @@
                                                     </svg>
                                                 </button>
                                             </router-link>
+                                            
                                         </div>
                                     </div>
                                 </div>

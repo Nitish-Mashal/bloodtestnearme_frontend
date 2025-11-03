@@ -93,7 +93,8 @@
                         <!-- Buttons -->
                         <div
                             class="flex flex-col sm:flex-row sm:justify-between items-stretch sm:items-center gap-2 sm:gap-0 mt-2">
-                            <router-link :to="`/SinglePackageBook/${encodeURIComponent(pkg.name1)}`"
+                            <router-link
+                                :to="{ name: 'SinglePackageBook', params: { slug: pkg.name1.replace(/\s+/g, '-') } }"
                                 class="w-full sm:w-auto no-underline">
                                 <button
                                     class="bg-[#2077BF] text-white text-sm px-3 py-1.5 rounded-full hover:bg-blue-700 transition w-full sm:w-auto">
@@ -101,15 +102,14 @@
                                 </button>
                             </router-link>
 
-                            <router-link :to="{ name: 'HealthCheckupDetails', params: { name1: pkg.name1 } }"
-                                class="no-underline">
+                            <router-link :to="`/${pkg.url}`" class="w-full sm:w-auto no-underline">
                                 <button
-                                    class="border-1 border-[#001D55] font-semibold text-xs bold-test-color px-3 py-1.5 rounded-full hover:bg-gray-100 transition flex items-center justify-center gap-1 w-full sm:w-auto">
-                                    View Details
+                                    class="border border-[#001D55] font-semibold text-sm bold-test-color px-3 py-1.5 rounded-full hover:bg-gray-100 transition flex items-center justify-center gap-1 whitespace-nowrap sm:w-auto w-full">
+                                    <span>View Details</span>
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                         stroke-width="2" stroke="currentColor" class="w-3 h-3 mt-[1px]">
-                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                            d="m4.5 19.5 15-15m0 0H8.25m11.25 0v11.25" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 19.5 15-15m0 0H8.25m11.25 
+                                0v11.25" />
                                     </svg>
                                 </button>
                             </router-link>
