@@ -329,9 +329,67 @@ watch(
 
 
 // ✅ Fetch package details
+// const fetchPackageDetails = async () => {
+//     isLoading.value = true;
+//     try {
+//         const endpoints = [
+//             "/api/method/bloodtestnearme.api.packages.get_package_based_tests",
+//             "/api/method/bloodtestnearme.api.packages.get_individual_packages",
+//         ];
+
+//         for (const endpoint of endpoints) {
+//             const response = await axios.get(endpoint);
+//             const data = response.data?.message?.data || [];
+//             const found = data.find((pkg) => {
+//             const normalizedName = pkg.name1?.toLowerCase().replace(/\s+/g, '-');
+//             return normalizedName === packageName.toLowerCase();
+//             });
+//             if (found) {
+//                 packageData.value = found;
+//                 totalAmount.value =
+//                     parseFloat(found.discounted_price || 0) + homeCollectionCharge.value;
+//                 break;
+//             }
+//         }
+//     } catch (error) {
+//         console.error("Error fetching package details:", error);
+//     } finally {
+//         isLoading.value = false;
+//     }
+// };
+
 const fetchPackageDetails = async () => {
     isLoading.value = true;
+
     try {
+        const packageUrl = route.params.url || route.params.slug || route.params.id;
+
+        if (packageUrl) {
+            // 🔹 Try fetching directly by URL first
+            try {
+                const response = await axios.get(
+                    "/api/method/bloodtestnearme.api.packages.get_packages",
+                    { params: { url: decodeURIComponent(packageUrl) } }
+                );
+
+                const msg = response.data?.message;
+                const data =
+                    Array.isArray(msg?.data) && msg.data.length ? msg.data[0] : msg?.data || msg;
+
+                if (data) {
+                    packageData.value = data;
+                    totalAmount.value =
+                        parseFloat(data.discounted_price || 0) + homeCollectionCharge.value;
+                    return; // ✅ Stop here if found
+                } else {
+                    console.warn("⚠️ No data found using URL param:", packageUrl);
+                }
+            } catch (urlError) {
+                console.warn("⚠️ URL-based API failed, falling back to full fetch.");
+            }
+        }
+
+        // 🔹 Fallback: search manually in both endpoints
         const endpoints = [
             "/api/method/bloodtestnearme.api.packages.get_package_based_tests",
             "/api/method/bloodtestnearme.api.packages.get_individual_packages",
@@ -340,10 +398,12 @@ const fetchPackageDetails = async () => {
         for (const endpoint of endpoints) {
             const response = await axios.get(endpoint);
             const data = response.data?.message?.data || [];
+
             const found = data.find((pkg) => {
-            const normalizedName = pkg.name1?.toLowerCase().replace(/\s+/g, '-');
-            return normalizedName === packageName.toLowerCase();
+                const normalizedName = pkg.name1?.toLowerCase().replace(/\s+/g, "-");
+                return normalizedName === packageUrl?.toLowerCase();
             });
+
             if (found) {
                 packageData.value = found;
                 totalAmount.value =
@@ -352,11 +412,12 @@ const fetchPackageDetails = async () => {
             }
         }
     } catch (error) {
-        console.error("Error fetching package details:", error);
+        console.error("❌ Error fetching package details:", error);
     } finally {
         isLoading.value = false;
     }
 };
+
 
 // ✅ Submit and Call Backend API
 const singleTestSubmit = async () => {

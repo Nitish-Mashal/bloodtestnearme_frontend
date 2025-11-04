@@ -9,7 +9,7 @@
             Most Booked Full Body Health Checkups.
           </h2>
 
-          <div class="text-sm font-medium mt-2 sm:mt-0 whitespace-nowrap">
+          <div class="text-sm font-medium sm:mt-0 whitespace-nowrap">
             <router-link to="/HealthCheckupList"
               class="flex items-center gap-1 no-underline bold-test-color hover:underline">
               <span>View All</span>
@@ -22,8 +22,8 @@
         </div>
 
         <!-- ✅ Carousel Section -->
-        <div class="p-2 sm:p-3 rounded-xl w-full">
-          <el-carousel :interval="4000" arrow="hover" trigger="click" indicator-position="none" class="custom-carousel">
+        <div class="p-2 sm:p-2 rounded-xl w-full">
+          <el-carousel :interval="4000" arrow="hover" trigger="click" indicator-position="none">
             <el-carousel-item v-for="(group, index) in cardChunks" :key="index">
               <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
                 <div v-for="(pkg, i) in group" :key="i"
@@ -31,7 +31,7 @@
                   <img :src="pkg.image" alt="Health Package" class="w-full h-40 object-cover rounded-xl px-2 mt-2" />
 
                   <div class="p-3 pt-2">
-                    <div class="flex justify-between items-center mb-1">
+                    <div class="flex justify-between items-center">
                       <h3 class="text-sm font-semibold bold-test-color leading-tight truncate">
                         {{ pkg.title }} {{ pkg.tests }}
                       </h3>
@@ -39,7 +39,7 @@
                       <!-- 🛒 Add to Cart Icon -->
                       <button :disabled="isInCart(pkg)" @click="addToCart(pkg)"
                         :title="isInCart(pkg) ? 'Item already in cart' : 'Add to cart'"
-                        class="relative group p-2 rounded-full transition" :class="[
+                        class="relative group p-1 rounded-full transition" :class="[
                           isInCart(pkg)
                             ? 'bg-gray-200 cursor-not-allowed'
                             : 'hover:bg-gray-100 text-indigo-900',
@@ -82,14 +82,14 @@
                       </button>
                     </div>
 
-                    <div class="flex items-center gap-2 flex-wrap mb-1">
-                      <p class="text-gray-400 line-through">₹ {{ pkg.originalPrice }}</p>
-                      <p class="bold-test-color">₹ {{ pkg.discountedPrice }}</p>
+                    <div class="flex items-center gap-2 flex-wrap pb-1">
+                      <div class="text-gray-400 line-through">₹ {{ pkg.originalPrice }}</div>
+                      <div class="bold-test-color">₹ {{ pkg.discountedPrice }}</div>
                     </div>
 
                     <div
-                      class="flex flex-col sm:flex-row sm:justify-between items-stretch sm:items-center gap-2 sm:gap-0 mt-2">
-                      <router-link :to="{ name: 'SinglePackageBook', params: { slug: pkg.title.replace(/\s+/g, '-') } }"
+                      class="flex flex-col sm:flex-row sm:justify-between items-stretch sm:items-center gap-2 sm:gap-0">
+                      <router-link :to="{ name: 'SinglePackageBook', params: { slug: pkg.url } }"
                         class="w-full sm:w-auto no-underline">
                         <button
                           class="bg-[#2077BF] text-white text-sm px-3 py-1.5 rounded-full hover:bg-blue-700 transition w-full sm:w-auto">

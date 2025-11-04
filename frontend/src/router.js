@@ -26,7 +26,7 @@ const routes = [
     },
   },
   {
-    path: "/:url", // 👈 dynamic route based on backend URL field
+    path: "/:url",
     name: "HealthCheckupDetails",
     component: () => import("@/HealthCheckupDetails/HealthCheckupDetails.vue"),
     props: true,
@@ -35,7 +35,7 @@ const routes = [
     },
   },
   {
-    path: "/:slug",
+    path: "/book/:slug",
     name: "SinglePackageBook",
     component: () => import("@/SinglePackageBook/SinglePackageBook.vue"),
     props: true,

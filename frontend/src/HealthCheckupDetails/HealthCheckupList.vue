@@ -107,8 +107,7 @@
 
                             <div
                                 class="flex flex-col sm:flex-row sm:justify-between items-stretch sm:items-center gap-2 sm:gap-0">
-                                <router-link
-                                    :to="{ name: 'SinglePackageBook', params: { slug: pkg.name1.replace(/\s+/g, '-') } }"
+                                <router-link :to="{ name: 'SinglePackageBook', params: { slug: pkg.url } }"
                                     class="w-full sm:w-auto no-underline">
                                     <button
                                         class="bg-[#2077BF] text-white text-sm px-3 py-1.5 rounded-full hover:bg-blue-700 transition w-full sm:w-auto">
