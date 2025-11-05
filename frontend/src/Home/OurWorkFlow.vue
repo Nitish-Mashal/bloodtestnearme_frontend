@@ -1,55 +1,59 @@
 <template>
-    <div>
-        <div class="mt-4">
-            <h2 class="text-lg sm:text-xl md:text-4xl font-bold bold-test-color text-center">
+    <section class="mt-6 sm:mt-10">
+        <div class="container mx-auto px-4 sm:px-8">
+            <!-- Title -->
+            <h2 class="text-lg sm:text-2xl md:text-4xl font-bold bold-test-color text-center mb-8">
                 Our Work Flow
             </h2>
-            <div class="text-center my-8">
-                <!-- smaller gap on mobile, larger gap on bigger screens -->
-                <div class="flex flex-wrap justify-center gap-6 sm:gap-20">
-                    <!-- Step 1 -->
-                    <div class="flex flex-col items-center text-center max-w-[150px]">
-                        <img src="/BookYourLabTestOnline.png" alt="Book Your Lab Tests Online"
-                            class="w-24 h-24 rounded-full object-cover shadow-md" />
-                        <p class="mt-3 font-semibold bold-test-color">
-                            Book Your Lab<br />Tests Online
-                        </p>
-                    </div>
 
-                    <!-- Step 2 -->
-                    <div class="flex flex-col items-center text-center max-w-[150px]">
-                        <img src="/GetHomeSampleCollection.png" alt="Get Home Sample Collection"
-                            class="w-24 h-24 rounded-full object-cover shadow-md" />
-                        <p class="mt-3 font-semibold bold-test-color">
-                            Get Home Sample<br />Collection
-                        </p>
-                    </div>
-
-                    <!-- Step 3 -->
-                    <div class="flex flex-col items-center text-center max-w-[150px]">
-                        <img src="/SampleProcess.png" alt="Samples Process in Lab"
-                            class="w-24 h-24 rounded-full object-cover shadow-md" />
-                        <p class="mt-3 font-semibold bold-test-color">
-                            Samples Process in<br />Thyrocare Pathology Lab
-                        </p>
-                    </div>
-
-                    <!-- Step 4 -->
-                    <div class="flex flex-col items-center text-center max-w-[150px]">
-                        <img src="/GetyourReportsOnline.png" alt="Get your Reports Online"
-                            class="w-24 h-24 rounded-full object-cover shadow-md" />
-                        <p class="mt-3 font-semibold bold-test-color">
-                            Get your Reports<br />Online
-                        </p>
-                    </div>
+            <!-- Steps -->
+            <div class="flex flex-wrap justify-center items-start gap-8 sm:gap-20 text-center leading-snug">
+                <div v-for="(step, index) in steps" :key="index"
+                    class="flex flex-col items-center w-28 sm:w-36 transition-transform duration-300 hover:scale-105">
+                    <img :src="step.image" :alt="step.alt" loading="lazy"
+                        class="w-24 h-24 sm:w-28 sm:h-28 rounded-full object-cover shadow-md" />
+                    <p class="mt-3 font-semibold bold-test-color text-sm sm:text-base">
+                        <span v-html="step.text"></span>
+                    </p>
                 </div>
             </div>
         </div>
-    </div>
+    </section>
 </template>
 
-<script>
-export default {
-    name: "OurWorkFlow",
-};
+<script setup>
+const steps = [
+    {
+        image: "/BookYourLabTestOnline.png",
+        alt: "Book Your Lab Tests Online",
+        text: "Book Your Lab<br>Tests Online",
+    },
+    {
+        image: "/GetHomeSampleCollection.png",
+        alt: "Get Home Sample Collection",
+        text: "Get Home Sample<br>Collection",
+    },
+    {
+        image: "/SampleProcess.png",
+        alt: "Samples Process in Lab",
+        text: "Samples Process in<br>Thyrocare Pathology Lab",
+    },
+    {
+        image: "/GetyourReportsOnline.png",
+        alt: "Get your Reports Online",
+        text: "Get your Reports<br>Online",
+    },
+];
 </script>
+
+<style scoped>
+/* Optional smooth hover transition */
+img {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+img:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+</style>

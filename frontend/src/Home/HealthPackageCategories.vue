@@ -9,8 +9,8 @@
                         Health Package Categories
                     </h2>
 
-                    <div class="text-sm font-medium mt-2 sm:mt-0 whitespace-nowrap">
-                        <router-link to="/HealthCheckupList"
+                    <div class="text-sm font-medium sm:mt-0 whitespace-nowrap">
+                        <router-link to="/health-checkup-packages-bangalore"
                             class="flex items-center gap-1 no-underline bold-test-color hover:underline">
                             <span>View All</span>
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
@@ -22,77 +22,92 @@
                     </div>
                 </div>
 
-                <div class="text-center my-8">
+                <!-- Loading State -->
+                <div v-if="isLoading" class="text-center py-10 text-gray-600">
+                    Loading categories...
+                </div>
+
+                <!-- Categories Section -->
+                <div v-else-if="categories.length" class="text-center my-8">
                     <div class="flex flex-wrap justify-center gap-3">
-                        <!-- Step 1 -->
-                        <div class="flex flex-col items-center text-center max-w-[150px]">
-                            <img src="/Men.png" alt="Book Your Lab Tests Online" class=" object-cover shadow-md" />
-                            <p class="mt-3  bold-test-color text-2xl">
-                                Men
-                            </p>
-                        </div>
-
-                        <!-- Step 2 -->
-                        <div class="flex flex-col items-center text-center max-w-[150px]">
-                            <img src="/Women.png" alt="Get Home Sample Collection" class=" object-cover shadow-md" />
-                            <p class="mt-3 bold-test-color text-2xl ">
-                                Women
-                            </p>
-                        </div>
-
-                        <!-- Step 3 -->
-                        <div class="flex flex-col items-center text-center max-w-[150px]">
-                            <img src="/LiverandKidney.png" alt="Samples Process in Lab"
-                                class=" object-cover shadow-md" />
-                            <p class="mt-3  bold-test-color text-2xl ">
-                                Liver & Kidney
-                            </p>
-                        </div>
-
-                        <!-- Step 4 -->
-                        <div class="flex flex-col items-center text-center max-w-[150px]">
-                            <img src="/Thyroid.png" alt="Get your Reports Online" class=" object-cover shadow-md" />
-                            <p class="mt-3  bold-test-color text-2xl ">
-                                Thyroid
-                            </p>
-                        </div>
-
-                        <!-- Step 5 -->
-                        <div class="flex flex-col items-center text-center max-w-[150px]">
-                            <img src="/Allergy.png" alt="Get your Reports Online" class=" object-cover shadow-md" />
-                            <p class="mt-3  bold-test-color text-2xl ">
-                                Allergy
+                        <div v-for="(category, index) in categories" :key="index"
+                            class="flex flex-col items-center text-center max-w-[150px] cursor-pointer transition-transform hover:scale-105"
+                            @click="goToCategory(category.url, category.name)">
+                            <img :src="getImage(category.image)" :alt="category.name"
+                                class="object-cover shadow-md rounded-lg w-full h-auto" />
+                            <p class="mt-3 bold-test-color text-2xl">
+                                {{ category.name }}
                             </p>
                         </div>
                     </div>
                 </div>
 
-
-
+                <!-- No Data -->
+                <div v-else class="text-center text-gray-500 py-10">
+                    No categories available.
+                </div>
             </div>
         </div>
     </div>
 </template>
 
 <script setup>
-import { computed } from "vue";
-import { ArrowRight } from "@element-plus/icons-vue";
+import { ref, onMounted } from "vue";
+import axios from "axios";
+import { useRouter } from "vue-router";
 
-const packages = [
-    { title: "Basic Health Checkup (94 Tests)", originalPrice: 1949, discountedPrice: 1299 },
-    { title: "Advanced Health Checkup (94 Tests)", originalPrice: 2999, discountedPrice: 1899 },
-    { title: "Comprehensive Health Checkup (94 Tests)", originalPrice: 3999, discountedPrice: 2499 },
-    { title: "Senior Citizen Checkup (94 Tests)", originalPrice: 1899, discountedPrice: 1199 },
-    { title: "Master Health Checkup (94 Tests)", originalPrice: 4999, discountedPrice: 2999 },
-    { title: "Premium Health Checkup (94 Tests)", originalPrice: 5999, discountedPrice: 3999 },
-];
+const categories = ref([]);
+const isLoading = ref(true);
+const router = useRouter();
 
-// Split packages into chunks of 4 for carousel slides
-const chunkedPackages = computed(() => {
-    const chunks = [];
-    for (let i = 0; i < packages.length; i += 4) {
-        chunks.push(packages.slice(i, i + 4));
+const fetchCategories = async () => {
+    try {
+        // 🧠 Use cache to avoid unnecessary API calls
+        const cached = sessionStorage.getItem("packageCategories");
+        if (cached) {
+            categories.value = JSON.parse(cached);
+            isLoading.value = false;
+            return;
+        }
+
+        const response = await axios.get(
+            "/api/method/bloodtestnearme.api.package_category.get_active_package_categories"
+        );
+
+        const data =
+            response.data?.message?.data || response.data?.data || [];
+
+        categories.value = data;
+        sessionStorage.setItem("packageCategories", JSON.stringify(data));
+    } catch (error) {
+        console.error("Error fetching package categories:", error);
+    } finally {
+        isLoading.value = false;
     }
-    return chunks;
-});
+};
+
+// ✅ Safely normalize image paths
+const getImage = (imagePath) => {
+    if (!imagePath) return "/default-image.png";
+    return imagePath.startsWith("/files") ? imagePath : `/files/${imagePath}`;
+};
+
+// ✅ Navigate with query param
+const goToCategory = (url, name) => {
+    if (name) {
+        const slug = name.toLowerCase().replace(/\s+/g, "-");
+        router.push({
+            path: "/health-checkup-packages-bangalore",
+            query: { category: slug },
+        });
+    }
+};
+
+onMounted(fetchCategories);
 </script>
+
+<style scoped>
+.bold-test-color {
+    color: #001d55;
+}
+</style>
