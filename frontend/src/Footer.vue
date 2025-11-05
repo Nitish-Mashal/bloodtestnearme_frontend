@@ -42,7 +42,7 @@
                         <div class="font-bold text-white text-3xl text-left">
                             Quick Links
                         </div>
-                        <ul class="text-white mt-4 space-y-2 text-sm text-left pl-0 list-none">
+                        <ul class="text-white mt-4 space-y-2 text-sm text-left pl-0 list-none pb-4">
                             <li><router-link to="/about" class="text-white no-underline hover:underline">About
                                     Us</router-link></li>
                             <li><router-link to="/blogs"
@@ -64,13 +64,17 @@
                             <li><router-link to="/labs-near-me" class="text-white no-underline hover:underline">Labs
                                     Near Me</router-link></li>
                         </ul>
+                        <div>
+                            <p class="text-white no-underline hover:underline text-sm">© 2026
+                                Copyright: Triguna Healthcare</p>
+                        </div>
                     </div>
 
                     <div class="col-md-4">
                         <div class="font-bold text-white text-3xl text-left">
                             Most Popular Packages
                         </div>
-                        <ul class="text-white mt-4 space-y-2 text-sm text-left pl-0 list-none">
+                        <ul class="text-white mt-4 space-y-2 text-sm text-left pl-0 list-none pb-4">
                             <li><router-link to="/about" class="text-white no-underline hover:underline">Women's Health
                                     Checkup (99 Tests)</router-link></li>
                             <li><router-link to="/blogs" class="text-white no-underline hover:underline">Male Advanced
@@ -93,6 +97,13 @@
                             <li><router-link to="/labs-near-me" class="text-white no-underline hover:underline">Basic
                                     Health Checkup (94 Tests)</router-link></li>
                         </ul>
+                        <div>
+                            <a href="https://quantumberg.com/" target="_blank"
+                                class="text-white no-underline hover:underline text-sm">
+                                <p>Powered by: Quantumberg
+                                    Technologies Pvt Ltd</p>
+                            </a>
+                        </div>
                     </div>
 
                     <div class="col-md-4">

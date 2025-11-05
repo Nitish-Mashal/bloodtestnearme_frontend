@@ -24,22 +24,22 @@
 <script setup>
 const steps = [
     {
-        image: "/BookYourLabTestOnline.png",
+        image: "/files/BookYourLabTestOnline.png",
         alt: "Book Your Lab Tests Online",
         text: "Book Your Lab<br>Tests Online",
     },
     {
-        image: "/GetHomeSampleCollection.png",
+        image: "/files/GetHomeSampleCollection.png",
         alt: "Get Home Sample Collection",
         text: "Get Home Sample<br>Collection",
     },
     {
-        image: "/SampleProcess.png",
+        image: "/files/SampleProcess.png",
         alt: "Samples Process in Lab",
         text: "Samples Process in<br>Thyrocare Pathology Lab",
     },
     {
-        image: "/GetyourReportsOnline.png",
+        image: "/files/GetyourReportsOnline.png",
         alt: "Get your Reports Online",
         text: "Get your Reports<br>Online",
     },

@@ -5,6 +5,9 @@ import { getProxyOptions } from 'frappe-ui/src/utils/vite-dev-server'
 import { webserver_port } from '../../../sites/common_site_config.json'
 
 export default defineConfig({
+  base: process.env.NODE_ENV === 'production'
+    ? '/assets/bloodtestnearme_frontend/'
+    : '/',
   plugins: [vue()],
   server: {
     port: 8080,
@@ -18,7 +21,7 @@ export default defineConfig({
   build: {
     outDir: `../${path.basename(path.resolve('..'))}/public/frontend`,
     emptyOutDir: true,
-    target: 'esnext', // ✅ upgraded target
+    target: 'es2015',
   },
   optimizeDeps: {
     include: ['frappe-ui > feather-icons', 'showdown', 'engine.io-client'],

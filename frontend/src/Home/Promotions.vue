@@ -1,10 +1,10 @@
 <template>
   <section class="mt-6">
     <div class="container px-2 sm:px-8">
-      <div class="bg-gray-100 py-4 px-4 rounded-xl shadow-sm">
+      <div class="bg-gray-100 py-4 px-4 rounded-xl shadow-sm relative">
         <!-- ✅ Carousel -->
         <el-carousel :loop="true" :autoplay="true" :interval="3000" height="200px" indicator-position="none"
-          trigger="click">
+          trigger="click" arrow="always">
           <el-carousel-item v-for="(group, index) in groupedOffers" :key="index">
             <div class="flex justify-center gap-4 flex-wrap">
               <div v-for="offer in group" :key="offer.id"
@@ -28,14 +28,13 @@ import axios from "axios";
 const offers = ref([]);
 const windowWidth = ref(window.innerWidth);
 
-// ✅ Dynamically adjust for responsive grouping
+// ✅ Responsive grouping
 const isSmallScreen = computed(() => windowWidth.value < 640);
-
 const updateWidth = () => (windowWidth.value = window.innerWidth);
 onMounted(() => window.addEventListener("resize", updateWidth));
 onBeforeUnmount(() => window.removeEventListener("resize", updateWidth));
 
-// ✅ Fetch offers (optimized with data fallback & error handling)
+// ✅ Fetch offers
 const fetchOffers = async () => {
   try {
     const res = await axios.get("/api/method/bloodtestnearme.api.offers.get_offers");
@@ -46,7 +45,7 @@ const fetchOffers = async () => {
   }
 };
 
-// ✅ Group offers based on screen size
+// ✅ Group offers
 const groupedOffers = computed(() => {
   const groups = [];
   const groupSize = isSmallScreen.value ? 1 : 2;
@@ -56,10 +55,35 @@ const groupedOffers = computed(() => {
   return groups;
 });
 
-// ✅ Open link in new tab safely
+// ✅ Open link
 const openLink = (url) => {
   if (url) window.open(url, "_blank", "noopener,noreferrer");
 };
 
 onMounted(fetchOffers);
 </script>
+
+<style scoped>
+/* ✅ Customize left/right arrows */
+.el-carousel__arrow {
+  background-color: rgba(0, 0, 0, 0.5);
+  transition: background-color 0.3s ease;
+}
+
+.el-carousel__arrow:hover {
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+.el-carousel__arrow i {
+  color: white;
+  font-size: 20px;
+}
+
+/* Optional: increase clickable area on small screens */
+@media (max-width: 640px) {
+  .el-carousel__arrow {
+    width: 32px;
+    height: 32px;
+  }
+}
+</style>

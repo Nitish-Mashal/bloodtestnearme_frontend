@@ -186,18 +186,50 @@ const fetchPackageDetails = async () => {
 };
 
 const updatePageSEO = (data) => {
+    // 🔹 Build title
     const title =
+        data.meta_title ||
         data.title ||
         `${data.package_name || "Health Checkup"} | Blood Test Near Me`;
 
+    // ✅ Update browser tab title
     document.title = title;
 
+    // ✅ Basic Meta Tags
     updateMeta("description", data.meta_description || data.short_description);
+    updateMeta("keywords", data.meta_keyword);
+
+    // ✅ Open Graph (for social sharing)
     updateMeta("og:title", title, "property");
-    updateMeta("og:description", data.meta_description, "property");
+    updateMeta("og:description", data.meta_description || data.short_description, "property");
     updateMeta("og:type", "website", "property");
+
+    // ✅ Twitter Cards (optional but good for SEO)
+    updateMeta("twitter:card", "summary_large_image");
+    updateMeta("twitter:title", title);
+    updateMeta("twitter:description", data.meta_description || data.short_description);
+
+    // ✅ Dynamically Insert Header Tag (if provided)
+    if (data.header_tag) {
+        let existingHeader = document.querySelector("h1[data-dynamic-header]");
+        if (existingHeader) {
+            existingHeader.textContent = data.header_tag;
+        } else {
+            const header = document.createElement("h1");
+            header.textContent = data.header_tag;
+            header.setAttribute("data-dynamic-header", "true");
+            header.style.display = "none"; // hidden from layout, used for SEO bots
+            document.body.prepend(header);
+        }
+    }
 };
 
+/**
+ * ✅ Helper to Create or Update <meta> Tags
+ * @param {string} key - meta name or property
+ * @param {string} content - meta content value
+ * @param {string} attr - 'name' or 'property'
+ */
 const updateMeta = (key, content, attr = "name") => {
     if (!content) return;
     let meta = document.querySelector(`meta[${attr}='${key}']`);
@@ -208,6 +240,7 @@ const updateMeta = (key, content, attr = "name") => {
     }
     meta.setAttribute("content", content);
 };
+
 
 onMounted(fetchPackageDetails);
 watch(() => route.params.url, fetchPackageDetails);

@@ -5,6 +5,29 @@ app_description = "Frontend application of blood test near me "
 app_email = "nitishmashal0@gmail.com"
 app_license = "mit"
 
+
+website_route_rules = [
+    # ✅ Allow Frappe system routes
+    {"from_route": "/app/<path:path>", "to_route": "/app/<path:path>"},
+    {"from_route": "/login", "to_route": "/login"},
+    {"from_route": "/api/<path:path>", "to_route": "/api/<path:path>"},
+    {"from_route": "/assets/<path:path>", "to_route": "/assets/<path:path>"},
+
+    # ✅ Vue SPA routes (redirect all frontend routes to index.html)
+    {"from_route": "/", "to_route": "/"},
+    {"from_route": "/health-checkup-packages-bangalore", "to_route": "/"},
+    {"from_route": "/blood-test-online-bangalore", "to_route": "/"},
+    {"from_route": "/CartPage", "to_route": "/"},
+    {"from_route": "/qrcodedata", "to_route": "/"},
+    {"from_route": "/blogspreview", "to_route": "/"},
+    {"from_route": "/blogdetails", "to_route": "/"},
+    {"from_route": "/address", "to_route": "/"},
+
+    # ✅ Dynamic Vue routes (use path wildcard to handle any dynamic URLs)
+    {"from_route": "/book/<path:path>", "to_route": "/"},
+    {"from_route": "/<path:path>", "to_route": "/"},
+]
+
 # Apps
 # ------------------
 

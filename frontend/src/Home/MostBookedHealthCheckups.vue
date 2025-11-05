@@ -23,7 +23,7 @@
 
         <!-- ✅ Carousel Section -->
         <div class="p-2 sm:p-2 rounded-xl w-full">
-          <el-carousel :interval="4000" arrow="hover" trigger="click" indicator-position="none">
+          <el-carousel :interval="4000" arrow="always" trigger="click" indicator-position="none">
             <el-carousel-item v-for="(group, index) in cardChunks" :key="index">
               <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
                 <div v-for="(pkg, i) in group" :key="i"

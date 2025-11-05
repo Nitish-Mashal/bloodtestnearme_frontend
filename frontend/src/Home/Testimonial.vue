@@ -109,13 +109,20 @@
         </div>
 
         <!-- WhatsApp Section -->
-        <div class="w-full flex justify-center items-center mt-4">
-            <div class="global-bg-color text-white p-6 rounded-3xl text-left flex justify-between items-center gap-10">
-                <div class="">
-                    <div class="text-[30px]"> Can't find what you're looking for? </div>
-                    <p class="bold-test-color text-2xl">We are here to help. Say 'Hi' on WhatsApp</p>
+        <div class="w-full flex justify-center items-center mt-4 px-3 sm:px-0">
+            <div
+                class="global-bg-color text-white p-6 rounded-3xl text-left flex flex-col sm:flex-row justify-between items-center gap-6 sm:gap-10 w-full sm:w-auto max-w-4xl">
+                <div class="text-center sm:text-left">
+                    <div class="text-[22px] sm:text-[30px] leading-tight">
+                        Can't find what you're looking for?
+                    </div>
+                    <div class="bold-test-color text-lg sm:text-2xl mt-2">
+                        We are here to help. Say 'Hi' on WhatsApp
+                    </div>
                 </div>
-                <div> <img src="/whatsapp.png" alt="whatsappLogo" class="h-20" /> </div>
+                <div class="sm:mt-0">
+                    <img src="/whatsapp.png" alt="whatsappLogo" class="h-16 sm:h-20 mx-auto sm:mx-0" />
+                </div>
             </div>
         </div>
     </div>
@@ -131,7 +138,7 @@ export default {
                 {
                     name: "Amber Morales",
                     role: "Product Designer",
-                    image: "/TestimonialImg.png",
+                    image: "/files/TestimonialImg.png",
                     highlight:
                         "Duis aute irure dolor in reprehe velit esse cillum dolo culpa officia.",
                     description:
@@ -140,7 +147,7 @@ export default {
                 {
                     name: "John Doe",
                     role: "UI Engineer",
-                    image: "/TestimonialImg.png",
+                    image: "/files/TestimonialImg.png",
                     highlight:
                         "Ut enim ad minim veniam quis nostrud exercitation ullamco laboris.",
                     description:
@@ -149,7 +156,7 @@ export default {
                 {
                     name: "Sarah Lee",
                     role: "Frontend Developer",
-                    image: "/TestimonialImg.png",
+                    image: "/files/TestimonialImg.png",
                     highlight:
                         "Velit esse cillum dolore eu fugiat nulla pariatur excepteur sint.",
                     description:
@@ -158,7 +165,7 @@ export default {
                 {
                     name: "David Smith",
                     role: "Project Manager",
-                    image: "/TestimonialImg.png",
+                    image: "/files/TestimonialImg.png",
                     highlight:
                         "Excepteur sint occaecat cupidatat non proident sunt in culpa.",
                     description:
@@ -167,7 +174,7 @@ export default {
                 {
                     name: "Jane Cooper",
                     role: "QA Engineer",
-                    image: "/TestimonialImg.png",
+                    image: "/files/TestimonialImg.png",
                     highlight:
                         "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit.",
                     description:
@@ -176,7 +183,7 @@ export default {
                 {
                     name: "Michael Brown",
                     role: "Marketing Lead",
-                    image: "/TestimonialImg.png",
+                    image: "/files/TestimonialImg.png",
                     highlight:
                         "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis.",
                     description:

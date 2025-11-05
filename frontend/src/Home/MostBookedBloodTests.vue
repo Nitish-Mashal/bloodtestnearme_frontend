@@ -24,8 +24,8 @@
 
                 <!-- ✅ Carousel -->
                 <div class="sm:p-3 rounded-xl w-full">
-                    <el-carousel v-if="cardChunks.length > 0" :interval="4000" arrow="hover" trigger="click"
-                        indicator-position="none" class="sm:h-[200px] h-[250px]">
+                    <el-carousel v-if="cardChunks.length > 0" :interval="4000" trigger="click"
+                        indicator-position="dash" class="sm:h-[200px] h-[250px]">
                         <el-carousel-item v-for="(group, index) in cardChunks" :key="index">
                             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
                                 <div v-for="pkg in group" :key="pkg.id"

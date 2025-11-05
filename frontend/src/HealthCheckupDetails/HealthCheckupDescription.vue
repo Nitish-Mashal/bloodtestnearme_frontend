@@ -54,22 +54,22 @@ const props = defineProps({
 // ✅ Static data moved outside component logic (no reallocation on re-render)
 const precautionaryMeasures = Object.freeze([
     {
-        image: "/watch.png",
+        image: "/files/watch.png",
         alt: "time",
         text: "10-12 hours fasting is required. Water is allowed.",
     },
     {
-        image: "/glass.png",
+        image: "/files/glass.png",
         alt: "water",
         text: "Keep yourself well-hydrated. Water is important.",
     },
     {
-        image: "/bed.png",
+        image: "/files/bed.png",
         alt: "rest",
         text: "Get enough rest for mind and body.",
     },
     {
-        image: "/gym.png",
+        image: "/files/gym.png",
         alt: "exercise",
         text: "Avoid heavy exercise a day before the blood test.",
     },

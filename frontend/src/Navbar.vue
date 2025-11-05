@@ -1,15 +1,19 @@
 <template>
   <header class="sticky top-0 z-50 w-full">
-    <!-- ✅ Mobile (Full-width Sliding Banner) -->
-    <div class="block md:hidden bg-white shadow-md py-2 w-full overflow-hidden">
-      <marquee behavior="scroll" direction="left" scrollamount="4">
-        <span class="bold-test-color font-semibold text-[14px]">
+    <!-- ✅ Mobile: Only text slides, button stays fixed -->
+    <div class="block md:hidden bg-white shadow-md py-2 px-5 flex items-center justify-between overflow-hidden">
+      <marquee behavior="scroll" direction="left" scrollamount="4" class="w-full">
+        <span class="bold-test-color font-semibold text-[14px] whitespace-nowrap">
           Book Full Body Health Checkup @ ₹1,499/- with Vitamins
         </span>
-        <button class="ml-3 global-bg-color text-white px-3 py-1 rounded-full text-sm hover:bg-[#005fa3] transition">
+      </marquee>
+
+      <router-link to="/health-checkup-packages-bangalore">
+        <button
+          class="ml-3 global-bg-color text-white px-3 py-1 rounded-full text-sm hover:bg-[#005fa3] transition flex-shrink-0">
           Book Now
         </button>
-      </marquee>
+      </router-link>
     </div>
 
     <!-- ✅ Desktop (Static Banner) -->
@@ -17,10 +21,13 @@
       <span class="bold-test-color font-semibold text-[14px]">
         Book Full Body Health Checkup @ ₹1,499/- with Vitamins
       </span>
-      <button class="ml-3 global-bg-color text-white px-3 py-1 rounded-full text-sm hover:bg-[#005fa3] transition">
-        Book Now
-      </button>
+      <router-link to="/health-checkup-packages-bangalore">
+        <button class="ml-3 global-bg-color text-white px-3 py-1 rounded-full text-sm hover:bg-[#005fa3] transition">
+          Book Now
+        </button>
+      </router-link>
     </div>
+
 
     <!-- Navbar -->
     <nav
