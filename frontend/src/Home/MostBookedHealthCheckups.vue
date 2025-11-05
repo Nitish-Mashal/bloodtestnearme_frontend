@@ -10,7 +10,7 @@
           </h2>
 
           <div class="text-sm font-medium sm:mt-0 whitespace-nowrap">
-            <router-link to="/HealthCheckupList"
+            <router-link to="/health-checkup-packages-bangalore"
               class="flex items-center gap-1 no-underline bold-test-color hover:underline">
               <span>View All</span>
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
@@ -28,9 +28,12 @@
               <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
                 <div v-for="(pkg, i) in group" :key="i"
                   class="bg-white rounded-xl overflow-hidden border border-gray-200 shadow-sm hover:shadow-lg transition-shadow">
+                  <!-- Image -->
                   <img :src="pkg.image" alt="Health Package" class="w-full h-40 object-cover rounded-xl px-2 mt-2" />
 
+                  <!-- Content -->
                   <div class="p-3 pt-2">
+                    <!-- Title + Cart -->
                     <div class="flex justify-between items-center">
                       <h3 class="text-sm font-semibold bold-test-color leading-tight truncate">
                         {{ pkg.title }} {{ pkg.tests }}
@@ -44,37 +47,37 @@
                             ? 'bg-gray-200 cursor-not-allowed'
                             : 'hover:bg-gray-100 text-indigo-900',
                         ]">
-                        <!-- 🛒 Normal cart icon (when not in cart) -->
+                        <!-- 🛒 Normal cart icon -->
                         <svg v-if="!isInCart(pkg)" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                           stroke-width="1" stroke="currentColor" class="w-5 h-5">
                           <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 
-            1.087.835l.383 1.437M7.5 14.25a3 3 0 0 
-            0-3 3h15.75m-12.75-3h11.218
-            c1.121-2.3 2.1-4.684 
-            2.924-7.138a60.114 
-            60.114 0 0 0-16.536-1.84M7.5 
-            14.25 5.106 5.272M6 20.25a.75.75 
-            0 1 1-1.5 0 .75.75 0 0 1 
-            1.5 0Zm12.75 0a.75.75 0 1 
-            1-1.5 0 .75.75 0 0 1 1.5 0Z" />
+                              1.087.835l.383 1.437M7.5 14.25a3 3 0 0 
+                              0-3 3h15.75m-12.75-3h11.218
+                              c1.121-2.3 2.1-4.684 
+                              2.924-7.138a60.114 
+                              60.114 0 0 0-16.536-1.84M7.5 
+                              14.25 5.106 5.272M6 20.25a.75.75 
+                              0 1 1-1.5 0 .75.75 0 0 1 
+                              1.5 0Zm12.75 0a.75.75 0 1 
+                              1-1.5 0 .75.75 0 0 1 1.5 0Z" />
                         </svg>
 
-                        <!-- 🛒 Disabled cart icon (grayed) -->
+                        <!-- 🛒 Disabled cart icon -->
                         <svg v-if="isInCart(pkg)" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                           stroke-width="1" stroke="currentColor" class="w-5 h-5 text-gray-400">
                           <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 
-            1.087.835l.383 1.437M7.5 14.25a3 3 0 0 
-            0-3 3h15.75m-12.75-3h11.218
-            c1.121-2.3 2.1-4.684 
-            2.924-7.138a60.114 
-            60.114 0 0 0-16.536-1.84M7.5 
-            14.25 5.106 5.272M6 20.25a.75.75 
-            0 1 1-1.5 0 .75.75 0 0 1 
-            1.5 0Zm12.75 0a.75.75 0 1 
-            1-1.5 0 .75.75 0 0 1 1.5 0Z" />
+                              1.087.835l.383 1.437M7.5 14.25a3 3 0 0 
+                              0-3 3h15.75m-12.75-3h11.218
+                              c1.121-2.3 2.1-4.684 
+                              2.924-7.138a60.114 
+                              60.114 0 0 0-16.536-1.84M7.5 
+                              14.25 5.106 5.272M6 20.25a.75.75 
+                              0 1 1-1.5 0 .75.75 0 0 1 
+                              1.5 0Zm12.75 0a.75.75 0 1 
+                              1-1.5 0 .75.75 0 0 1 1.5 0Z" />
                         </svg>
 
-                        <!-- ❌ Red cross shown only on hover -->
+                        <!-- ❌ Hover cross -->
                         <span v-if="isInCart(pkg)"
                           class="absolute inset-0 flex items-center justify-center text-red-500 opacity-0 group-hover:opacity-100 transition-opacity duration-200 text-lg font-bold">
                           ×
@@ -82,11 +85,13 @@
                       </button>
                     </div>
 
-                    <div class="flex items-center gap-2 flex-wrap pb-1">
-                      <div class="text-gray-400 line-through">₹ {{ pkg.originalPrice }}</div>
-                      <div class="bold-test-color">₹ {{ pkg.discountedPrice }}</div>
+                    <!-- Prices -->
+                    <div class="flex items-center gap-2 flex-wrap pb-2">
+                      <div class="text-gray-500 line-through ">₹ {{ pkg.originalPrice }}</div>
+                      <div class="bold-test-color font-semibold">₹ {{ pkg.discountedPrice }}</div>
                     </div>
 
+                    <!-- Buttons -->
                     <div
                       class="flex flex-col sm:flex-row sm:justify-between items-stretch sm:items-center gap-2 sm:gap-0">
                       <router-link :to="{ name: 'SinglePackageBook', params: { slug: pkg.url } }"
@@ -99,7 +104,7 @@
 
                       <router-link :to="`/${pkg.url}`" class="no-underline">
                         <button
-                          class="border border-[#001D55] font-semibold text-xs bold-test-color px-2 py-1 rounded-full hover:bg-gray-100 transition flex items-center justify-center gap-1 w-full sm:w-auto">
+                          class="border-1 border-[#001D55] font-semibold text-xs bold-test-color px-2 py-1 rounded-full hover:bg-gray-100 transition flex items-center justify-center gap-1 w-full sm:w-auto">
                           View Details
                           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
                             stroke="currentColor" class="w-3 h-3 mt-[1px]">
@@ -142,9 +147,9 @@ const fetchMostBookedPackages = async () => {
       originalPrice: pkg.actual_price,
       discountedPrice: pkg.discounted_price,
       tests: pkg.tests || "",
-      name1: pkg.name, // 🛒 needed for unique cart identification
-      discounted_price: pkg.discounted_price, // 🛒 store-compatible field
-      url: pkg.url, // 🛒 for routing to details page
+      name1: pkg.name, // 🛒 for cart uniqueness
+      discounted_price: pkg.discounted_price,
+      url: pkg.url,
     }));
   } catch (error) {
     console.error("❌ Error fetching most booked packages:", error);
@@ -156,17 +161,17 @@ const addToCart = (pkg) => {
   cartStore.addToCart(pkg);
 };
 
-// ✅ Check if package is already in cart
+// ✅ Check if already in cart
 const isInCart = (pkg) => {
   return cartStore.cartItems.some((item) => item.name1 === pkg.name1);
 };
 
-// ✅ Responsive logic
+// ✅ Responsive width watcher
 const updateWidth = () => {
   screenWidth.value = window.innerWidth;
 };
 
-// ✅ Group packages for carousel
+// ✅ Group packages into carousel chunks
 const cardChunks = computed(() => {
   const size = screenWidth.value < 640 ? 1 : screenWidth.value < 1024 ? 2 : 4;
   const chunks = [];
@@ -185,3 +190,9 @@ onUnmounted(() => {
   window.removeEventListener("resize", updateWidth);
 });
 </script>
+
+<style scoped>
+.bold-test-color {
+  color: #001d55;
+}
+</style>

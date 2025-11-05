@@ -22,17 +22,18 @@
                     </div>
                 </div>
 
-                <!-- Categories Section -->
+                <!-- Loading State -->
                 <div v-if="isLoading" class="text-center py-10 text-gray-600">
                     Loading categories...
                 </div>
 
+                <!-- Categories Section -->
                 <div v-else-if="categories.length" class="text-center my-8">
                     <div class="flex flex-wrap justify-center gap-3">
                         <div v-for="(category, index) in categories" :key="index"
                             class="flex flex-col items-center text-center max-w-[150px] cursor-pointer transition-transform hover:scale-105"
                             @click="goToCategory(category.url, category.name)">
-                            <img :src="category.image" :alt="category.name"
+                            <img :src="getImage(category.image)" :alt="category.name"
                                 class="object-cover shadow-md rounded-lg w-full h-auto" />
                             <p class="mt-3 bold-test-color text-2xl">
                                 {{ category.name }}
@@ -41,6 +42,7 @@
                     </div>
                 </div>
 
+                <!-- No Data -->
                 <div v-else class="text-center text-gray-500 py-10">
                     No categories available.
                 </div>
@@ -60,17 +62,23 @@ const router = useRouter();
 
 const fetchCategories = async () => {
     try {
+        // 🧠 Use cache to avoid unnecessary API calls
+        const cached = sessionStorage.getItem("packageCategories");
+        if (cached) {
+            categories.value = JSON.parse(cached);
+            isLoading.value = false;
+            return;
+        }
+
         const response = await axios.get(
             "/api/method/bloodtestnearme.api.package_category.get_active_package_categories"
         );
 
-        if (response.data?.message?.data) {
-            // Frappe returns data inside message.data by default
-            categories.value = response.data.message.data;
-        } else if (response.data?.data) {
-            // If you returned {"status":"success", "data": [...]}
-            categories.value = response.data.data;
-        }
+        const data =
+            response.data?.message?.data || response.data?.data || [];
+
+        categories.value = data;
+        sessionStorage.setItem("packageCategories", JSON.stringify(data));
     } catch (error) {
         console.error("Error fetching package categories:", error);
     } finally {
@@ -78,15 +86,28 @@ const fetchCategories = async () => {
     }
 };
 
-// inside your <script setup>
+// ✅ Safely normalize image paths
+const getImage = (imagePath) => {
+    if (!imagePath) return "/default-image.png";
+    return imagePath.startsWith("/files") ? imagePath : `/files/${imagePath}`;
+};
+
+// ✅ Navigate with query param
 const goToCategory = (url, name) => {
     if (name) {
+        const slug = name.toLowerCase().replace(/\s+/g, "-");
         router.push({
-            path: "/health-checkup-packages-bangalore", // 👈 your actual route path
-            query: { category: name.toLowerCase().replace(/\s+/g, "-") },
+            path: "/health-checkup-packages-bangalore",
+            query: { category: slug },
         });
     }
 };
 
 onMounted(fetchCategories);
 </script>
+
+<style scoped>
+.bold-test-color {
+    color: #001d55;
+}
+</style>

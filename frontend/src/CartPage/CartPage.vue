@@ -17,7 +17,7 @@
                 <div class="col-12 col-md-6 mb-2">
                     <div class="flex justify-between items-center mb-4">
                         <h5 class="text-[#001D55] font-semibold">Cart Items</h5>
-                        <router-link to="/BloodTestList"
+                        <router-link to="/blood-test-online-bangalore"
                             class="flex items-center text-red-700 font-medium no-underline hover:underline-offset-2">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                                 stroke="currentColor" class="w-4 h-4 mr-1">
@@ -51,19 +51,22 @@
 
                 <!-- Right Section -->
                 <div class="col-12 col-md-6">
-                    <div class="p-4 border-0 shadow-sm rounded-xl bg-gray-50">
-                        <form class="space-y-4 bold-test-color" @submit.prevent="singleOrderSubmit">
+                    <div class="p-3 border-0 shadow-sm rounded-xl bg-gray-50">
+                        <form class="space-y-2 bold-test-color" @submit.prevent="singleOrderSubmit">
                             <!-- Row 1 -->
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 items-start">
-                                <div class="relative w-full min-h-[30px]">
+                                <div class="relative w-full min-h-[40px]">
                                     <input v-model="form.pincode" @input="onPincodeInput" type="text"
                                         placeholder="Pincode *"
                                         class="border rounded-md px-3 py-[1px] text-sm w-full" />
 
-                                    <p v-if="errors.pincode" class="absolute text-[11px] text-red-500 mt-[2px]"> {{
-                                        errors.pincode }} </p>
-                                    <p v-if="pincodeMessage"
-                                        :class="['absolute text-[11px] mt-[2px]', pincodeStatus === 'success' ? 'text-green-600' : 'text-red-500']">
+                                    <p v-if="errors.pincode" class="absolute text-[11px] text-red-500 mt-[2px]">
+                                        {{ errors.pincode }}
+                                    </p>
+                                    <p v-if="pincodeMessage" :class="[
+                                        'absolute text-[11px] mt-[2px]',
+                                        pincodeStatus === 'success' ? 'text-green-600' : 'text-red-500'
+                                    ]">
                                         {{ pincodeMessage }}
                                     </p>
                                 </div>
@@ -85,7 +88,6 @@
                                     Note: Same set of tests will be added for all persons.
                                 </div>
 
-                                <!-- Dynamic Persons -->
                                 <div v-for="(person, index) in persons" :key="index"
                                     class="border p-1 rounded-md bg-gray-50 mb-2">
                                     <h6 v-if="numPersons && numPersons > 1" class="text-sm font-semibold mb-2 mt-2">
@@ -126,7 +128,7 @@
                             </div>
 
                             <!-- Email & Mobile -->
-                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
                                 <div>
                                     <input v-model="form.email" @input="clearError('email')" type="email"
                                         placeholder="Email *" class="border rounded-md px-3 py-[1px] text-sm w-full" />
@@ -179,23 +181,29 @@
                             </div>
 
                             <!-- Printed Reports -->
-                            <div class="flex items-center text-sm text-gray-700">
-                                <input type="checkbox" v-model="form.printedReports" class="mr-2" />
-                                <span class="text-red-500">Additional Rs. 75 for Printed Reports</span>
-                            </div>
-
-                            <!-- Price Summary -->
                             <div>
-                                <p><strong>Test/Package Price: </strong> ₹{{ totalBasePrice }}</p>
-                                <p v-if="totalBasePrice < 300">
-                                    <strong>Home Collection Charge:</strong> ₹{{ homeCollectionCharge }}
-                                </p>
-                                <p v-if="form.printedReports">
-                                    <strong>Printed Report Charge:</strong> ₹{{ printedReportCharge }}
-                                </p>
-                                <p class="mt-2 text-lg font-semibold text-[#001D55]">
-                                    <strong>Total Amount:</strong> ₹{{ finalAmount }}
-                                </p>
+                                <div class="flex items-center text-sm text-gray-700">
+                                    <input type="checkbox" v-model="form.printedReports" class="mr-2" />
+                                    <span class="text-red-500">Additional Rs. 75 for Printed Reports</span>
+                                </div>
+                                <div class="mt-3">
+                                    <p><strong>Test/Package Price:</strong> ₹{{ totalBasePrice }}</p>
+
+                                    <!-- Show Home Collection Charge only if there are cart items AND total < 300 -->
+                                    <p v-if="cartStore.cartItems.length > 0 && totalBasePrice < 300">
+                                        <strong>Home Collection Charge:</strong> ₹{{ homeCollectionCharge }}
+                                    </p>
+
+                                    <!-- Printed Report Charge -->
+                                    <p v-if="form.printedReports">
+                                        <strong>Printed Report Charge:</strong> ₹{{ printedReportCharge }}
+                                    </p>
+
+                                    <!-- Final Amount -->
+                                    <p class="mt-2 text-lg font-semibold text-[#001D55]">
+                                        <strong>Total Amount:</strong> ₹{{ finalAmount }}
+                                    </p>
+                                </div>
                             </div>
 
                             <!-- Book Now -->
@@ -219,13 +227,13 @@
                         </form>
                     </div>
                 </div>
+
             </div>
         </div>
 
         <MostBookedHealthCheckups />
     </div>
 </template>
-
 
 <script setup>
 import { ref, watch, onMounted, computed } from "vue";
@@ -234,10 +242,12 @@ import MostBookedHealthCheckups from "../Home/MostBookedHealthCheckups.vue";
 import { useCartStore } from "@/stores/cartStore";
 
 const cartStore = useCartStore();
+
+// ========================== STATE ==========================
 const loading = ref(true);
 const submitting = ref(false);
+const isChecking = ref(false);
 
-// ========================== FORM & STATE ==========================
 const numPersons = ref("");
 const persons = ref([{ name: "", age: "", gender: "" }]);
 const errors = ref({});
@@ -245,7 +255,6 @@ const backendMessage = ref({ text: "", type: "" });
 
 const pincodeMessage = ref("");
 const pincodeStatus = ref("");
-const isChecking = ref(false);
 
 const form = ref({
     pincode: "",
@@ -258,223 +267,107 @@ const form = ref({
     printedReports: false,
 });
 
-const homeCollectionCharge = ref(200);
-const printedReportCharge = ref(75);
+// Charges
+const HOME_COLLECTION_THRESHOLD = 300;
+const homeCollectionCharge = 200;
+const printedReportCharge = 75;
 
-// Date & time slots
-const timeSlots = ref([]);
-const todayISO = new Date().toISOString().split("T")[0];
-const minDate = ref(todayISO);
+// ========================== COMPUTED ==========================
+const totalBasePrice = computed(() =>
+    cartStore.cartItems.reduce((sum, item) => sum + Number(item.discounted_price || 0), 0)
+);
 
-// ========================== DYNAMIC PERSONS ==========================
-watch(numPersons, (newVal) => {
-    const count = Number(newVal);
-    if (!count) {
-        persons.value = [{ name: "", age: "", gender: "" }];
-        return;
-    }
-    persons.value = Array.from({ length: count }, () => ({
+const finalAmount = computed(() => {
+    let total = totalBasePrice.value;
+    if (total < HOME_COLLECTION_THRESHOLD) total += homeCollectionCharge;
+    if (form.value.printedReports) total += printedReportCharge;
+    return Math.round(total);
+});
+
+const totalAmount = ref(0);
+watch(finalAmount, v => (totalAmount.value = v), { immediate: true });
+
+// ========================== PERSON HANDLING ==========================
+watch(numPersons, count => {
+    const n = Number(count);
+    persons.value = Array.from({ length: n || 1 }, () => ({
         name: "",
         age: "",
         gender: "",
     }));
 });
 
-// keep person inputs clean (letters/spaces only) and clear errors as user types
-watch(
-    persons,
-    (newPersons) => {
-        newPersons.forEach((person, i) => {
-            if (person.name && /[^a-zA-Z\s]/.test(person.name)) {
-                person.name = person.name.replace(/[^a-zA-Z\s]/g, "");
-            }
-            if (person.name) delete errors.value[`name_${i}`];
-            if (person.age) delete errors.value[`age_${i}`];
-            if (person.gender) delete errors.value[`gender_${i}`];
+watch(persons, newPersons => {
+    newPersons.forEach((p, i) => {
+        p.name = p.name.replace(/[^a-zA-Z\s]/g, "");
+        ["name", "age", "gender"].forEach(f => {
+            if (p[f]) delete errors.value[`${f}_${i}`];
         });
-    },
-    { deep: true }
-);
+    });
+}, { deep: true });
 
 // ========================== TIME SLOTS ==========================
+const timeSlots = ref([]);
+const minDate = ref(new Date().toISOString().split("T")[0]);
+
 const generateTimeSlots = () => {
     const slots = [];
-    const start = new Date();
-    start.setHours(7, 0, 0, 0);
-    const end = new Date();
-    end.setHours(18, 0, 0, 0);
+    const start = new Date(); start.setHours(7, 0, 0, 0);
+    const end = new Date(); end.setHours(18, 0, 0, 0);
+
     while (start < end) {
         const endTime = new Date(start.getTime() + 30 * 60000);
-        const formatTime = (date) =>
-            date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", hour12: true });
-        slots.push(`${formatTime(start)} - ${formatTime(endTime)}`);
+        const format = d => d.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", hour12: true });
+        slots.push(`${format(start)} - ${format(endTime)}`);
         start.setTime(endTime.getTime());
     }
     return slots;
 };
+
 const allSlots = generateTimeSlots();
 
-watch(
-    () => form.value.date,
-    (newDate) => {
-        if (!newDate) {
-            timeSlots.value = [];
-            form.value.timeSlot = "";
-            return;
-        }
-        const selected = new Date(newDate);
-        const today = new Date();
-        if (
-            selected.getFullYear() === today.getFullYear() &&
-            selected.getMonth() === today.getMonth() &&
-            selected.getDate() === today.getDate()
-        ) {
-            const now = new Date();
-            timeSlots.value = allSlots.filter((slot) => {
-                const slotStart = new Date();
-                const [startStr] = slot.split(" - ");
-                // startStr example: "07:00 AM"
-                const parts = startStr.split(" ");
-                let timePart = parts[0];
-                let meridiem = parts[1] || "";
-                let [hour, minute] = timePart.split(":").map(Number);
-                if (meridiem === "PM" && hour !== 12) hour += 12;
-                if (meridiem === "AM" && hour === 12) hour = 0;
-                slotStart.setHours(hour, minute, 0, 0);
-                return slotStart > now;
-            });
-        } else {
-            timeSlots.value = [...allSlots];
-        }
+watch(() => form.value.date, newDate => {
+    if (!newDate) {
+        timeSlots.value = [];
         form.value.timeSlot = "";
-    }
-);
-
-// ========================== VALIDATIONS ==========================
-const clearError = (field) => {
-    delete errors.value[field];
-};
-
-const onPincodeInput = (e) => {
-    // allow only digits and max 6
-    let v = e.target.value.replace(/\D/g, "");
-    if (v.length > 6) v = v.slice(0, 6);
-    form.value.pincode = v;
-    if (!v) errors.value.pincode = "Please enter pincode.";
-    else if (v.length !== 6) errors.value.pincode = "Pincode must be 6 digits.";
-    else delete errors.value.pincode;
-};
-
-watch(
-    () => form.value.email,
-    (val) => {
-        if (!val) errors.value.email = "Please enter your email.";
-        else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val))
-            errors.value.email = "Please enter a valid email address (example@domain.com).";
-        else delete errors.value.email;
-    }
-);
-
-const onMobileInput = (e) => {
-    let value = e.target.value.replace(/\D/g, "");
-    if (value.length > 10) value = value.slice(0, 10);
-    form.value.mobile = value;
-
-    if (!value) errors.value.mobile = "Please enter your mobile number.";
-    else if (!/^[6-9]/.test(value)) errors.value.mobile = "Please enter a valid Indian mobile number.";
-    else if (value.length < 10) errors.value.mobile = "Mobile number must be exactly 10 digits.";
-    else delete errors.value.mobile;
-};
-
-const onAddressInput = (e) => {
-    // keep trimmed value but allow newlines while typing
-    const value = e.target.value;
-    form.value.address = value;
-    if (!value || !value.trim()) errors.value.address = "Please enter your address.";
-    else if (value.trim().length < 25) errors.value.address = "Address must be at least 25 characters long.";
-    else delete errors.value.address;
-};
-
-// ========================== AMOUNT COMPUTATIONS ==========================
-const totalBasePrice = computed(() => {
-    return cartStore.cartItems.reduce(
-        (sum, item) => sum + parseFloat(item.discounted_price || 0),
-        0
-    );
-});
-
-const finalAmount = computed(() => {
-    let total = totalBasePrice.value;
-
-    // ✅ Always add home collection charge if total < 300
-    if (total < 300) total += homeCollectionCharge.value;
-
-    // Printed reports charge (only if selected)
-    if (form.value.printedReports) total += printedReportCharge.value;
-
-    return Math.round(total);
-});
-
-
-// Keep a reactive totalAmount (useful for payload)
-const totalAmount = ref(0);
-watch(finalAmount, (v) => (totalAmount.value = v), { immediate: true });
-
-// ========================== PINCODE CHECK ==========================
-const checkPincodeAvailability = async () => {
-    const pincode = form.value.pincode?.trim();
-    pincodeMessage.value = "";
-    pincodeStatus.value = "";
-    if (!/^\d{6}$/.test(pincode)) {
-        pincodeMessage.value = "Enter valid 6 digit pincode first.";
-        pincodeStatus.value = "error";
         return;
     }
-    isChecking.value = true;
-    try {
-        const response = await axios.get("/api/method/bloodtestnearme.api.pincodes_api.getby_pincodes", {
-            params: { pincode }
-        });
-        const res = response.data?.message;
-        if (res) {
-            pincodeMessage.value = res.message || "Response received";
-            pincodeStatus.value = res.status || "success";
-        } else {
-            pincodeMessage.value = "Unexpected API response format.";
-            pincodeStatus.value = "error";
-        }
-    } catch (err) {
-        console.error("Error checking pincode:", err);
-        pincodeMessage.value = err.response?.data?.message || "Unable to check availability at the moment.";
-        pincodeStatus.value = "error";
-    } finally {
-        isChecking.value = false;
-    }
-};
 
-// ========================== EMAIL VALIDATION WATCH ==========================
-watch(
-    () => form.value.email,
-    (val) => {
-        if (!val) {
-            errors.value.email = "Please enter your email.";
-        } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val)) {
-            errors.value.email = "Please enter a valid email address (example@domain.com).";
-        } else {
-            delete errors.value.email;
-        }
+    const selected = new Date(newDate);
+    const today = new Date();
+
+    const isToday = selected.toDateString() === today.toDateString();
+    if (isToday) {
+        const now = new Date();
+        timeSlots.value = allSlots.filter(slot => {
+            const [startStr] = slot.split(" - ");
+            const [time, meridiem] = startStr.split(" ");
+            let [hour, minute] = time.split(":").map(Number);
+            if (meridiem === "PM" && hour !== 12) hour += 12;
+            if (meridiem === "AM" && hour === 12) hour = 0;
+
+            const slotStart = new Date(); slotStart.setHours(hour, minute, 0, 0);
+            return slotStart > now;
+        });
+    } else {
+        timeSlots.value = [...allSlots];
     }
-);
+
+    form.value.timeSlot = "";
+});
 
 // ========================== VALIDATIONS ==========================
+const clearError = field => delete errors.value[field];
+
 const validateBeforeSubmit = () => {
     errors.value = {};
 
-    // Pincode
-    if (!form.value.pincode) errors.value.pincode = "Please enter pincode.";
-    else if (!/^\d{6}$/.test(form.value.pincode)) errors.value.pincode = "Pincode must be 6 digits.";
+    const f = form.value;
+    const pin = f.pincode?.trim();
 
-    // Persons
+    if (!pin) errors.value.pincode = "Please enter pincode.";
+    else if (!/^\d{6}$/.test(pin)) errors.value.pincode = "Pincode must be 6 digits.";
+
     persons.value.forEach((p, i) => {
         if (!p.name) errors.value[`name_${i}`] = "Name is required.";
         else if (!/^[A-Za-z\s]+$/.test(p.name)) errors.value[`name_${i}`] = "Name must contain only letters.";
@@ -482,44 +375,73 @@ const validateBeforeSubmit = () => {
         if (!p.gender) errors.value[`gender_${i}`] = "Gender is required.";
     });
 
-    // Email
-    if (!form.value.email) {
-        errors.value.email = "Please enter your email.";
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.value.email)) {
-        errors.value.email = "Please enter a valid email address (example@domain.com).";
-    }
+    if (!f.email) errors.value.email = "Please enter your email.";
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(f.email)) errors.value.email = "Invalid email address.";
 
-    // Mobile
-    const mobile = (form.value.mobile || "").trim();
+    const mobile = f.mobile?.trim();
     if (!mobile) errors.value.mobile = "Please enter your mobile number.";
     else if (!/^[6-9]\d{9}$/.test(mobile)) errors.value.mobile = "Invalid Indian mobile number.";
 
-    // Address
-    const address = (form.value.address || "").trim();
-    if (!address) errors.value.address = "Please enter your address.";
-    else if (address.length < 25) errors.value.address = "Address must be at least 25 characters.";
+    const addr = f.address?.trim();
+    if (!addr) errors.value.address = "Please enter your address.";
+    else if (addr.length < 25) errors.value.address = "Address must be at least 25 characters.";
 
-    // Date & Time
-    if (!form.value.date) errors.value.date = "Please select your date.";
-    if (!form.value.timeSlot) errors.value.timeSlot = "Please select your time slot.";
+    if (!f.date) errors.value.date = "Please select date.";
+    if (!f.timeSlot) errors.value.timeSlot = "Please select time slot.";
 
-    // Cart
-    if (!cartStore.cartItems || cartStore.cartItems.length === 0)
+    if (!cartStore.cartItems?.length)
         backendMessage.value = { text: "No items in cart to book.", type: "error" };
 
-    return Object.keys(errors.value).length === 0 &&
-        (!backendMessage.value.text || backendMessage.value.type !== "error");
+    return !Object.keys(errors.value).length && (!backendMessage.value.text || backendMessage.value.type !== "error");
 };
 
-const singleOrderSubmit = async () => {
-    backendMessage.value = { text: "", type: "" };
-    if (!validateBeforeSubmit()) {
-        // If validation failed, show a message (fields will show inline errors)
-        backendMessage.value = { text: "Please fix the errors above and try again.", type: "error" };
+// ========================== PINCODE CHECK ==========================
+const checkPincodeAvailability = async () => {
+    const pincode = form.value.pincode.trim();
+    pincodeMessage.value = "";
+    pincodeStatus.value = "";
+
+    if (!/^\d{6}$/.test(pincode)) {
+        pincodeMessage.value = "Enter valid 6 digit pincode first.";
+        pincodeStatus.value = "error";
         return;
     }
 
-    // Prepare payload
+    isChecking.value = true;
+    try {
+        const { data } = await axios.get("/api/method/bloodtestnearme.api.pincodes_api.getby_pincodes", { params: { pincode } });
+        const msg = data?.message;
+        pincodeMessage.value = msg?.message || "Response received";
+        pincodeStatus.value = msg?.status || "success";
+    } catch (err) {
+        console.error("Error checking pincode:", err);
+        pincodeMessage.value = err.response?.data?.message || "Unable to check availability.";
+        pincodeStatus.value = "error";
+    } finally {
+        isChecking.value = false;
+    }
+};
+
+// ========================== SUBMIT ORDER ==========================
+const singleOrderSubmit = async () => {
+    backendMessage.value = { text: "", type: "" };
+
+    if (!validateBeforeSubmit()) {
+        backendMessage.value = { text: "Please fix the errors above.", type: "error" };
+        return;
+    }
+
+    if (pincodeStatus.value !== "success") {
+        await checkPincodeAvailability();
+        if (pincodeStatus.value !== "success") {
+            backendMessage.value = {
+                text: pincodeMessage.value || "Home collection not available for this pincode.",
+                type: "error",
+            };
+            return;
+        }
+    }
+
     const payload = {
         customer_name: persons.value[0]?.name || "",
         age: persons.value[0]?.age || "",
@@ -534,69 +456,41 @@ const singleOrderSubmit = async () => {
         hard_copy_required: form.value.printedReports ? 1 : 0,
         total_price: totalAmount.value,
         total_item_price: totalBasePrice.value,
-        ordered_items: cartStore.cartItems.map(item => ({ ...item })), // send all cart items
+        ordered_items: [...cartStore.cartItems],
         customer_details: persons.value,
-        home_collection: form.value.homeCollection ? 1 : 0
+        home_collection: form.value.homeCollection ? 1 : 0,
     };
 
     submitting.value = true;
-    loading.value = true; // show loader during call
+    loading.value = true;
+
     try {
-        const res = await axios.post("/api/method/bloodtestnearme.api.order_api.create_order", payload);
+        const { data } = await axios.post("/api/method/bloodtestnearme.api.order_api.create_order", payload);
+        const ok = data?.status === "success" || data?.message?.status === "success";
 
-        // Accept different API shapes gracefully
-        const ok = res.data?.status === "success" || res.data?.message?.status === "success";
+        backendMessage.value = ok
+            ? { text: "Your order is submitted successfully.", type: "success" }
+            : { text: data?.message || "Failed to create order.", type: "error" };
+
         if (ok) {
-            const orderId = res.data?.order_id || res.data?.message?.order_id || res.data?.message || res.data?.data || "";
-            backendMessage.value = {
-                text: `✅ Order created successfully! Order ID: ${orderId}`,
-                type: "success",
-            };
-
-            // Reset form
-            form.value = {
-                pincode: "",
-                email: "",
-                mobile: "",
-                address: "",
-                date: "",
-                timeSlot: "",
-                homeCollection: false,
-                printedReports: false,
-            };
+            form.value = { pincode: "", email: "", mobile: "", address: "", date: "", timeSlot: "", homeCollection: false, printedReports: false };
             numPersons.value = "";
             persons.value = [{ name: "", age: "", gender: "" }];
             errors.value = {};
-
-            // Clear cart if method available
-            if (typeof cartStore.clearCart === "function") {
-                cartStore.clearCart();
-            } else {
-                // fallback: empty array (Pinia best practice is to call action, but fallback included)
-                cartStore.cartItems = [];
-            }
-        } else {
-            const message = res.data?.message || res.data?.error || "Failed to create order.";
-            backendMessage.value = { text: message, type: "error" };
+            cartStore.clearCart?.();
         }
     } catch (err) {
         console.error("Order creation error:", err);
-        backendMessage.value = {
-            text: err.response?.data?.message || "Server error occurred while creating order.",
-            type: "error",
-        };
+        backendMessage.value = { text: err.response?.data?.message || "Server error occurred.", type: "error" };
     } finally {
         submitting.value = false;
         loading.value = false;
     }
 };
 
-// ========================== FETCH/INIT ==========================
-const fetchData = async () => {
-    // If you'd like to re-fetch product/package lists to keep cart items consistent, do it here.
+// ========================== FETCH INIT ==========================
+onMounted(async () => {
     try {
-        // If you need to re-sync with backend for available packages or latest prices,
-        // add axios calls here and reconcile cartStore.cartItems accordingly.
         await Promise.all([
             axios.get("/api/method/bloodtestnearme.api.packages.get_individual_packages"),
             axios.get("/api/method/bloodtestnearme.api.packages.get_package_based_tests"),
@@ -606,7 +500,5 @@ const fetchData = async () => {
     } finally {
         loading.value = false;
     }
-};
-
-onMounted(fetchData);
+});
 </script>

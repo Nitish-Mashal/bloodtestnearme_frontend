@@ -7,6 +7,8 @@ const routes = [
     component: () => import("@/Home/HeroSection.vue"),
     meta: {
       title: "Blood Tests | Full Body Health Checkups | Thyrocare",
+      description:
+        "Book blood tests and full body health checkup packages online at Thyrocare Bangalore. Get accurate lab tests at home with free sample collection.",
     },
   },
   {
@@ -15,6 +17,8 @@ const routes = [
     component: () => import("@/HealthCheckupDetails/HealthCheckupList.vue"),
     meta: {
       title: "Thyrocare Full Body Health Checkup Packages in Bangalore",
+      description:
+        "Explore the best full body health checkup packages offered by Thyrocare in Bangalore. Affordable and reliable tests at home.",
     },
   },
   {
@@ -22,7 +26,9 @@ const routes = [
     name: "BloodTestList",
     component: () => import("@/BloodTest/BloodTestList.vue"),
     meta: {
-      title: "Book Blood Tests in Bangalore | Thyrocare Lab"
+      title: "Book Blood Tests in Bangalore | Thyrocare Lab",
+      description:
+        "Book blood tests online in Bangalore with Thyrocare. Get free home sample collection and quick digital reports.",
     },
   },
   {
@@ -30,9 +36,6 @@ const routes = [
     name: "HealthCheckupDetails",
     component: () => import("@/HealthCheckupDetails/HealthCheckupDetails.vue"),
     props: true,
-    meta: {
-      title: "Health Checkup Package Details | Blood Test Near Me",
-    },
   },
   {
     path: "/book/:slug",
@@ -45,7 +48,9 @@ const routes = [
     name: "CartPage",
     component: () => import("@/CartPage/CartPage.vue"),
     meta: {
-      title: "Online Blood Test At Home | Full Body Checkup | Cart"
+      title: "Online Blood Test At Home | Full Body Checkup | Cart",
+      description:
+        "Review your selected health checkup packages and proceed to checkout easily. Safe and secure online booking.",
     },
   },
 ];
@@ -58,9 +63,30 @@ const router = createRouter({
   },
 });
 
-// ✅ Set meta title dynamically for each route
+// ✅ Global hook to set title and meta description
 router.beforeEach((to, from, next) => {
-  document.title = to.meta.title || "Blood Test Near Me"; // default title
+  // Set document title
+  document.title = to.meta.title || "Blood Test Near Me";
+
+  // Update or create <meta name="description">
+  const metaDescription = document.querySelector("meta[name='description']");
+  if (metaDescription) {
+    metaDescription.setAttribute(
+      "content",
+      to.meta.description ||
+      "Book affordable blood tests and health checkups at home."
+    );
+  } else {
+    const meta = document.createElement("meta");
+    meta.setAttribute("name", "description");
+    meta.setAttribute(
+      "content",
+      to.meta.description ||
+      "Book affordable blood tests and health checkups at home."
+    );
+    document.head.appendChild(meta);
+  }
+
   next();
 });
 

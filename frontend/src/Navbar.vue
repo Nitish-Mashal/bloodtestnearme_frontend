@@ -1,9 +1,22 @@
 <template>
   <header class="sticky top-0 z-50 w-full">
-    <!-- Top Banner -->
-    <div
-      class="flex justify-center items-center py-[4px] text-[14px] bold-test-color font-semibold px-5 md:px-20 py-2 bg-white shadow-md">
-      <span class="bold-test-color">Book Full Body Health Checkup @ ₹1,499/- with Vitamins</span>
+    <!-- ✅ Mobile (Full-width Sliding Banner) -->
+    <div class="block md:hidden bg-white shadow-md py-2 w-full overflow-hidden">
+      <marquee behavior="scroll" direction="left" scrollamount="4">
+        <span class="bold-test-color font-semibold text-[14px]">
+          Book Full Body Health Checkup @ ₹1,499/- with Vitamins
+        </span>
+        <button class="ml-3 global-bg-color text-white px-3 py-1 rounded-full text-sm hover:bg-[#005fa3] transition">
+          Book Now
+        </button>
+      </marquee>
+    </div>
+
+    <!-- ✅ Desktop (Static Banner) -->
+    <div class="hidden md:flex justify-center items-center bg-white shadow-md py-2 px-20">
+      <span class="bold-test-color font-semibold text-[14px]">
+        Book Full Body Health Checkup @ ₹1,499/- with Vitamins
+      </span>
       <button class="ml-3 global-bg-color text-white px-3 py-1 rounded-full text-sm hover:bg-[#005fa3] transition">
         Book Now
       </button>
@@ -11,8 +24,7 @@
 
     <!-- Navbar -->
     <nav
-      class="flex flex-col md:flex-row items-center justify-between px-6 md:px-20 py-2 global-bg-color relative text-white sticky top-0 z-40 shadow-md">
-
+      class="flex flex-col md:flex-row items-center justify-between px-6 md:px-20 py-2 global-bg-color relative text-white z-40 shadow-md">
       <!-- Logo + Hamburger -->
       <div class="flex items-center justify-between w-full md:w-auto">
         <div class="flex items-center space-x-2 bg-white rounded-full px-20 py-1">
@@ -22,16 +34,22 @@
         </div>
 
         <!-- Mobile Hamburger -->
-        <button @click.stop="toggleMenu" class="md:hidden focus:outline-none text-white">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <button @click.stop="toggleMenu" aria-expanded="isMenuOpen" aria-label="Toggle menu"
+          class="md:hidden focus:outline-none text-white transition-transform duration-300">
+          <svg v-if="!isMenuOpen" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+            stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+
+          <svg v-else xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 rotate-90 transition-transform duration-300"
+            fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
           </svg>
         </button>
       </div>
 
       <!-- 🔍 Search + Cart (Mobile) -->
       <div class="flex items-center justify-between w-full md:hidden mt-2 px-2" ref="mobileSearchRef">
-        <!-- Search -->
         <div class="relative flex-1 mr-2">
           <input v-model="searchQuery" @input="handleSearch" type="text" placeholder="Search"
             class="w-full rounded-[5px] px-4 py-[2px] text-gray-700 text-sm focus:outline-none border border-gray-300" />
@@ -50,10 +68,10 @@
               No results found
             </div>
             <ul v-else>
-              <li v-for="(item, index) in searchResults" :key="index"
-                class=" py-2 text-sm text-gray-800 hover:bg-gray-100 cursor-pointer">
-                <router-link :to="`/${item.url}`" class="block w-full h-full no-underline" @click="clearSearch">
-                  {{  item.name1 }}
+              <li v-for="(item, index) in searchResults" :key="index" class="py-2 text-sm text-gray-800 cursor-pointer">
+                <router-link :to="`/${item.url}`" class="block w-full h-full no-underline hover:text-indigo-900"
+                  @click="clearSearch">
+                  {{ item.name1 }}
                 </router-link>
               </li>
             </ul>
@@ -81,7 +99,29 @@
         </router-link>
       </div>
 
-      <!-- Search (Desktop) -->
+      <!-- ✅ Mobile menu with smooth transition -->
+      <transition enter-active-class="transition-all duration-300 ease-in-out"
+        enter-from-class="opacity-0 transform -translate-y-3" enter-to-class="opacity-100 transform translate-y-0"
+        leave-active-class="transition-all duration-300 ease-in-out"
+        leave-from-class="opacity-100 transform translate-y-0" leave-to-class="opacity-0 transform -translate-y-3">
+        <div v-show="isMenuOpen" ref="menuRef" class="md:hidden w-full overflow-hidden">
+          <ul class="flex flex-col py-2 transition-all duration-300 ease-in-out">
+            <li>
+              <router-link @click="onMobileLinkClick" to="/blood-test-online-bangalore" class="block py-2 text-white">
+                Book a Test
+              </router-link>
+            </li>
+            <li>
+              <router-link @click="onMobileLinkClick" to="/health-checkup-packages-bangalore"
+                class="block py-2 text-white">
+                Health Checkups
+              </router-link>
+            </li>
+          </ul>
+        </div>
+      </transition>
+
+      <!-- Desktop Search -->
       <div class="hidden md:flex items-center relative w-[20%]" ref="desktopSearchRef">
         <input v-model="searchQuery" @input="handleSearch" type="text" placeholder="Search"
           class="w-full rounded-[5px] px-4 py-[1px] text-gray-700 text-sm focus:outline-none" />
@@ -99,9 +139,9 @@
             No results found
           </div>
           <ul v-else>
-            <li v-for="(item, index) in searchResults" :key="index"
-              class="py-2 text-sm text-gray-800 hover:bg-gray-100 cursor-pointer">
-              <router-link :to="`/${item.url}`" class="block w-full h-full no-underline" @click="clearSearch">
+            <li v-for="(item, index) in searchResults" :key="index" class="py-2 text-sm  text-gray-800 cursor-pointer">
+              <router-link :to="`/${item.url}`" class="block w-full h-full no-underline hover:text-indigo-900"
+                @click="clearSearch">
                 {{ item.name1 }}
               </router-link>
             </li>
@@ -151,11 +191,9 @@ import { useRoute } from 'vue-router'
 import { useCartStore } from '@/stores/cartStore'
 import { storeToRefs } from 'pinia'
 
-// ✅ Cart store
 const cartStore = useCartStore()
 const { cartCount } = storeToRefs(cartStore)
 
-// ✅ Reactive states
 const searchQuery = ref('')
 const searchResults = ref([])
 const loading = ref(false)
@@ -163,9 +201,20 @@ const showResults = ref(false)
 const desktopSearchRef = ref(null)
 const mobileSearchRef = ref(null)
 
+const isMenuOpen = ref(false)
+const menuRef = ref(null)
+
 const route = useRoute()
 
-// 🔍 Fetch results from API
+const toggleMenu = () => {
+  isMenuOpen.value = !isMenuOpen.value
+}
+
+const onMobileLinkClick = () => {
+  isMenuOpen.value = false
+  clearSearch()
+}
+
 const handleSearch = async () => {
   const query = searchQuery.value.trim()
   if (!query) {
@@ -188,32 +237,40 @@ const handleSearch = async () => {
   }
 }
 
-// ✅ Clear results when user clicks result or navigates
 const clearSearch = () => {
   searchQuery.value = ''
   searchResults.value = []
   showResults.value = false
 }
 
-// ✅ Hide dropdown on outside click
 const handleClickOutside = (e) => {
-  const isOutside =
-    (!desktopSearchRef.value || !desktopSearchRef.value.contains(e.target)) &&
-    (!mobileSearchRef.value || !mobileSearchRef.value.contains(e.target))
-  if (isOutside) showResults.value = false
+  const clickedInsideDesktopSearch = desktopSearchRef.value && desktopSearchRef.value.contains(e.target)
+  const clickedInsideMobileSearch = mobileSearchRef.value && mobileSearchRef.value.contains(e.target)
+  const clickedInsideMenu = menuRef.value && menuRef.value.contains(e.target)
+
+  if (!clickedInsideDesktopSearch && !clickedInsideMobileSearch) {
+    showResults.value = false
+  }
+
+  if (!clickedInsideMenu && !clickedInsideMobileSearch && !clickedInsideDesktopSearch) {
+    isMenuOpen.value = false
+  }
 }
 
 document.addEventListener('click', handleClickOutside)
 onBeforeUnmount(() => document.removeEventListener('click', handleClickOutside))
 
-// ✅ Close dropdown when route changes
-watch(() => route.fullPath, clearSearch)
+watch(() => route.fullPath, () => {
+  clearSearch()
+  isMenuOpen.value = false
+})
 </script>
 
 <style scoped>
 .nav-link {
   text-decoration: none;
   color: white;
+  transition: color 0.3s ease;
 }
 
 .active-link {

@@ -200,11 +200,9 @@
                                 </button>
                             </div>
 
-                            <!-- ✅ Backend Message Display -->
-                            <div v-if="backendMessage.text" class="mt-3 text-center">
-                                <p :class="backendMessage.type === 'success' ? 'text-green-600' : 'text-red-600'">
-                                    {{ backendMessage.text }}
-                                </p>
+                            <!-- ✅ Backend Message Display (Cleaned) -->
+                            <div v-if="successmessage" class="mt-3 text-center">
+                                <p class="text-green-600">{{ successmessage }}</p>
                             </div>
                         </form>
                     </div>
@@ -232,7 +230,7 @@ const totalAmount = ref(0);
 const pincodeMessage = ref("");
 const pincodeStatus = ref("");
 const isChecking = ref(false);
-const backendMessage = ref({ text: "", type: "" }); // ✅ Added for backend feedback
+const successmessage = ref("");
 
 
 // 🧍‍♂️ Dynamic form logic
@@ -328,36 +326,6 @@ watch(
 );
 
 
-// ✅ Fetch package details
-// const fetchPackageDetails = async () => {
-//     isLoading.value = true;
-//     try {
-//         const endpoints = [
-//             "/api/method/bloodtestnearme.api.packages.get_package_based_tests",
-//             "/api/method/bloodtestnearme.api.packages.get_individual_packages",
-//         ];
-
-//         for (const endpoint of endpoints) {
-//             const response = await axios.get(endpoint);
-//             const data = response.data?.message?.data || [];
-//             const found = data.find((pkg) => {
-//             const normalizedName = pkg.name1?.toLowerCase().replace(/\s+/g, '-');
-//             return normalizedName === packageName.toLowerCase();
-//             });
-//             if (found) {
-//                 packageData.value = found;
-//                 totalAmount.value =
-//                     parseFloat(found.discounted_price || 0) + homeCollectionCharge.value;
-//                 break;
-//             }
-//         }
-//     } catch (error) {
-//         console.error("Error fetching package details:", error);
-//     } finally {
-//         isLoading.value = false;
-//     }
-// };
-
 const fetchPackageDetails = async () => {
     isLoading.value = true;
 
@@ -374,12 +342,18 @@ const fetchPackageDetails = async () => {
 
                 const msg = response.data?.message;
                 const data =
-                    Array.isArray(msg?.data) && msg.data.length ? msg.data[0] : msg?.data || msg;
+                    Array.isArray(msg?.data) && msg.data.length
+                        ? msg.data[0]
+                        : msg?.data || msg;
 
                 if (data) {
                     packageData.value = data;
                     totalAmount.value =
                         parseFloat(data.discounted_price || 0) + homeCollectionCharge.value;
+
+                    // ✅ Apply SEO meta updates
+                    updatePageSEO(data);
+
                     return; // ✅ Stop here if found
                 } else {
                     console.warn("⚠️ No data found using URL param:", packageUrl);
@@ -408,6 +382,10 @@ const fetchPackageDetails = async () => {
                 packageData.value = found;
                 totalAmount.value =
                     parseFloat(found.discounted_price || 0) + homeCollectionCharge.value;
+
+                // ✅ Apply SEO meta updates
+                updatePageSEO(found);
+
                 break;
             }
         }
@@ -418,81 +396,154 @@ const fetchPackageDetails = async () => {
     }
 };
 
+/**
+ * ✅ Dynamically updates page title and meta description
+ */
+const updatePageSEO = (data) => {
+    // 🔹 Update tab title
+    document.title =
+        data.title ||
+        data.package_name ||
+        data.name1 ||
+        "Blood Test Near Me - Health Packages";
+
+    // 🔹 Update or create <meta name="description">
+    let metaDesc = document.querySelector("meta[name='description']");
+    if (!metaDesc) {
+        metaDesc = document.createElement("meta");
+        metaDesc.name = "description";
+        document.head.appendChild(metaDesc);
+    }
+
+    metaDesc.setAttribute(
+        "content",
+        data.meta_description ||
+        data.short_description ||
+        `Book ${data.package_name || "this health checkup"} at home easily with Blood Test Near Me.`
+    );
+
+    // (Optional) You can also handle Open Graph (for sharing)
+    setOrUpdateMeta("og:title", data.meta_title || data.package_name);
+    setOrUpdateMeta("og:description", data.meta_description);
+    setOrUpdateMeta("og:type", "website");
+};
+
+/**
+ * Helper to safely set/update meta tags
+ */
+const setOrUpdateMeta = (property, content) => {
+    if (!content) return;
+    let meta = document.querySelector(`meta[property='${property}']`);
+    if (!meta) {
+        meta = document.createElement("meta");
+        meta.setAttribute("property", property);
+        document.head.appendChild(meta);
+    }
+    meta.setAttribute("content", content);
+};
 
 // ✅ Submit and Call Backend API
+// ✅ Submit and Call Backend API
 const singleTestSubmit = async () => {
+    successmessage.value = "";
     errors.value = {};
-    backendMessage.value = { text: "", type: "" };
 
+    // Validate form first
     const isValid = handleSubmit();
-    if (!isValid) return; // stop if validation fails
+    if (!isValid) {
+        successmessage.value = "Please fix the highlighted errors before submitting.";
+        return;
+    }
 
-    if (Object.keys(errors.value).length === 0) {
-        isLoading.value = true; // ✅ Show loader during API call
+    // ✅ If user didn’t manually check pincode, auto-check it now
+    const isPincodeValid =
+        pincodeStatus.value === "success" ||
+        (await checkPincodeAvailability(true));
 
-        try {
-            const payload = {
-                customer_name: persons.value[0]?.name || "",
-                age: persons.value[0]?.age || "",
-                gender: persons.value[0]?.gender || "",
-                email: form.value.email,
-                mobile_number: form.value.mobile,
-                address: form.value.address,
-                pincode: form.value.pincode,
-                appointment_date: form.value.date,
-                appointment_time: form.value.timeSlot,
-                number_of_persons: numPersons.value || 1,
-                hard_copy_required: form.value.printedReports ? 1 : 0,
-                total_price: totalAmount.value,
-                total_item_price: packageData.value.discounted_price,
-                ordered_items: [packageData.value],
-                customer_details: persons.value,
+    if (!isPincodeValid) {
+        successmessage.value = "Please enter a valid pincode before booking.";
+        return;
+    }
+
+    isLoading.value = true;
+
+    try {
+        const payload = {
+            customer_name: persons.value[0]?.name || "",
+            age: persons.value[0]?.age || "",
+            gender: persons.value[0]?.gender || "",
+            email: form.value.email,
+            mobile_number: form.value.mobile,
+            address: form.value.address,
+            pincode: form.value.pincode,
+            appointment_date: form.value.date,
+            appointment_time: form.value.timeSlot,
+            number_of_persons: numPersons.value || 1,
+            hard_copy_required: form.value.printedReports ? 1 : 0,
+            total_price: totalAmount.value,
+            total_item_price: packageData.value.discounted_price,
+            ordered_items: [packageData.value],
+            customer_details: persons.value,
+        };
+
+        const res = await axios.post(
+            "/api/method/bloodtestnearme.api.order_api.create_order",
+            payload
+        );
+
+        const data = res.data;
+
+        // ✅ Show only the backend successmessage, not full JSON
+        if (data.status === "success") {
+            successmessage.value =
+                data.successmessage || "Your order has been placed successfully!";
+
+            // ✅ Reset form only on success
+            form.value = {
+                pincode: "",
+                email: "",
+                mobile: "",
+                address: "",
+                date: "",
+                timeSlot: "",
+                homeCollection: false,
+                printedReports: false,
             };
+            numPersons.value = "";
+            persons.value = [{ name: "", age: "", gender: "" }];
 
-            const res = await axios.post(
-                "/api/method/bloodtestnearme.api.order_api.create_order",
-                payload
-            );
+            // Reset other related states
+            pincodeMessage.value = "";
+            pincodeStatus.value = "";
 
-            if (res.data.status === "success") {
-                backendMessage.value = {
-                    text: `✅ Order created successfully! Order ID: ${res.data.order_id || res.data.message}`,
-                    type: "success",
-                };
-
-                // ✅ Clear form and reset
-                form.value = {
-                    pincode: "",
-                    email: "",
-                    mobile: "",
-                    address: "",
-                    date: "",
-                    timeSlot: "",
-                    homeCollection: false,
-                    printedReports: false,
-                };
-                numPersons.value = "";
-                persons.value = [{ name: "", age: "", gender: "" }];
-            } else {
-                backendMessage.value = {
-                    text: res.data.message || "Failed to create order.",
-                    type: "error",
-                };
-            }
-        } catch (error) {
-            backendMessage.value = {
-                text: error.response?.data?.message || "Server error occurred.",
-                type: "error",
-            };
-        } finally {
-            isLoading.value = false; // ✅ Hide loader after API call
+            // ✅ Auto-clear success message after 3 seconds
+            setTimeout(() => (successmessage.value = ""), 3000);
+        } else {
+            successmessage.value =
+                data.message || "Failed to create order. Please try again.";
         }
+    } catch (error) {
+        successmessage.value =
+            error.response?.data?.message || "Server error occurred.";
+    } finally {
+        isLoading.value = false;
     }
 };
 
 // 🧩 Check Pincode Availability (Backend Message Only)
-const checkPincodeAvailability = async () => {
+const checkPincodeAvailability = async (autoCheck = false) => {
     const pincode = form.value.pincode?.trim();
+
+    // If empty and this was an auto check from "Book Now"
+    if (!pincode && autoCheck) {
+        errors.value.pincode = "Please enter your pincode before booking.";
+        return false;
+    }
+
+    if (!/^\d{6}$/.test(pincode)) {
+        errors.value.pincode = "Pincode must be 6 digits.";
+        return false;
+    }
 
     // Reset message and status
     pincodeMessage.value = "";
@@ -505,14 +556,12 @@ const checkPincodeAvailability = async () => {
             { params: { pincode } }
         );
 
-        // ✅ Read directly from backend structure
         const res = response.data?.message;
 
         if (res) {
             pincodeMessage.value = res.message || "";
             pincodeStatus.value = res.status || "error";
         } else {
-            // If message object not found
             pincodeMessage.value = "Unexpected API response format.";
             pincodeStatus.value = "error";
         }
@@ -523,7 +572,10 @@ const checkPincodeAvailability = async () => {
     } finally {
         isChecking.value = false;
     }
+
+    return pincodeStatus.value === "success";
 };
+
 
 onMounted(fetchPackageDetails);
 
@@ -608,7 +660,7 @@ watch(
     { deep: true }
 );
 
-// 🧩 Submit Validation
+// 🧩 Submit Validation — return true/false instead of alert
 const handleSubmit = () => {
     errors.value = {};
 
@@ -640,16 +692,17 @@ const handleSubmit = () => {
     // Address
     const address = form.value.address.trim();
     if (!address) errors.value.address = "Please enter your address.";
-    else if (address.length < 25) errors.value.address = "Address must be at least 25 characters.";
+    else if (address.length < 25)
+        errors.value.address = "Address must be at least 25 characters.";
 
     // Date & Time
     if (!form.value.date) errors.value.date = "Please select your date.";
     if (!form.value.timeSlot) errors.value.timeSlot = "Please select your time slot.";
 
-    if (Object.keys(errors.value).length === 0) {
-        alert("Form submitted successfully!");
-    }
+    // ✅ Return true if valid, false otherwise
+    return Object.keys(errors.value).length === 0;
 };
+
 
 // 🧮 Dynamic total amount
 const finalAmount = computed(() => {
