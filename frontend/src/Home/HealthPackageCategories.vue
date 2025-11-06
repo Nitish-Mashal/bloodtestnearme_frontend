@@ -27,19 +27,27 @@
                     Loading categories...
                 </div>
 
-                <!-- Categories Section -->
-                <div v-else-if="categories.length" class="text-center my-8">
-                    <div class="flex flex-wrap justify-center gap-3">
-                        <div v-for="(category, index) in categories" :key="index"
-                            class="flex flex-col items-center text-center max-w-[150px] cursor-pointer transition-transform hover:scale-105"
-                            @click="goToCategory(category.url, category.name)">
-                            <img :src="getImage(category.image)" :alt="category.name"
-                                class="object-cover shadow-md rounded-lg w-full h-auto" />
-                            <p class="mt-3 bold-test-color text-2xl">
-                                {{ category.name }}
-                            </p>
-                        </div>
-                    </div>
+                <!-- Carousel Section -->
+                <div v-else-if="categories.length" class="my-8">
+                    <el-carousel :interval="3000" :autoplay="true" arrow="always" height="200px"
+                        indicator-position="none" trigger="click" :pause-on-hover="true">
+                        <el-carousel-item v-for="(group, groupIndex) in groupedCategories" :key="groupIndex">
+                            <div class="flex justify-center gap-4">
+                                <div v-for="(category, index) in group" :key="index"
+                                    class="flex flex-col items-center justify-center text-center cursor-pointer transition-transform hover:scale-105"
+                                    :class="{
+                                        'w-[120px]': !isMobile,
+                                        'w-[200px]': isMobile,
+                                    }" @click="goToCategory(category.url, category.name)">
+                                    <img :src="getImage(category.image)" :alt="category.name"
+                                        class="object-cover shadow-md rounded-lg w-full h-[120px]" />
+                                    <p class="mt-3 bold-test-color text-base sm:text-lg font-semibold">
+                                        {{ category.name }}
+                                    </p>
+                                </div>
+                            </div>
+                        </el-carousel-item>
+                    </el-carousel>
                 </div>
 
                 <!-- No Data -->
@@ -52,17 +60,29 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, computed, onMounted, onBeforeUnmount } from "vue";
 import axios from "axios";
 import { useRouter } from "vue-router";
+import "element-plus/es/components/carousel/style/css";
+import "element-plus/es/components/carousel-item/style/css";
 
 const categories = ref([]);
 const isLoading = ref(true);
+const isMobile = ref(window.innerWidth < 640);
 const router = useRouter();
+
+const handleResize = () => {
+    isMobile.value = window.innerWidth < 640; // sm breakpoint
+};
+
+window.addEventListener("resize", handleResize);
+
+onBeforeUnmount(() => {
+    window.removeEventListener("resize", handleResize);
+});
 
 const fetchCategories = async () => {
     try {
-        // 🧠 Use cache to avoid unnecessary API calls
         const cached = sessionStorage.getItem("packageCategories");
         if (cached) {
             categories.value = JSON.parse(cached);
@@ -73,10 +93,7 @@ const fetchCategories = async () => {
         const response = await axios.get(
             "/api/method/bloodtestnearme.api.package_category.get_active_package_categories"
         );
-
-        const data =
-            response.data?.message?.data || response.data?.data || [];
-
+        const data = response.data?.message?.data || response.data?.data || [];
         categories.value = data;
         sessionStorage.setItem("packageCategories", JSON.stringify(data));
     } catch (error) {
@@ -86,13 +103,37 @@ const fetchCategories = async () => {
     }
 };
 
-// ✅ Safely normalize image paths
+// ✅ Dynamically group cards based on screen size
+const groupedCategories = computed(() => {
+    const groups = [];
+    const items = categories.value;
+    const visibleCount = isMobile.value ? 1 : 5;
+
+    // ✅ Slide forward one card at a time
+    if (items.length > 0) {
+        for (let i = 0; i <= items.length - visibleCount; i++) {
+            groups.push(items.slice(i, i + visibleCount));
+        }
+
+        // ✅ Optional: Loop seamlessly by adding wrap-around slides
+        for (let j = 0; j < visibleCount - 1; j++) {
+            const wrapGroup = [
+                ...items.slice(j * 1),
+                ...items.slice(0, (visibleCount - 1) - j),
+            ].slice(0, visibleCount);
+            groups.push(wrapGroup);
+        }
+    }
+
+    return groups;
+});
+
+
 const getImage = (imagePath) => {
     if (!imagePath) return "/default-image.png";
     return imagePath.startsWith("/files") ? imagePath : `/files/${imagePath}`;
 };
 
-// ✅ Navigate with query param
 const goToCategory = (url, name) => {
     if (name) {
         const slug = name.toLowerCase().replace(/\s+/g, "-");
@@ -103,11 +144,17 @@ const goToCategory = (url, name) => {
     }
 };
 
-onMounted(fetchCategories);
+onMounted(() => {
+    fetchCategories();
+});
 </script>
 
 <style scoped>
 .bold-test-color {
     color: #001d55;
+}
+
+.el-carousel__container {
+    overflow: hidden;
 }
 </style>
