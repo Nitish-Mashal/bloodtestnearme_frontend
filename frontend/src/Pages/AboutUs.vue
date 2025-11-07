@@ -107,7 +107,7 @@
     <div class="transform -translate-y-4">
       <div class="rounded-2xl overflow-hidden shadow-md">
         <img
-          src="https://via.placeholder.com/300x250"
+          src="/Trained-Phlebotomists.jpg"
           alt="Trained Phlebotomists"
           class="w-full h-80 object-cover"
         />
@@ -119,7 +119,7 @@
     <div class="transform translate-y-4">
       <div class="rounded-2xl overflow-hidden shadow-md">
         <img
-          src="https://via.placeholder.com/300x250"
+          src="Advanced-Diagnostic-Equipment.jpg"
           alt="Advanced Diagnostic Equipment"
           class="w-full h-80 object-cover"
         />
@@ -131,7 +131,7 @@
     <div class="transform -translate-y-4">
       <div class="rounded-2xl overflow-hidden shadow-md">
         <img
-          src="https://via.placeholder.com/300x250"
+          src="/Advanced-manufacture-machine.jpg"
           alt="Sterile and Hygienic Process"
           class="w-full h-80 object-cover"
         />
@@ -143,7 +143,7 @@
     <div class="transform translate-y-4">
       <div class="rounded-2xl overflow-hidden shadow-md">
         <img
-          src="/about-us-banner.png"
+          src="/Enjoy-your-treatment.png"
           alt="Enjoy Your Treatment"
           class="w-full h-80 object-cover"
         />

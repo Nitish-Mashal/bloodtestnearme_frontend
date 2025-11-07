@@ -80,9 +80,9 @@ const routes = [
     component: () => import('@/Address/LabsNearMe.vue'),
   },
   {
-     path:'/termsAndConditions',
-      name:'TermsAndConditions',
-      component: () => import('@/Pages/TermsAndConditions.vue'),
+     path:'/terms-Conditions',
+      name:'TermsAndCondition',
+      component: () => import('@/Pages/TermsAndCondition.vue'),
     },
     {
       path:'/contact-us',
@@ -93,6 +93,11 @@ const routes = [
       path:'/about-us',
       name:'AboutUs',
       component: () => import('@/Pages/AboutUs.vue'),
+    },
+    {
+      path:'/privacy-policy',
+      name:'PrivavyAndPolicy',
+      component: () => import('@/Pages/PrivavyAndPolicy.vue'),
     }
 
 ]

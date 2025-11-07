@@ -28,7 +28,7 @@
                 </div>
 
                 <!-- Carousel Section -->
-                <div v-else-if="categories.length" class="my-8">
+                <div v-else-if="categories.length" class="my-3">
                     <el-carousel :interval="3000" :autoplay="true" arrow="always" height="200px"
                         indicator-position="none" trigger="click" :pause-on-hover="true">
                         <el-carousel-item v-for="(group, groupIndex) in groupedCategories" :key="groupIndex">
