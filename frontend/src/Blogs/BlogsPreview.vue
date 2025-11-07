@@ -1,5 +1,5 @@
 <template>
-  <div class="container p-5 bg-gray-50 min-h-screen">
+  <div class="container p-10  min-h-screen">
     <!-- Grid layout: 3 cards per row -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
       <div
@@ -37,8 +37,8 @@
           <p class="text-gray-600 text-sm mb-2 line-clamp-3">
   {{ stripHtml(card.description_1) }}
           </p>
-        <router-link
-  :to="{ name: 'blogdetails', query: { name: card.name } }"
+         <router-link
+  :to="{ name: 'BlogDetails', query: { name: card.name } }"
   class="bold-test-color font-semibold text-sm hover:underline"
 >
   Read More >>
@@ -47,10 +47,10 @@
         </div>
 
         <!-- 🔸 Footer with line -->
-        <div class="border-t border-[#2077BF] px-3 py-2">
-          <p class="text-gray-400 text-xs">
-  {{ formatDate(card.blog_date) }}
-          </p>
+        <div class="border-t border-[#2077BF] px-3 p-2">
+          <div class="text-gray-500 text-xs">
+              {{ formatDate(card.blog_date) }}
+          </div>
         </div>
       </div>
     </div>
@@ -84,7 +84,7 @@ const formatDate = (dateStr) => {
 onMounted(async () => {
   try {
     const res = await fetch(
-      "/api/method/education_app.api.education_blog.get_blogs"
+      "/api/method/bloodtestnearme.api.blogs.get_blogs"
     );
     const data = await res.json();
     cards.value = data.message || [];

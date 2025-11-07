@@ -1,5 +1,5 @@
 <template>
-    <div class="bg-gray-100 py-10 px-5">
+    <div class=" py-10 px-5">
 
         <!-- Loading State -->
         <div v-if="isLoading" class="text-center py-20 text-gray-500 text-lg">
@@ -65,7 +65,7 @@ export default {
             }
 
             try {
-                const res = await axios.get('/api/method/education_app.api.education_blog.get_blog', {
+                const res = await axios.get('/api/method/bloodtestnearme.api.blogs.get_blog', {
                     params: { blog_name: blogName }
                 })
                 this.blog = res.data.message || null
