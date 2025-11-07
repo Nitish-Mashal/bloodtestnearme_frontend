@@ -70,10 +70,30 @@ const routes = [
     component: () => import('@/Blogs/BlogDetails.vue'),
   },
   {
-    path: '/address',
-    name: 'Address',
-    component: () => import('@/Blogs/Address.vue'),
-  }
+    path: '/add-diagnostic-center',
+    name: 'AddDiagnosticCenter',
+    component: () => import('@/Address/AddDiagnosticCenter.vue'), 
+  },
+  {
+    path:'/labs-near-me',
+    name:'LabsNearMe',
+    component: () => import('@/Address/LabsNearMe.vue'),
+  },
+  {
+     path:'/termsAndConditions',
+      name:'TermsAndConditions',
+      component: () => import('@/Pages/TermsAndConditions.vue'),
+    },
+    {
+      path:'/contact-us',
+      name:'ContactUs',
+      component: () => import('@/Pages/ContactUs.vue'),
+    },
+    {
+      path:'/about-us',
+      name:'AboutUs',
+      component: () => import('@/Pages/AboutUs.vue'),
+    }
 
 ]
 

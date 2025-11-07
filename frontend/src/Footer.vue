@@ -45,7 +45,7 @@
                         <ul class="text-white mt-4 space-y-2 text-sm text-left pl-0 list-none pb-4">
                             <li><router-link to="/about" class="text-white no-underline hover:underline">About
                                     Us</router-link></li>
-                            <li><router-link to="/blogs"
+                            <li><router-link to="/blogspreview"
                                     class="text-white no-underline hover:underline">Blogs</router-link></li>
                             <li><router-link to="/team"
                                     class="text-white no-underline hover:underline">Team</router-link></li>
