@@ -6,14 +6,36 @@ app_email = "nitishmashal0@gmail.com"
 app_license = "mit"
 
 
+# website_route_rules = [
+#     # ✅ Allow Frappe system routes
+#     {"from_route": "/app/<path:path>", "to_route": "/app/<path:path>"},
+#     {"from_route": "/login", "to_route": "/login"},
+#     {"from_route": "/api/<path:path>", "to_route": "/api/<path:path>"},
+#     {"from_route": "/assets/<path:path>", "to_route": "/assets/<path:path>"},
+
+#     # ✅ Vue SPA routes (redirect all frontend routes to index.html)
+#     {"from_route": "/", "to_route": "/"},
+#     {"from_route": "/health-checkup-packages-bangalore", "to_route": "/"},
+#     {"from_route": "/blood-test-online-bangalore", "to_route": "/"},
+#     {"from_route": "/CartPage", "to_route": "/"},
+#     {"from_route": "/qrcodedata", "to_route": "/"},
+#     {"from_route": "/blogspreview", "to_route": "/"},
+#     {"from_route": "/blogdetails", "to_route": "/"},
+#     {"from_route": "/address", "to_route": "/"},
+
+#     # ✅ Dynamic Vue routes (use path wildcard to handle any dynamic URLs)
+#     {"from_route": "/book/<path:path>", "to_route": "/"},
+#     {"from_route": "/<path:path>", "to_route": "/"},
+# ]
+
 website_route_rules = [
-    # ✅ Allow Frappe system routes
+    # ✅ Allow Frappe system & backend routes
     {"from_route": "/app/<path:path>", "to_route": "/app/<path:path>"},
     {"from_route": "/login", "to_route": "/login"},
     {"from_route": "/api/<path:path>", "to_route": "/api/<path:path>"},
     {"from_route": "/assets/<path:path>", "to_route": "/assets/<path:path>"},
 
-    # ✅ Vue SPA routes (redirect all frontend routes to index.html)
+    # ✅ Vue SPA base and static routes
     {"from_route": "/", "to_route": "/"},
     {"from_route": "/health-checkup-packages-bangalore", "to_route": "/"},
     {"from_route": "/blood-test-online-bangalore", "to_route": "/"},
@@ -21,12 +43,18 @@ website_route_rules = [
     {"from_route": "/qrcodedata", "to_route": "/"},
     {"from_route": "/blogspreview", "to_route": "/"},
     {"from_route": "/blogdetails", "to_route": "/"},
-    {"from_route": "/address", "to_route": "/"},
+    {"from_route": "/add-diagnostic-center", "to_route": "/"},
+    {"from_route": "/labs-near-me", "to_route": "/"},
+    {"from_route": "/terms-Conditions", "to_route": "/"},
+    {"from_route": "/contact-us", "to_route": "/"},
+    {"from_route": "/about-us", "to_route": "/"},
+    {"from_route": "/privacy-policy", "to_route": "/"},
 
-    # ✅ Dynamic Vue routes (use path wildcard to handle any dynamic URLs)
-    {"from_route": "/book/<path:path>", "to_route": "/"},
-    {"from_route": "/<path:path>", "to_route": "/"},
+    # ✅ Dynamic Vue routes (use wildcard to catch nested paths)
+    {"from_route": "/book/<path:path>", "to_route": "/"},      # e.g. /book/some-package
+    {"from_route": "/<path:path>", "to_route": "/"},           # fallback for dynamic pages like /some-health-package
 ]
+
 
 # Apps
 # ------------------
