@@ -12,7 +12,7 @@
           Lab Tests at the Comfort of Your Home
         </h1>
 
-        <!-- Buttons Grid -->
+        <!-- Buttons -->
         <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 sm:gap-4 mb-4 justify-start">
           <button v-for="pkg in packages" :key="pkg"
             class="global-bg-color hover:bg-[#0056b3] text-white font-medium px-4 sm:px-6 py-2 rounded-full transition text-xs sm:text-sm">
@@ -27,50 +27,35 @@
 
         <!-- Request Callback Button -->
         <button
-          class="border-1 border-[#001D55] bold-test-color bg-white text-sm font-medium px-6 sm:px-8 py-2 rounded-full transition ml-[4px] sm:ml-[2px]">
+          class="border border-[#001D55] bold-test-color bg-white text-sm font-medium px-6 sm:px-8 py-2 rounded-full transition ml-[4px] sm:ml-[2px]">
           Request Callback
         </button>
       </div>
     </section>
 
-    <!-- Render Child Components -->
-    <Promotions />
-    <MostBookedHealthCheckups />
-    <MostBookedBloodTests />
-    <OurWorkFlow />
-    <HealthPackageCategories />
-    <Testimonial />
-    <Certificates />
-    <FAQ />
-    <CitiesWeAreIn />
+    <!-- Lazy Load Rest of the Sections -->
+    <Suspense>
+      <LazySections />
+    </Suspense>
   </div>
 </template>
 
 <script>
-import { defineAsyncComponent } from "vue";
+import LazySections from "./LazySections.vue";
 
 export default {
   name: "HeroSection",
-  components: {
-    Promotions: defineAsyncComponent(() => import("./Promotions.vue")),
-    MostBookedHealthCheckups: defineAsyncComponent(() =>
-      import("./MostBookedHealthCheckups.vue")
-    ),
-    MostBookedBloodTests: defineAsyncComponent(() =>
-      import("./MostBookedBloodTests.vue")
-    ),
-    OurWorkFlow: defineAsyncComponent(() => import("./OurWorkFlow.vue")),
-    HealthPackageCategories: defineAsyncComponent(() =>
-      import("./HealthPackageCategories.vue")
-    ),
-    Testimonial: defineAsyncComponent(() => import("./Testimonial.vue")),
-    Certificates: defineAsyncComponent(() => import("./Certificates.vue")),
-    FAQ: defineAsyncComponent(() => import("./FAQ.vue")),
-    CitiesWeAreIn: defineAsyncComponent(() => import("./CitiesWeAreIn.vue")),
-  },
+  components: { LazySections },
   data() {
     return {
-      packages: Array(6).fill("Popular Package"),
+      packages: [
+        "Full Body Checkup",
+        "Thyroid Test",
+        "Diabetes Test",
+        "Vitamin Test",
+        "Liver Test",
+        "Kidney Test",
+      ],
     };
   },
 };

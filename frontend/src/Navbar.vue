@@ -2,11 +2,11 @@
   <header class="sticky top-0 z-50 w-full">
     <!-- ✅ Mobile: Only text slides, button stays fixed -->
     <div class="block md:hidden bg-white shadow-md py-2 px-5 flex items-center justify-between overflow-hidden">
-      <marquee behavior="scroll" direction="left" scrollamount="4" class="w-full">
-        <span class="bold-test-color font-semibold text-[14px] whitespace-nowrap">
+      <div class="overflow-hidden whitespace-nowrap flex items-center font-bold bold-test-color">
+        <div class="animate-marquee inline-block">
           Book Full Body Health Checkup @ ₹1,499/- with Vitamins
-        </span>
-      </marquee>
+        </div>
+      </div>
 
       <router-link to="/health-checkup-packages-bangalore">
         <button
@@ -283,5 +283,19 @@ watch(() => route.fullPath, () => {
 .active-link {
   font-weight: bold;
   text-decoration: underline;
+}
+
+@keyframes marquee {
+  0% {
+    transform: translateX(100%);
+  }
+
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+.animate-marquee {
+  animation: marquee 15s linear infinite;
 }
 </style>
