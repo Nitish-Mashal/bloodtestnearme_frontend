@@ -1,7 +1,7 @@
 <template>
     <div class="mt-4">
-        <div class="px-5 sm:px-16 mx-auto">
-            <div class="bg-gray-100 px-4 sm:px-5 py-3 sm:py-5 rounded-xl shadow-sm">
+        <div class="px-4 sm:px-16 mx-auto">
+            <div class="bg-gray-100 sm:px-5 py-3 sm:py-5 rounded-xl shadow-sm">
                 <!-- Header -->
                 <div
                     class="flex flex-col sm:flex-row items-center justify-between w-full px-2 sm:px-4 pt-3 sm:pt-5 gap-2 sm:gap-0">
@@ -29,7 +29,7 @@
 
                 <!-- Carousel Section -->
                 <div v-else-if="categories.length" class="my-3">
-                    <el-carousel :interval="3000" :autoplay="true" arrow="always" height="200px"
+                    <el-carousel :interval="3000" :autoplay="true" arrow="always" height="160px"
                         indicator-position="none" trigger="click" :pause-on-hover="true">
                         <el-carousel-item v-for="(group, groupIndex) in groupedCategories" :key="groupIndex">
                             <div class="flex justify-center gap-4">

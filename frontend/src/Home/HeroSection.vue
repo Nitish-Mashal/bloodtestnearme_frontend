@@ -27,7 +27,7 @@
 
         <!-- Request Callback Button -->
         <button
-          class="border border-[#001D55] bold-test-color bg-white text-sm font-medium px-6 sm:px-8 py-2 rounded-full transition ml-[4px] sm:ml-[2px]">
+          class="border-1 border-[#001D55] bold-test-color bg-white text-sm font-medium px-6 sm:px-8 py-2 rounded-full transition ml-[4px] sm:ml-[2px]">
           Request Callback
         </button>
       </div>
