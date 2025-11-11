@@ -3,7 +3,7 @@
     <div class="container px-2 sm:px-8">
       <div class="bg-gray-100 py-4 px-4 rounded-xl shadow-sm relative">
         <!-- ✅ Carousel -->
-        <el-carousel :loop="true" :autoplay="true" :interval="3000" height="200px" indicator-position="none"
+        <el-carousel :loop="true" :autoplay="true" height="200px" indicator-position="none"
           trigger="click" arrow="always">
           <el-carousel-item v-for="(group, index) in groupedOffers" :key="index">
             <div class="flex justify-center gap-4 flex-wrap">
