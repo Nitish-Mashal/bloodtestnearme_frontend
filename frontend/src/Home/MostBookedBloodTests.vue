@@ -1,7 +1,7 @@
 <template>
     <div class="mt-4">
         <div class="container px-2 sm:px-8 mt-6">
-            <div class="bg-gray-100 px-5 py-4 rounded-xl">
+            <div class="bg-gray-100 px-3 py-4 rounded-xl">
                 <!-- Header -->
                 <div
                     class="flex flex-col sm:flex-row items-center justify-between w-full px-2 sm:px-6 pt-2 sm:pt-6 gap-2 sm:gap-0">
@@ -27,12 +27,11 @@
                     <el-carousel v-if="cardChunks.length > 0" :interval="4000" trigger="click" indicator-position="dash"
                         class="sm:h-[200px] h-[200px]">
                         <el-carousel-item v-for="(group, index) in cardChunks" :key="index">
-                            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 pt-2">
                                 <div v-for="pkg in group" :key="pkg.id"
                                     class="rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-shadow relative bg-white">
                                     <!-- Blue Gradient Top -->
-                                    <div class="px-3 py-3 text-white rounded-t-xl shadow-[0_4px_10px_rgba(0,0,0,0.25)]"
-                                        :style="{
+                                    <div class="px-3 py-3 text-white rounded-xl" :style="{
                                             background: 'linear-gradient(180deg, #2077BF 0%, #0040BB 100%)',
                                             height: '80px'
                                         }">

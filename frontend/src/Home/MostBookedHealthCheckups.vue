@@ -2,7 +2,7 @@
   <div class="mt-4">
     <div class="container sm:px-16 mx-auto">
       <!-- ✅ Increased vertical padding for mobile to prevent content cut-off -->
-      <div class="bg-gray-100 px-5 sm:px-5 py-6 sm:py-5 rounded-xl">
+      <div class="bg-gray-100 px-3 sm:px-5 py-6 sm:py-5 rounded-xl">
         <!-- Header -->
         <div
           class="flex flex-col sm:flex-row items-center justify-between w-full px-2 sm:px-4 pt-2 sm:pt-5 gap-2 sm:gap-0">
@@ -23,10 +23,10 @@
         </div>
 
         <!-- ✅ Carousel Section -->
-        <div class="p-2 sm:p-2 rounded-xl w-full">
+        <div class="sm:p-2 rounded-xl w-full">
           <el-carousel :interval="4000" arrow="always" trigger="click" indicator-position="none">
             <el-carousel-item v-for="(group, index) in cardChunks" :key="index">
-              <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
+              <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 pt-2">
                 <div v-for="(pkg, i) in group" :key="i"
                   class="bg-white rounded-xl overflow-hidden border border-gray-200 shadow-sm hover:shadow-lg transition-shadow">
                   <!-- Image -->

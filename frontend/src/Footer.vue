@@ -1,6 +1,6 @@
 <template>
     <footer class="global-bg-color px-4 sm:px-5 py-6 mt-4 text-white">
-        <div class="container px-3 sm:px-5">
+        <div class="container sm:px-5">
             <!-- ✅ Social Media Icons -->
             <nav class="flex justify-start gap-4 mb-4 flex-wrap ml-4 sm:ml-8">
                 <a v-for="(icon, index) in socialLinks" :key="index" :href="icon.url" target="_blank"

@@ -12,7 +12,7 @@
 
     <div v-else>
         <div class="container">
-            <div class="px-5 py-4 row">
+            <div class="py-4 row">
                 <!-- Left Section -->
                 <div class="col-12 col-md-6 mb-2">
                     <div class="flex justify-between items-center mb-4">
@@ -130,14 +130,15 @@
                             <!-- Email & Mobile -->
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
                                 <div>
-                                    <input v-model="form.email" @input="clearError('email')" type="email"
-                                        placeholder="Email *" class="border rounded-md px-3 py-[1px] text-sm w-full" />
+                                    <input v-model="form.email" type="email" placeholder="Email *"
+                                        class="border rounded-md px-3 py-[1px] text-sm w-full" />
                                     <p v-if="errors.email" class="text-xs text-red-500 mt-1">{{ errors.email }}</p>
                                 </div>
                                 <div>
                                     <input v-model="form.mobile" @input="onMobileInput" type="tel"
                                         placeholder="Mobile (Indian Number Only) *"
-                                        class="border rounded-md px-3 py-[1px] text-sm w-full" />
+                                        class="border rounded-md px-3 py-[1px] text-sm w-full" maxlength="10"
+                                        inputmode="numeric" />
                                     <p v-if="errors.mobile" class="text-xs text-red-500 mt-1">{{ errors.mobile }}</p>
                                 </div>
                             </div>
@@ -150,11 +151,12 @@
                                 <p v-if="errors.address" class="text-xs text-red-500 mt-1">{{ errors.address }}</p>
                             </div>
 
+
                             <!-- Collection Type -->
                             <div class="flex items-center justify-center gap-2">
                                 <span class="font-semibold text-sm">Collection Type:</span>
-                                <label class="flex items-center gap-2 text-sm cursor-pointer">
-                                    <input type="checkbox" v-model="form.homeCollection"
+                                <label class="flex items-center gap-2 text-sm cursor-not-allowed">
+                                    <input type="checkbox" checked disabled
                                         class="w-4 h-4 appearance-none border border-gray-400 rounded-full checked:bg-[#001D55] checked:border-[#001D55] transition duration-200" />
                                     Home Collection
                                 </label>
@@ -238,8 +240,9 @@
 <script setup>
 import { ref, watch, onMounted, computed } from "vue";
 import axios from "axios";
-import MostBookedHealthCheckups from "../Home/MostBookedHealthCheckups.vue";
 import { useCartStore } from "@/stores/cartStore";
+import { useQRCodeStore } from '@/stores/useQRCodeStore'
+import MostBookedHealthCheckups from "../Home/MostBookedHealthCheckups.vue";
 
 const cartStore = useCartStore();
 
@@ -357,6 +360,97 @@ watch(() => form.value.date, newDate => {
 });
 
 // ========================== VALIDATIONS ==========================
+const onPincodeInput = (e) => {
+    const value = e.target.value;
+
+    // ✅ Allow only digits
+    const digitsOnly = value.replace(/\D/g, "");
+
+    // ✅ Update model
+    form.value.pincode = digitsOnly;
+
+    // ✅ Validation
+    if (!digitsOnly) {
+        errors.value.pincode = "Please enter pincode.";
+        pincodeMessage.value = "";
+        pincodeStatus.value = "";
+    } else if (digitsOnly.length < 6) {
+        errors.value.pincode = "Pincode must be 6 digits.";
+        pincodeMessage.value = "";
+        pincodeStatus.value = "";
+    } else if (digitsOnly.length > 6) {
+        // ✅ Show immediate message if more than 6 digits
+        errors.value.pincode = "Pincode cannot exceed 6 digits.";
+        pincodeMessage.value = "";
+        pincodeStatus.value = "error";
+    } else {
+        // ✅ Clear errors when exactly 6 digits
+        delete errors.value.pincode;
+        pincodeMessage.value = "";
+        pincodeStatus.value = "";
+    }
+};
+
+const onAddressInput = (e) => {
+    const value = e.target.value; // ✅ no .trim() here
+    form.value.address = value;
+
+    const trimmedValue = value.trim();
+
+    if (!trimmedValue) {
+        errors.value.address = "Please enter your address.";
+    } else if (trimmedValue.length < 25) {
+        errors.value.address = "Address must be at least 25 characters.";
+    } else {
+        delete errors.value.address;
+    }
+};
+
+
+// ========================== LIVE FIELD VALIDATIONS ==========================
+watch(() => form.value.email, (val) => {
+    const email = val.trim();
+    if (!email) {
+        errors.value.email = "Please enter your email.";
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        errors.value.email = "Please enter a valid email address (example@domain.com).";
+    } else {
+        delete errors.value.email;
+    }
+});
+
+watch(() => form.value.mobile, (val) => {
+    const mobile = val.trim();
+    if (!mobile) {
+        errors.value.mobile = "Please enter your mobile number.";
+    } else if (!/^[6-9]\d{9}$/.test(mobile)) {
+        errors.value.mobile = "Please enter a valid Indian mobile number.";
+    } else {
+        delete errors.value.mobile;
+    }
+});
+
+const onMobileInput = (e) => {
+    // ✅ Remove all non-digit characters
+    const digitsOnly = e.target.value.replace(/\D/g, "");
+    form.value.mobile = digitsOnly;
+
+    // ✅ Live validation messages
+    if (!digitsOnly) {
+        errors.value.mobile = "Please enter your mobile number.";
+    } else if (!/^[6-9]\d{0,9}$/.test(digitsOnly)) {
+        errors.value.mobile = "Please enter a valid Indian mobile number.";
+    } else if (digitsOnly.length > 10) {
+        errors.value.mobile = "Mobile number cannot exceed 10 digits.";
+    } else if (digitsOnly.length < 10) {
+        errors.value.mobile = "Mobile number must be 10 digits.";
+    } else {
+        delete errors.value.mobile;
+    }
+};
+
+
+
 const clearError = field => delete errors.value[field];
 
 const validateBeforeSubmit = () => {
@@ -442,6 +536,12 @@ const singleOrderSubmit = async () => {
         }
     }
 
+    // ✅ Load QR code store and get scannedId from localStorage (if available)
+    const qrCodeStore = useQRCodeStore();
+    qrCodeStore.loadFromLocalStorage();
+    const scannedId = qrCodeStore.scannedId;
+
+    // ✅ Prepare payload
     const payload = {
         customer_name: persons.value[0]?.name || "",
         age: persons.value[0]?.age || "",
@@ -461,32 +561,67 @@ const singleOrderSubmit = async () => {
         home_collection: form.value.homeCollection ? 1 : 0,
     };
 
+    // ✅ Include scanned_id only if it exists in localStorage
+    if (scannedId) {
+        payload.affiliated_id = scannedId;
+        console.log("📦 Including affiliated_id in payload:", scannedId);
+    }
+
     submitting.value = true;
     loading.value = true;
 
     try {
-        const { data } = await axios.post("/api/method/bloodtestnearme.api.order_api.create_order", payload);
-        const ok = data?.status === "success" || data?.message?.status === "success";
+        const res = await axios.post(
+            "/api/method/bloodtestnearme.api.order_api.create_order",
+            payload
+        );
 
-        backendMessage.value = ok
-            ? { text: "Your order is submitted successfully.", type: "success" }
-            : { text: data?.message || "Failed to create order.", type: "error" };
+        // ✅ Frappe sometimes wraps data under `message`
+        const responseData = res.data.message || res.data;
+
+        // ✅ Check success status
+        const ok = responseData?.status === "success";
 
         if (ok) {
-            form.value = { pincode: "", email: "", mobile: "", address: "", date: "", timeSlot: "", homeCollection: false, printedReports: false };
+            // ✅ Display only backend successmessage
+            backendMessage.value = {
+                text: responseData.successmessage || "Your order is submitted successfully",
+                type: "success",
+            };
+
+            // ✅ Reset form and data only on success
+            form.value = {
+                pincode: "",
+                email: "",
+                mobile: "",
+                address: "",
+                date: "",
+                timeSlot: "",
+                homeCollection: false,
+                printedReports: false,
+            };
             numPersons.value = "";
             persons.value = [{ name: "", age: "", gender: "" }];
             errors.value = {};
             cartStore.clearCart?.();
+        } else {
+            backendMessage.value = {
+                text: responseData?.message || "Failed to create order.",
+                type: "error",
+            };
         }
     } catch (err) {
         console.error("Order creation error:", err);
-        backendMessage.value = { text: err.response?.data?.message || "Server error occurred.", type: "error" };
+        backendMessage.value = {
+            text: err.response?.data?.message || "Server error occurred.",
+            type: "error",
+        };
     } finally {
         submitting.value = false;
         loading.value = false;
     }
 };
+
 
 // ========================== FETCH INIT ==========================
 onMounted(async () => {

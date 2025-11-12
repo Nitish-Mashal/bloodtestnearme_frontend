@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="container">
-            <div v-if="!isLoading && packageData" class="px-5 py-4 row">
+            <div v-if="!isLoading && packageData" class="py-4 row">
                 <!-- Accordion Section -->
                 <div class="col-12 col-md-8 mb-2">
                     <h5 class="font-bold bold-test-color pb-2">List Of Tests Included:</h5>
