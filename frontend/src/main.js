@@ -23,6 +23,18 @@ const app = createApp(App)
 const pinia = createPinia()
 app.use(pinia)
 
+// ✅ Store scannedId from URL into Pinia + localStorage
+import { useQRCodeStore } from './stores/useQRCodeStore'
+
+const urlParams = new URLSearchParams(window.location.search)
+const scannedId = urlParams.get('scannedId')
+
+if (scannedId) {
+  const qrStore = useQRCodeStore(pinia) // Pass pinia instance
+  qrStore.setScannedId(scannedId)
+  console.log('✅ Scanned ID stored from URL:', scannedId)
+}
+
 // ✅ Frappe UI setup
 setConfig('resourceFetcher', frappeRequest)
 app.use(resourcesPlugin)

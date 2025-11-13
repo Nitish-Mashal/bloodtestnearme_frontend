@@ -138,7 +138,7 @@ const pincodeQuery = ref("");
 const cityQuery = ref("");
 
 const apiUrl =
-  "http://localhost:8000/api/method/bloodtestnearme.api.diagnostic_center.get_accepted_diagnostic_centers";
+  "/api/method/bloodtestnearme.api.diagnostic_center.get_accepted_diagnostic_centers";
 
 // ✅ Fetch centers from backend
 onMounted(async () => {

@@ -16,7 +16,7 @@
 
     <!-- About Section -->
     <section class="py-8 px-2 md:px-16 bg-white">
-      <h2 class="text-center text-4xl md:text-4xl font-bold bold-test-color mb-5">
+      <h2 class="text-center text-4xl md:text-4xl font-bold bold-test-color mb-4">
         About Blood Test Near Me
       </h2>
 
@@ -25,7 +25,7 @@
         <div class="md:w-3/5 text-gray-700 space-y-4">
           <!-- Who We Are -->
           <div>
-            <h3 class="text-2xl font-semibold global-text-color mb-1">Who We Are</h3>
+            <h3 class="text-2xl font-semibold bold-test-color mb-1">Who We Are</h3>
             <p>
               Welcome to BloodTestNearMe.in, your trusted partner in healthcare and
               the ultimate destination for convenient and accurate Online Blood Tests.
@@ -37,9 +37,9 @@
 
           <!-- Our Vision -->
           <div>
-            <h3 class="text-2xl font-semibold global-text-color mb-1 flex items-center">
+            <h3 class="text-2xl font-semibold bold-test-color mb-1 flex items-center">
               <!-- Heroicon: Eye -->
-              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 global-text-color mr-2" viewBox="0 0 20 20" fill="currentColor">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 bold-test-color mr-2" viewBox="0 0 20 20" fill="currentColor">
                 <path d="M10 3C5 3 1.73 7.11 1 10c.73 2.89 4 7 9 7s8.27-4.11 9-7c-.73-2.89-4-7-9-7zM10 15a5 5 0 1 1 0-10 5 5 0 0 1 0 10z" />
                 <path d="M10 7a3 3 0 1 0 0 6 3 3 0 0 0 0-6z" />
               </svg>
@@ -56,9 +56,9 @@
 
           <!-- Our Mission -->
           <div>
-            <h3 class="text-2xl font-semibold global-text-color mb-1 flex items-center">
+            <h3 class="text-2xl font-semibold bold-test-color mb-1 flex items-center">
               <!-- Heroicon: Globe Alt -->
-              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 global-text-color mr-2" viewBox="0 0 24 24" fill="currentColor">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 bold-test-color mr-2" viewBox="0 0 24 24" fill="currentColor">
                 <path fill-rule="evenodd" d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 
                 10-4.477 10-10S17.523 2 12 2zM4 12a8 8 0 0 0 13.856 5.285c-.467-.333-.96-.682-1.46-1.045a10.764 10.764 0 0 1-2.465 1.31A7.964 7.964 0 0 1 12 18a7.967 7.967 0 0 1-2.001-.45 10.77 10.77 0 0 1-2.465-1.31c-.5.363-.993.712-1.46 1.045A7.967 7.967 0 0 0 4 12zm4.708-4.708A7.965 7.965 0 0 1 12 6c.676 0 1.334.083 1.968.237a10.773 10.773 0 0 1 2.464 1.31c.5-.363.993-.712 1.46-1.045A7.967 7.967 0 0 0 12 4a7.965 7.965 0 0 0-3.292.708z" clip-rule="evenodd"/>
               </svg>
@@ -73,26 +73,19 @@
             </p>
           </div>
 
-          <!-- Book Test -->
-          <div>
-            <h3 class="text-2xl font-semibold global-text-color mb-1">Book Your Test</h3>
-            <button class=" global-bg-color text-white px-4 py-2 rounded-full text-sm hover:bg-[#005fa3] transition ">
-              Book Now
-            </button>
-          </div>
-        </div>
+        </div>        
 
         <!-- Right Column -->
         <div class="md:w-2/5">
           <img
             src="/bloodtest.png"
             alt="Doctor"
-            class="w-full h-[520px] rounded-xl shadow-md"
+            class="w-full h-[400px] rounded-xl shadow-md"
           />
         </div>
       </div>
     </section>
-<section class="px-8 py-12">
+<section class="px-8 py-2">
   <!-- Heading -->
   <div class="text-center mb-10">
     <h2 class="text-2xl sm:text-3xl font-bold bold-test-color">Expert Healthcare For All</h2>
@@ -112,7 +105,7 @@
           class="w-full h-80 object-cover"
         />
       </div>
-      <h3 class="font-semibold text-lg global-text-color mt-3">Trained Phlebotomists</h3>
+      <h3 class="font-semibold text-lg bold-test-color mt-3">Trained Phlebotomists</h3>
     </div>
 
     <!-- Card 2 -->
@@ -124,7 +117,7 @@
           class="w-full h-80 object-cover"
         />
       </div>
-      <h3 class="font-semibold text-lg global-text-color mt-3">Advanced Diagnostic Equipment</h3>
+      <h3 class="font-semibold text-lg bold-test-color mt-3">Advanced Diagnostic Equipment</h3>
     </div>
 
     <!-- Card 3 -->
@@ -136,7 +129,7 @@
           class="w-full h-80 object-cover"
         />
       </div>
-      <h3 class="font-semibold text-lg global-text-color mt-3">Sterile and Hygienic Process</h3>
+      <h3 class="font-semibold text-lg bold-test-color mt-3">Sterile and Hygienic Process</h3>
     </div>
 
     <!-- Card 4 -->
@@ -148,7 +141,7 @@
           class="w-full h-80 object-cover"
         />
       </div>
-      <h3 class="font-semibold text-lg global-text-color mt-3">Enjoy Your Treatment</h3>
+      <h3 class="font-semibold text-lg bold-test-color mt-3">Enjoy Your Treatment</h3>
     </div>
   </div>
 </section>
@@ -232,22 +225,20 @@
 
   <!-- Content -->
   <div class="relative max-w-3xl mx-auto text-center">
-    <h3 class="text-lg font-medium mb-3">Doctor Consultation</h3>
+    <h3 class="text-lg font-medium mb-3">Blood Test Near Me</h3>
     <h2 class="text-3xl sm:text-4xl font-bold mb-4">
       Keeping you Confident and Healthy until the Big Day
     </h2>
     <p class="text-gray-200 text-sm sm:text-base mb-8 leading-relaxed">
-      The provider may offer a range of services, including consultations,
-      medical interventions, emotional support, and guidance on lifestyle
-      changes or preparations leading up to the big day. The ultimate goal is
-      to help patients achieve optimal health outcomes and feel empowered
-      throughout the process.
+      Our blood test services help you understand your health better with quick, accurate, and affordable testing — all from trusted labs near you. Whether it’s a routine health check, a pre-employment test, or pregnancy-related screening, we ensure a smooth and safe experience every time.
     </p>
-    <button
-      class="global-bg-color hover:bg-[#005fa3] text-white font-semibold px-6 py-2 rounded-full shadow-md transition"
-    >
-      Get Started
-    </button>
+  <RouterLink
+  to="/health-checkup-packages-bangalore"
+  class="global-bg-color hover:bg-[#005fa3] text-white font-semibold px-6 py-2 rounded-full shadow-md transition inline-block"
+>
+  Book Your Test Now
+</RouterLink>
+
   </div>
 </section>
   <Testimonial />

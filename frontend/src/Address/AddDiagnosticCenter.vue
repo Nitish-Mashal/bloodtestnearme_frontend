@@ -1,124 +1,105 @@
 <template>
-  <div class="max-w-md mx-auto mt-4 p-3 bg-white rounded-2xl shadow-lg">
-    <h2 class=" text-2xl font-semibold text-center mb-2">Contact Information</h2>
+  <div>
+    <!-- Main Section -->
+    <div class="container mx-auto px-6 py-8">
+      <h2 class="text-3xl font-semibold mb-6 text-gray-800">
+        Diagnostic Center Contact Information
+      </h2>
 
-   <form @submit.prevent="handleSubmit" class="space-y-4">
-      <!-- Lab Name -->
-      <div>
-        <label class="block text-gray-700 font-medium mb-1">Lab Name</label>
-        <input
-          v-model="form.labName"
-          type="text"
-          placeholder="Enter Lab Name"
-          class="w-full border border-gray-300 rounded-lg p-1 focus:ring focus:ring-blue-200"
-          required
-        />
-      </div>
+      <!-- ✅ Element Plus Form -->
+      <el-form
+        ref="formRef"
+        :model="form"
+        :rules="rules"
+        label-position="top"
+        @submit.prevent="handleSubmit"
+        class="grid grid-cols-2 gap-x-4 gap-y-3 bg-white p-6 rounded-lg shadow-sm border border-gray-200"
+      >
+        <!-- Lab Name -->
+        <el-form-item label="Lab Name" prop="labName">
+          <input
+            v-model="form.labName"
+            type="text"
+            placeholder="Enter Lab Name"
+            class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:border-purple-600"
+          />
+        </el-form-item>
 
-      <!-- Address -->
-      <div>
-        <label class="block text-gray-700 font-medium mb-1">Address</label>
-        <textarea
-          v-model="form.address"
-          placeholder="Enter address"
-          class="w-full border border-gray-300 rounded-lg p-1 focus:ring focus:ring-blue-200"
-          rows="3"
-          required
-        ></textarea>
-      </div>
+        <!-- Address -->
+        <el-form-item label="Address" prop="address">
+          <textarea
+            v-model="form.address"
+            placeholder="Enter Address"
+            rows="1"
+            class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:border-purple-600"
+          ></textarea>
+        </el-form-item>
 
-      <!-- Phone + City (2 columns) -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-2">
-        <div>
-          <label class="block text-gray-700 font-medium mb-1">Phone Number</label>
+        <!-- Phone -->
+        <el-form-item label="Phone Number" prop="phone">
           <input
             v-model="form.phone"
-            type="tel"
-            placeholder="Enter phone number"
-            class="w-full border border-gray-300 rounded-lg p-1 focus:ring focus:ring-blue-200"
-            required
+            type="text"
+            placeholder="Enter Phone Number"
+            class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:border-purple-600"
           />
-        </div>
+        </el-form-item>
 
-        <div>
-          <label class="block text-gray-700 font-medium mb-1">City</label>
+        <!-- City -->
+        <el-form-item label="City" prop="city">
           <input
             v-model="form.city"
             type="text"
-            placeholder="Enter city"
-            class="w-full border border-gray-300 rounded-lg p-1 focus:ring focus:ring-blue-200"
-            required
+            placeholder="Enter City"
+            class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:border-purple-600"
           />
-        </div>
-      </div>
+        </el-form-item>
 
-      <!-- State + Pincode (2 columns) -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-2">
-        <div>
-          <label class="block text-gray-700 font-medium mb-1">State</label>
+        <!-- State -->
+        <el-form-item label="State" prop="state">
           <input
             v-model="form.state"
             type="text"
-            placeholder="Enter state"
-            class="w-full border border-gray-300 rounded-lg p-1 focus:ring focus:ring-blue-200"
-            required
+            placeholder="Enter State"
+            class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:border-purple-600"
           />
-        </div>
+        </el-form-item>
 
-        <div>
-          <label class="block text-gray-700 font-medium mb-1">Pincode</label>
+        <!-- Pincode -->
+        <el-form-item label="Pincode" prop="pincode">
           <input
             v-model="form.pincode"
             type="text"
-            placeholder="Enter pincode"
-            class="w-full border border-gray-300 rounded-lg p-1 focus:ring focus:ring-blue-200"
-            required
+            placeholder="Enter Pincode"
+            class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:border-purple-600"
           />
+        </el-form-item>
+
+        <!-- Location Link -->
+        <el-form-item label="Location Link" prop="locationLink" class="col-span-2">
+          <input
+            v-model="form.locationLink"
+            type="text"
+            placeholder="Paste map or location link here"
+            class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:border-purple-600"
+          />
+        </el-form-item>
+
+        <!-- Buttons -->
+        <div class="col-span-2 flex justify-end mt-4 space-x-3">
+          <el-button type="default" @click="resetForm">Cancel</el-button>
+          <el-button type="primary" @click="handleSubmit">Submit</el-button>
         </div>
-      </div>
-
-      <!-- Location Link -->
-      <div>
-        <label class="block text-gray-700 font-medium mb-1">Location Link</label>
-        <input
-          v-model="form.locationLink"
-          type="url"
-          placeholder="Paste map or location link here"
-          class="w-full border border-gray-300 rounded-lg p-1 focus:ring focus:ring-blue-200"
-          required
-        />
-      </div>
-
-      <!-- Submit Button -->
-      <div class="text-center pt-2">
-        <button
-          type="submit"
-          class="global-bg-color text-white px-6 py-2 rounded-lg hover:global-bg-color transition"
-        >
-          Submit
-        </button>
-      </div>
-    </form>
-     <!-- ✅ Success Message -->
-    <p
-      v-if="successMessage"
-      class="bg-green-100 text-green-700 text-center p-1 rounded-md mb-3"
-    >
-      {{ successMessage }}
-    </p>
-
-    <!-- ❌ Error Message -->
-    <p
-      v-if="errorMessage"
-      class="bg-red-100 text-red-700 text-center p-1 rounded-md mb-3"
-    >
-      {{ errorMessage }}
-    </p>
+      </el-form>
+    </div>
   </div>
 </template>
 
 <script setup>
-import { reactive, ref } from "vue";
+import { ref, reactive } from "vue";
+import { ElMessage } from "element-plus";
+
+const formRef = ref();
 
 const form = reactive({
   labName: "",
@@ -130,55 +111,97 @@ const form = reactive({
   locationLink: "",
 });
 
-const successMessage = ref("");
-const errorMessage = ref("");
+// ✅ Validation Rules
+const rules = {
+  labName: [{ required: true, message: "Please enter Lab Name", trigger: "blur" }],
+  address: [{ required: true, message: "Please enter Address", trigger: "blur" }],
+  phone: [
+    { required: true, message: "Please enter Phone Number", trigger: "blur" },
+    { pattern: /^[0-9]{10}$/, message: "Phone must be 10 digits", trigger: "blur" },
+  ],
+  city: [{ required: true, message: "Please enter City", trigger: "blur" }],
+  state: [{ required: true, message: "Please enter State", trigger: "blur" }],
+  pincode: [
+    { required: true, message: "Please enter Pincode", trigger: "blur" },
+    { pattern: /^[0-9]{6}$/, message: "Pincode must be 6 digits", trigger: "blur" },
+  ],
+  locationLink: [
+    { required: true, message: "Please paste location link", trigger: "blur" },
+    {
+      validator: (rule, value, callback) => {
+        try {
+          new URL(value);
+          callback();
+        } catch {
+          callback(new Error("Enter a valid URL"));
+        }
+      },
+      trigger: "blur",
+    },
+  ],
+};
 
-const handleSubmit = async () => {
-  successMessage.value = "";
-  errorMessage.value = "";
+// ✅ Reset Form
+const resetForm = () => {
+  formRef.value.resetFields();
+};
 
-  try {
-    const payload = {
-      diagnostic_center_name: form.labName,
-      address: form.address,
-      phone_number: form.phone,
-      city: form.city,
-      state: form.state,
-      pincode: form.pincode,
-      map_embed_link: form.locationLink,
-      workflow_state: "Created",
-    };
-
-    const response = await fetch(
-      "http://localhost:8000/api/method/bloodtestnearme.api.diagnostic_center.create_diagnostic_center",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payload),
-      }
-    );
-
-    const data = await response.json();
-    console.log("Response:", data);
-
-    const isSuccess =
-      data.message?.status === "success" ||
-      data.message?.message?.includes("Diagnostic Center created successfully");
-
-    if (isSuccess) {
-      successMessage.value = "Diagnostic Center data submitted successfully!";
-      Object.keys(form).forEach((key) => (form[key] = ""));
-      setTimeout(() => (successMessage.value = ""), 4000); // Auto hide after 4s
-    } else {
-      errorMessage.value = "Failed to submit data. Please try again.";
-      setTimeout(() => (errorMessage.value = ""), 4000);
+// ✅ Submit Handler (Relative URL)
+const handleSubmit = () => {
+  formRef.value.validate(async (valid) => {
+    if (!valid) {
+      ElMessage.error("Please fill all required fields correctly.");
+      return;
     }
-  } catch (error) {
-    console.error("Error posting Diagnostic Center:", error);
-    errorMessage.value = "Something went wrong. Please try again.";
-    setTimeout(() => (errorMessage.value = ""), 4000);
-  }
+
+    try {
+      const payload = {
+        diagnostic_center_name: form.labName,
+        address: form.address,
+        phone_number: form.phone,
+        city: form.city,
+        state: form.state,
+        pincode: form.pincode,
+        map_embed_link: form.locationLink,
+        workflow_state: "Created",
+      };
+
+      // ✅ Relative path (no localhost:8000)
+      const response = await fetch(
+        "/api/method/bloodtestnearme.api.diagnostic_center.create_diagnostic_center",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        }
+      );
+
+      const data = await response.json();
+
+      if (
+        data.message?.status === "success" ||
+        data.message?.message?.includes("Diagnostic Center created successfully")
+      ) {
+        ElMessage.success("Diagnostic Center data submitted successfully!");
+        resetForm();
+      } else {
+        ElMessage.error("Failed to submit data. Please try again.");
+      }
+    } catch (err) {
+      console.error("Error:", err);
+      ElMessage.error("Something went wrong. Please try again.");
+    }
+  });
 };
 </script>
+
+<style scoped>
+.el-form-item__label {
+  font-weight: 500;
+  color: #374151;
+}
+
+.el-form-item {
+  margin-bottom: 12px !important;
+}
+</style>

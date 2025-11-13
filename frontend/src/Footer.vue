@@ -1,7 +1,7 @@
 <template>
     <div>
-        <div class="global-bg-color px-5 py-4 mt-4">
-            <div class="container px-5">
+        <div class="global-bg-color px-4 py-4 mt-4">
+            <div class="container">
                 <!-- Social Media Logo -->
                 <div class="d-flex justify-content-start gap-4 mb-4">
                     <!-- Facebook -->
