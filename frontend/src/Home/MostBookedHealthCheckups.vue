@@ -1,7 +1,8 @@
 <template>
   <div class="mt-4">
     <div class="container sm:px-16 mx-auto">
-      <div class="bg-gray-100 px-5 sm:px-5 py-3 sm:py-5 rounded-xl">
+      <!-- ✅ Increased vertical padding for mobile to prevent content cut-off -->
+      <div class="bg-gray-100 px-3 sm:px-5 py-6 sm:py-5 rounded-xl">
         <!-- Header -->
         <div
           class="flex flex-col sm:flex-row items-center justify-between w-full px-2 sm:px-4 pt-2 sm:pt-5 gap-2 sm:gap-0">
@@ -22,17 +23,17 @@
         </div>
 
         <!-- ✅ Carousel Section -->
-        <div class="p-2 sm:p-2 rounded-xl w-full">
+        <div class="sm:p-2 rounded-xl w-full">
           <el-carousel :interval="4000" arrow="always" trigger="click" indicator-position="none">
             <el-carousel-item v-for="(group, index) in cardChunks" :key="index">
-              <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
+              <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 pt-2">
                 <div v-for="(pkg, i) in group" :key="i"
                   class="bg-white rounded-xl overflow-hidden border border-gray-200 shadow-sm hover:shadow-lg transition-shadow">
                   <!-- Image -->
                   <img :src="pkg.image" alt="Health Package" class="w-full h-40 object-cover rounded-xl px-2 mt-2" />
 
                   <!-- Content -->
-                  <div class="p-3 pt-2">
+                  <div class="p-3 pt-2 pb-4">
                     <!-- Title + Cart -->
                     <div class="flex justify-between items-center">
                       <h3 class="text-sm font-semibold bold-test-color leading-tight truncate">
@@ -40,9 +41,10 @@
                       </h3>
 
                       <!-- 🛒 Add to Cart Icon -->
-                      <button :disabled="isInCart(pkg)" @click="addToCart(pkg)"
-                        :title="isInCart(pkg) ? 'Item already in cart' : 'Add to cart'"
-                        class="relative group p-1 rounded-full transition" :class="[
+                      <button :disabled="isInCart(pkg)" @click="addToCart(pkg)" :title="isInCart(pkg)
+                        ? 'Item already in cart'
+                        : 'Add to cart'
+                        " class="relative group p-1 rounded-full transition" :class="[
                           isInCart(pkg)
                             ? 'bg-gray-200 cursor-not-allowed'
                             : 'hover:bg-gray-100 text-indigo-900',
@@ -87,33 +89,37 @@
 
                     <!-- Prices -->
                     <div class="flex items-center gap-2 flex-wrap pb-2">
-                      <div class="text-gray-500 line-through ">₹ {{ pkg.originalPrice }}</div>
-                      <div class="bold-test-color font-semibold">₹ {{ pkg.discountedPrice }}</div>
+                      <div class="text-gray-500 line-through">
+                        ₹ {{ pkg.originalPrice }}
+                      </div>
+                      <div class="bold-test-color font-semibold">
+                        ₹ {{ pkg.discountedPrice }}
+                      </div>
                     </div>
 
-                    <!-- Buttons -->
-                    <div
-                      class="flex flex-col sm:flex-row sm:justify-between items-stretch sm:items-center gap-2 sm:gap-0">
+                    <div class="flex flex-row sm:flex-row sm:justify-between items-center gap-2 sm:gap-0">
                       <router-link :to="{ name: 'SinglePackageBook', params: { slug: pkg.url } }"
-                        class="w-full sm:w-auto no-underline">
+                        class="w-1/2 sm:w-auto no-underline">
                         <button
-                          class="bg-[#2077BF] text-white text-sm px-3 py-1.5 rounded-full hover:bg-blue-700 transition w-full sm:w-auto">
+                          class="bg-[#2077BF] text-white text-sm px-3 py-1.5 rounded-full hover:bg-blue-700 transition w-full">
                           Book Now
                         </button>
                       </router-link>
 
-                      <router-link :to="`/${pkg.url}`" class="no-underline">
+                      <router-link :to="`/${pkg.url}`" class="w-1/2 sm:w-auto no-underline">
                         <button
-                          class="border-1 border-[#001D55] font-semibold text-xs bold-test-color px-2 py-1 rounded-full hover:bg-gray-100 transition flex items-center justify-center gap-1 w-full sm:w-auto">
+                          class="border-1 border-[#001D55] font-semibold text-xs bold-test-color px-2 py-1 rounded-full hover:bg-gray-100 transition flex items-center justify-center gap-1 w-full whitespace-nowrap">
                           View Details
                           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
                             stroke="currentColor" class="w-3 h-3 mt-[1px]">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 19.5 15-15m0 
-                              0H8.25m11.25 0v11.25" />
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                              d="m4.5 19.5 15-15m0 0H8.25m11.25 0v11.25" />
                           </svg>
                         </button>
                       </router-link>
                     </div>
+
+
                   </div>
                 </div>
               </div>
@@ -124,6 +130,7 @@
     </div>
   </div>
 </template>
+
 
 <script setup>
 import { ref, computed, onMounted, onUnmounted } from "vue";

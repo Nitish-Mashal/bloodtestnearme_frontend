@@ -1,7 +1,7 @@
 <template>
     <div class="mt-4">
         <div class="container px-2 sm:px-8 mt-6">
-            <div class="bg-gray-100 px-5 py-4 rounded-xl">
+            <div class="bg-gray-100 px-3 py-4 rounded-xl">
                 <!-- Header -->
                 <div
                     class="flex flex-col sm:flex-row items-center justify-between w-full px-2 sm:px-6 pt-2 sm:pt-6 gap-2 sm:gap-0">
@@ -24,15 +24,14 @@
 
                 <!-- ✅ Carousel -->
                 <div class="sm:p-3 rounded-xl w-full">
-                    <el-carousel v-if="cardChunks.length > 0" :interval="4000" trigger="click"
-                        indicator-position="dash" class="sm:h-[200px] h-[250px]">
+                    <el-carousel v-if="cardChunks.length > 0" :interval="4000" trigger="click" indicator-position="dash"
+                        class="sm:h-[200px] h-[200px]">
                         <el-carousel-item v-for="(group, index) in cardChunks" :key="index">
-                            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 pt-2">
                                 <div v-for="pkg in group" :key="pkg.id"
                                     class="rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-shadow relative bg-white">
                                     <!-- Blue Gradient Top -->
-                                    <div class="px-3 py-3 text-white rounded-t-xl shadow-[0_4px_10px_rgba(0,0,0,0.25)]"
-                                        :style="{
+                                    <div class="px-3 py-3 text-white rounded-xl" :style="{
                                             background: 'linear-gradient(180deg, #2077BF 0%, #0040BB 100%)',
                                             height: '80px'
                                         }">
@@ -85,29 +84,31 @@
                                         </div>
 
                                         <!-- Buttons -->
+
                                         <div
-                                            class="flex flex-col sm:flex-row sm:justify-between items-stretch sm:items-center gap-2 sm:gap-0 mt-2">
+                                            class="flex flex-row sm:flex-row sm:justify-between items-center gap-2 sm:gap-0">
                                             <router-link :to="{ name: 'SinglePackageBook', params: { slug: pkg.url } }"
-                                                class="w-full sm:w-auto no-underline">
+                                                class="w-1/2 sm:w-auto no-underline">
                                                 <button
-                                                    class="bg-[#2077BF] text-white text-sm px-3 py-1.5 rounded-full hover:bg-blue-700 transition w-full sm:w-auto">
+                                                    class="bg-[#2077BF] text-white text-sm px-3 py-1.5 rounded-full hover:bg-blue-700 transition w-full">
                                                     Book Now
                                                 </button>
                                             </router-link>
 
-                                            <router-link :to="`/${pkg.url}`" class="no-underline">
+                                            <router-link :to="`/${pkg.url}`" class="w-1/2 sm:w-auto no-underline">
                                                 <button
-                                                    class="border-1 border-[#001D55] font-semibold text-xs bold-test-color px-2 py-1 rounded-full hover:bg-gray-100 transition flex items-center justify-center gap-1 w-full sm:w-auto">
+                                                    class="border-1 border-[#001D55] font-semibold text-xs bold-test-color px-2 py-1 rounded-full hover:bg-gray-100 transition flex items-center justify-center gap-1 w-full whitespace-nowrap">
                                                     View Details
                                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none"
                                                         viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
                                                         class="w-3 h-3 mt-[1px]">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 19.5 15-15m0 
-                              0H8.25m11.25 0v11.25" />
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            d="m4.5 19.5 15-15m0 0H8.25m11.25 0v11.25" />
                                                     </svg>
                                                 </button>
                                             </router-link>
                                         </div>
+
                                     </div>
                                 </div>
                             </div>

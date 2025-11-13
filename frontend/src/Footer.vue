@@ -35,111 +35,123 @@
                     </a>
                 </div>
 
-
-                <!-- Footer Links -->
-                <div class="row">
-                    <div class="col-md-4">
-                        <div class="font-bold text-white text-3xl text-left">
-                            Quick Links
-                        </div>
-                        <ul class="text-white mt-4 space-y-2 text-sm text-left pl-0 list-none pb-4">
-                            <li><router-link to="/about-us" class="text-white no-underline hover:underline">About
-                                    Us</router-link></li>
-                                     <li><router-link to="/contact-us" class="text-white no-underline hover:underline">Contact
-                                    Us</router-link></li>
-                            <li><router-link to="/blogspreview"
-                                    class="text-white no-underline hover:underline">Blogs</router-link></li>
-                            <li><router-link to="/team"
-                                    class="text-white no-underline hover:underline">Team</router-link></li>
-                            <li><router-link to="/privacy-policy"
-                                    class="text-white no-underline hover:underline">Privacy Policy</router-link></li>
-                            <li><router-link to="/terms-Conditions"
-                                    class="text-white no-underline hover:underline">Terms & Conditions</router-link>
-                            </li>
-                            <li><router-link to="/careers"
-                                    class="text-white no-underline hover:underline">Careers</router-link></li>
-                            <li><router-link to="/upcoming-services"
-                                    class="text-white no-underline hover:underline">Upcoming Services</router-link></li>
-                            <li><router-link to="/add-diagnostic-center"
-                                    class="text-white no-underline hover:underline">Add Your Diagnostic
-                                    Center</router-link></li>
-                            <li><router-link to="/labs-near-me" class="text-white no-underline hover:underline">Labs
-                                    Near Me</router-link></li>
-                        </ul>
-                      
-                    </div>
-
-                    <div class="col-md-4">
-                        <div class="font-bold text-white text-3xl text-left">
-                            Most Popular Packages
-                        </div>
-                        <ul class="text-white mt-4 space-y-2 text-sm text-left pl-0 list-none pb-4">
-                            <li><router-link to="#" class="text-white no-underline hover:underline">Women's Health
-                                    Checkup (99 Tests)</router-link></li>
-                            <li><router-link to="#" class="text-white no-underline hover:underline">Male Advanced
-                                    Health Checkup (105 Tests)</router-link></li>
-                            <li><router-link to="#" class="text-white no-underline hover:underline">Basic Health
-                                    Checkup (94 Tests)</router-link></li>
-                            <li><router-link to="#" class="text-white no-underline hover:underline">Master
-                                    Health Checkup (98 Tests)</router-link></li>
-                            <li><router-link to="#"
-                                    class="text-white no-underline hover:underline">Diabetic Advanced Health Checkup
-                                    (135 Tests)</router-link></li>
-                            <li><router-link to="#" class="text-white no-underline hover:underline">Female
-                                    Advanced Health Checkup (112 Tests)</router-link></li>
-                            <li><router-link to="#"
-                                    class="text-white no-underline hover:underline">Women's Health Checkup (99
-                                    Tests)</router-link></li>
-                            <li><router-link to="#"
-                                    class="text-white no-underline hover:underline">Male Advanced Health Checkup (105
-                                    Tests)</router-link></li>
-                            <li><router-link to="$" class="text-white no-underline hover:underline">Basic
-                                    Health Checkup (94 Tests)</router-link></li>
-                        </ul>
-                        
-                    </div>
-
-                    <div class="col-md-4">
-                        <ul class="text-white mt-4 space-y-2 text-sm text-left pl-0 list-none">
-                            <li><router-link to="/about" class="text-white no-underline hover:underline">Master Health
-                                    Checkup (98 Tests)</router-link></li>
-                            <li><router-link to="/blogs" class="text-white no-underline hover:underline">Diabetic
-                                    Advanced Health Checkup (135 Tests)</router-link></li>
-                            <li><router-link to="/team" class="text-white no-underline hover:underline">Female Advanced
-                                    Health Checkup (112 Tests)</router-link></li>
-                        </ul>
-                    </div>
-                </div>
-               <div class="grid grid-cols-3 ">
-                <div>
-                    <p class="text-white no-underline hover:underline text-sm">
-                    © 2026 Copyright: Triguna Healthcare
-                    </p>
+                <!-- Most Popular Packages -->
+                <div :class="[
+                    'transition-all',
+                    otherPackages.length > 0 ? 'mb-2' : 'mb-6',
+                    isSmallScreen ? 'mb-2' : ''
+                ]">
+                    <h2 class="font-bold text-lg sm:text-xl mb-2 sm:mb-3 ml-8">
+                        Most Popular Packages
+                    </h2>
+                    <ul class="space-y-2 text-sm">
+                        <li v-for="(pkg, index) in popularPackages" :key="'p' + index">
+                            <router-link :to="{ name: 'SinglePackageBook', params: { slug: pkg.url } }"
+                                class="text-white no-underline hover:underline cursor-pointer">
+                                {{ pkg.name }}
+                            </router-link>
+                        </li>
+                    </ul>
                 </div>
 
-                <div>
-                    <a href="https://quantumberg.com/" target="_blank"
-                    class="text-white no-underline hover:underline text-sm">
-                    <p>Powered by: Quantumberg Technologies Pvt Ltd</p>
-                    </a>
+                <!-- Other Packages -->
+                <div v-if="otherPackages.length > 0">
+                    <h2 class="font-bold text-lg sm:text-xl mb-2 sm:mb-3 ml-4 sm:ml-8">
+                        Other Packages
+                    </h2>
+                    <ul class="space-y-2 text-sm ml-4 sm:ml-8">
+                        <li v-for="(pkg, index) in otherPackages" :key="'o' + index">
+                            <router-link :to="{ name: 'SinglePackageBook', params: { slug: pkg.url } }"
+                                class="text-white no-underline hover:underline cursor-pointer">
+                                {{ pkg.name }}
+                            </router-link>
+                        </li>
+                    </ul>
                 </div>
-                </div>
-
             </div>
-            
+
+            <!-- ✅ Footer Bottom -->
+            <div :class="[
+                'flex flex-col md:flex-row items-start md:items-center text-sm gap-4 sm:gap-20 ml-4 sm:ml-8',
+                isSmallScreen ? 'mt-3' : otherPackages.length > 0 ? 'mt-3' : 'mt-6'
+            ]">
+                <div class="text-white">
+                    © 2026 Triguna Healthcare. All Rights Reserved.
+                </div>
+                <a href="https://quantumberg.com/" target="_blank" rel="noopener noreferrer"
+                    class="text-white no-underline hover:underline">
+                    <strong>Powered by</strong> Quantumberg Technologies Pvt. Ltd.
+                </a>
+            </div>
         </div>
-        
-    </div>
+    </footer>
 </template>
 
-<script>
-export default {
-    name: "Footer",
-}
+<script setup>
+import { ref, onMounted } from "vue";
+import axios from "axios";
+
+/* ✅ Static Social & Quick Links */
+const socialLinks = [
+    { name: "Facebook", url: "https://www.facebook.com", icon: "bi bi-facebook" },
+    { name: "Twitter", url: "https://twitter.com", icon: "bi bi-twitter" },
+    { name: "Instagram", url: "https://www.instagram.com", icon: "bi bi-instagram" },
+    { name: "LinkedIn", url: "https://www.linkedin.com", icon: "bi bi-linkedin" },
+    { name: "YouTube", url: "https://www.youtube.com", icon: "bi bi-youtube" },
+    { name: "Medium", url: "https://medium.com", icon: "bi bi-medium" },
+];
+
+const quickLinks = [
+    { name: "About Us", path: "/about-us" },
+    { name: "Contact Us", path: "/contact-us" },
+    { name: "Blogs", path: "/blogspreview" },
+    { name: "Team", path: "/team" },
+    { name: "Privacy Policy", path: "/privacy-policy" },
+    { name: "Terms & Conditions", path: "/terms-Conditions" },
+    { name: "Careers", path: "/careers" },
+    { name: "Upcoming Services", path: "/upcoming-services" },
+    { name: "Add Diagnostic Center", path: "/add-diagnostic-center" },
+    { name: "Labs Near Me", path: "/labs-near-me" },
+];
+
+/* ✅ Reactive Variables */
+const popularPackages = ref([]);
+const otherPackages = ref([]);
+const isSmallScreen = ref(false);
+
+/* ✅ Fetch Data from API */
+const fetchPackages = async () => {
+    try {
+        const response = await axios.get(
+            "/api/method/bloodtestnearme.api.packages.get_most_booking_packages"
+        );
+        const data = response.data?.message || [];
+
+        // include both name and url for routing
+        const packages = data.map((pkg) => ({
+            name: pkg.name,
+            url: pkg.url || pkg.name.toLowerCase().replace(/\s+/g, "-"),
+        }));
+
+        popularPackages.value = packages.slice(0, 10);
+        otherPackages.value = packages.slice(10, 20);
+    } catch (error) {
+        console.error("❌ Error fetching packages:", error);
+    }
+};
+
+/* ✅ Detect Screen Size */
+onMounted(() => {
+    const handleResize = () => {
+        isSmallScreen.value = window.innerWidth < 640;
+    };
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    fetchPackages();
+});
 </script>
 
 <style scoped>
-/* Optional: Hover effect for social media icons */
 a:hover i {
     transform: scale(1.2);
     transition: transform 0.2s ease-in-out;

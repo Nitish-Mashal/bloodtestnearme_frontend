@@ -12,7 +12,7 @@
 
     <div v-else>
         <div class="container">
-            <div class="px-5 py-4 row">
+            <div class="py-4 row">
                 <div class="col-12 col-md-6 mb-2">
                     <h4 class="bold-test-color pb-2">{{ packageData.name1 }} ({{ packageData.number_of_test }} Tests)
                     </h4>
@@ -135,8 +135,8 @@
                             <!-- Collection Type -->
                             <div class="flex items-center justify-center gap-2">
                                 <span class="font-semibold text-sm">Collection Type:</span>
-                                <label class="flex items-center gap-2 text-sm cursor-pointer">
-                                    <input type="checkbox" v-model="form.homeCollection"
+                                <label class="flex items-center gap-2 text-sm cursor-not-allowed">
+                                    <input type="checkbox" checked disabled
                                         class="w-4 h-4 appearance-none border border-gray-400 rounded-full checked:bg-[#001D55] checked:border-[#001D55] transition duration-200" />
                                     Home Collection
                                 </label>
@@ -201,9 +201,10 @@
                             </div>
 
                             <!-- ✅ Backend Message Display (Cleaned) -->
-                            <div v-if="successmessage" class="mt-3 text-center">
-                                <p class="text-green-600">{{ successmessage }}</p>
+                            <div v-if="frontendSuccessMessage" class="mt-3 text-center">
+                                <p class="text-green-600">{{ frontendSuccessMessage }}</p>
                             </div>
+
                         </form>
                     </div>
                 </div>
@@ -219,6 +220,7 @@
 import { ref, watch, onMounted, computed } from "vue";
 import { useRoute } from "vue-router";
 import axios from "axios";
+import { useQRCodeStore } from '@/stores/useQRCodeStore'
 import MostBookedHealthCheckups from "../Home/MostBookedHealthCheckups.vue";
 
 const route = useRoute();
@@ -230,7 +232,8 @@ const totalAmount = ref(0);
 const pincodeMessage = ref("");
 const pincodeStatus = ref("");
 const isChecking = ref(false);
-const successmessage = ref("");
+// const successmessage = ref("");
+const frontendSuccessMessage = ref("");
 
 
 // 🧍‍♂️ Dynamic form logic
@@ -443,31 +446,36 @@ const setOrUpdateMeta = (property, content) => {
 };
 
 // ✅ Submit and Call Backend API
-// ✅ Submit and Call Backend API
 const singleTestSubmit = async () => {
-    successmessage.value = "";
+    frontendSuccessMessage.value = "";
     errors.value = {};
 
-    // Validate form first
+    // ✅ Validate form first
     const isValid = handleSubmit();
     if (!isValid) {
-        successmessage.value = "Please fix the highlighted errors before submitting.";
+        frontendSuccessMessage.value = "Please fix the highlighted errors before submitting.";
         return;
     }
 
-    // ✅ If user didn’t manually check pincode, auto-check it now
+    // ✅ Auto-check pincode if not manually checked
     const isPincodeValid =
         pincodeStatus.value === "success" ||
         (await checkPincodeAvailability(true));
 
     if (!isPincodeValid) {
-        successmessage.value = "Please enter a valid pincode before booking.";
+        frontendSuccessMessage.value = "Please enter a valid pincode before booking.";
         return;
     }
 
     isLoading.value = true;
 
     try {
+        // ✅ Load QR code data from store
+        const qrCodeStore = useQRCodeStore();
+        qrCodeStore.loadFromLocalStorage();
+        const scannedId = qrCodeStore.scannedId;
+
+        // ✅ Prepare payload
         const payload = {
             customer_name: persons.value[0]?.name || "",
             age: persons.value[0]?.age || "",
@@ -486,17 +494,21 @@ const singleTestSubmit = async () => {
             customer_details: persons.value,
         };
 
+        if (scannedId) payload.affiliated_id = scannedId;
+
+        // ✅ Send request
         const res = await axios.post(
             "/api/method/bloodtestnearme.api.order_api.create_order",
             payload
         );
 
-        const data = res.data;
+        // ✅ Frappe sometimes wraps response inside "message"
+        const data = res.data.message || res.data;
 
-        // ✅ Show only the backend successmessage, not full JSON
+        // ✅ Handle backend success
         if (data.status === "success") {
-            successmessage.value =
-                data.successmessage || "Your order has been placed successfully!";
+            frontendSuccessMessage.value =
+                data.successmessage || "Your order is submitted successfully";
 
             // ✅ Reset form only on success
             form.value = {
@@ -511,24 +523,24 @@ const singleTestSubmit = async () => {
             };
             numPersons.value = "";
             persons.value = [{ name: "", age: "", gender: "" }];
-
-            // Reset other related states
             pincodeMessage.value = "";
             pincodeStatus.value = "";
 
-            // ✅ Auto-clear success message after 3 seconds
-            setTimeout(() => (successmessage.value = ""), 3000);
+            // ✅ Auto-clear message
+            setTimeout(() => (frontendSuccessMessage.value = ""), 3000);
         } else {
-            successmessage.value =
+            frontendSuccessMessage.value =
                 data.message || "Failed to create order. Please try again.";
         }
     } catch (error) {
-        successmessage.value =
+        console.error("Order submission error:", error);
+        frontendSuccessMessage.value =
             error.response?.data?.message || "Server error occurred.";
     } finally {
         isLoading.value = false;
     }
 };
+
 
 // 🧩 Check Pincode Availability (Backend Message Only)
 const checkPincodeAvailability = async (autoCheck = false) => {
@@ -586,6 +598,10 @@ watch(
         const digitsOnly = val.replace(/\D/g, "");
         if (val !== digitsOnly) form.value.pincode = digitsOnly;
 
+        // 🧹 Clear previous messages when user types a new pincode
+        pincodeMessage.value = "";
+        pincodeStatus.value = "";
+
         if (!digitsOnly) {
             errors.value.pincode = "Please enter pincode.";
         } else if (digitsOnly.length !== 6) {
@@ -629,12 +645,12 @@ const onMobileInput = (e) => {
 
 // 🧩 Address Input Logic
 const onAddressInput = (e) => {
-    const value = e.target.value.trim();
+    const value = e.target.value; // ❌ no trim here
     form.value.address = value;
 
-    if (!value) {
+    if (!value.trim()) {
         errors.value.address = "Please enter your address.";
-    } else if (value.length < 25) {
+    } else if (value.trim().length < 25) {
         errors.value.address = "Address must be at least 25 characters long.";
     } else {
         delete errors.value.address;

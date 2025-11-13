@@ -112,7 +112,7 @@
     <div class="transform translate-y-4">
       <div class="rounded-2xl overflow-hidden shadow-md">
         <img
-          src="Advanced-Diagnostic-Equipment.jpg"
+          src="/Advanced-Diagnostic-Equipment.jpg"
           alt="Advanced Diagnostic Equipment"
           class="w-full h-80 object-cover"
         />

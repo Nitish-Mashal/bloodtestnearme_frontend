@@ -12,7 +12,7 @@
 
         <!-- Sample Type -->
         <div class="pt-2">
-            <strong>Sample Type:</strong>
+            <strong>Sample Type: </strong>
             <span class="text-red-600">{{ packageData.sample_type }}</span>
         </div>
 
