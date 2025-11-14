@@ -520,11 +520,17 @@ const checkPincodeAvailability = async () => {
 const singleOrderSubmit = async () => {
     backendMessage.value = { text: "", type: "" };
 
+    // -----------------------------------------------------
+    // ✅ Validate front-end form
+    // -----------------------------------------------------
     if (!validateBeforeSubmit()) {
         backendMessage.value = { text: "Please fix the errors above.", type: "error" };
         return;
     }
 
+    // -----------------------------------------------------
+    // ✅ Validate pincode first
+    // -----------------------------------------------------
     if (pincodeStatus.value !== "success") {
         await checkPincodeAvailability();
         if (pincodeStatus.value !== "success") {
@@ -536,12 +542,16 @@ const singleOrderSubmit = async () => {
         }
     }
 
-    // ✅ Load QR code store and get scannedId from localStorage (if available)
+    // -----------------------------------------------------
+    // ✅ Load scanned ID from localStorage using Pinia store
+    // -----------------------------------------------------
     const qrCodeStore = useQRCodeStore();
-    qrCodeStore.loadFromLocalStorage();
+    qrCodeStore.loadScannedId();  // <-- FIXED
     const scannedId = qrCodeStore.scannedId;
 
-    // ✅ Prepare payload
+    // -----------------------------------------------------
+    // ✅ Prepare pure JS payload (no reactive objects)
+    // -----------------------------------------------------
     const payload = {
         customer_name: persons.value[0]?.name || "",
         age: persons.value[0]?.age || "",
@@ -552,16 +562,22 @@ const singleOrderSubmit = async () => {
         pincode: form.value.pincode,
         appointment_date: form.value.date,
         appointment_time: form.value.timeSlot,
+
         number_of_persons: Number(numPersons.value) || persons.value.length || 1,
         hard_copy_required: form.value.printedReports ? 1 : 0,
+
         total_price: totalAmount.value,
         total_item_price: totalBasePrice.value,
-        ordered_items: [...cartStore.cartItems],
-        customer_details: persons.value,
+
+        ordered_items: JSON.parse(JSON.stringify(cartStore.cartItems)), // remove Vue Proxy
+        customer_details: JSON.parse(JSON.stringify(persons.value)), // remove Vue Proxy
+
         home_collection: form.value.homeCollection ? 1 : 0,
     };
 
-    // ✅ Include scanned_id only if it exists in localStorage
+    // -----------------------------------------------------
+    // ✅ Add affiliated_id only when available
+    // -----------------------------------------------------
     if (scannedId) {
         payload.affiliated_id = scannedId;
         console.log("📦 Including affiliated_id in payload:", scannedId);
@@ -571,25 +587,29 @@ const singleOrderSubmit = async () => {
     loading.value = true;
 
     try {
+        // -----------------------------------------------------
+        // ✅ Send to backend
+        // -----------------------------------------------------
         const res = await axios.post(
             "/api/method/bloodtestnearme.api.order_api.create_order",
             payload
         );
 
-        // ✅ Frappe sometimes wraps data under `message`
-        const responseData = res.data.message || res.data;
+        // Frappe returns `message: {...}` OR direct `{...}`
+        const responseData = res.data?.message ?? res.data ?? {};
 
-        // ✅ Check success status
-        const ok = responseData?.status === "success";
+        const ok = responseData.status === "success";
 
+        // -----------------------------------------------------
+        // ✅ Success case
+        // -----------------------------------------------------
         if (ok) {
-            // ✅ Display only backend successmessage
             backendMessage.value = {
                 text: responseData.successmessage || "Your order is submitted successfully",
                 type: "success",
             };
 
-            // ✅ Reset form and data only on success
+            // Reset form
             form.value = {
                 pincode: "",
                 email: "",
@@ -600,9 +620,11 @@ const singleOrderSubmit = async () => {
                 homeCollection: false,
                 printedReports: false,
             };
+
             numPersons.value = "";
             persons.value = [{ name: "", age: "", gender: "" }];
             errors.value = {};
+
             cartStore.clearCart?.();
         } else {
             backendMessage.value = {
@@ -610,10 +632,12 @@ const singleOrderSubmit = async () => {
                 type: "error",
             };
         }
+
     } catch (err) {
         console.error("Order creation error:", err);
+
         backendMessage.value = {
-            text: err.response?.data?.message || "Server error occurred.",
+            text: err?.response?.data?.message || "Server error occurred.",
             type: "error",
         };
     } finally {

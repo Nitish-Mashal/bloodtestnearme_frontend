@@ -470,13 +470,17 @@ const singleTestSubmit = async () => {
     isLoading.value = true;
 
     try {
-        // ✅ Load QR code data from store
+        // -----------------------------------------------------
+        // ✅ Load QR code data from Pinia store (Correct Method)
+        // -----------------------------------------------------
         const qrCodeStore = useQRCodeStore();
-        qrCodeStore.loadFromLocalStorage();
+        qrCodeStore.loadScannedId();  // <-- FIXED
         const scannedId = qrCodeStore.scannedId;
 
-        // ✅ Prepare payload
-        const payload = {
+        // -----------------------------------------------------
+        // ✅ Prepare raw payload (Vue reactive objects avoided)
+        // -----------------------------------------------------
+        let rawPayload = {
             customer_name: persons.value[0]?.name || "",
             age: persons.value[0]?.age || "",
             gender: persons.value[0]?.gender || "",
@@ -494,25 +498,36 @@ const singleTestSubmit = async () => {
             customer_details: persons.value,
         };
 
-        if (scannedId) payload.affiliated_id = scannedId;
+        // Add affiliate ID only if exists
+        if (scannedId) {
+            rawPayload.affiliated_id = scannedId;
+        }
 
+        // -----------------------------------------------------
+        // ✅ Deep clone to remove Vue Proxy / refs
+        // -----------------------------------------------------
+        const payload = JSON.parse(JSON.stringify(rawPayload));
+        console.log("Payload:", payload);
+
+        // -----------------------------------------------------
         // ✅ Send request
+        // -----------------------------------------------------
         const res = await axios.post(
             "/api/method/bloodtestnearme.api.order_api.create_order",
             payload
         );
-        console.log("Payload", payload)
 
-        // ✅ Frappe sometimes wraps response inside "message"
-        // const data = res.data.message || res.data;
+        // Frappe sometimes returns {message:{...}} or plain {...}
         const data = res.data?.message ?? res.data ?? {};
 
+        // -----------------------------------------------------
         // ✅ Handle backend success
+        // -----------------------------------------------------
         if (data.status === "success") {
             frontendSuccessMessage.value =
                 data.successmessage || "Your order is submitted successfully";
 
-            // ✅ Reset form only on success
+            // Reset form on success
             form.value = {
                 pincode: "",
                 email: "",
@@ -523,26 +538,29 @@ const singleTestSubmit = async () => {
                 homeCollection: false,
                 printedReports: false,
             };
+
             numPersons.value = "";
             persons.value = [{ name: "", age: "", gender: "" }];
             pincodeMessage.value = "";
             pincodeStatus.value = "";
 
-            // ✅ Auto-clear message
+            // Auto-clear message
             setTimeout(() => (frontendSuccessMessage.value = ""), 3000);
         } else {
             frontendSuccessMessage.value =
                 data.message || "Failed to create order. Please try again.";
         }
     } catch (error) {
-        console.error("Order submission error:", error);
+        console.error("API ERROR:", error.response?.data || error);
+
         frontendSuccessMessage.value =
-            error.response?.data?.message || "Server error occurred.";
+            error.response?.data?.message ||
+            error.response?.data?.exc ||
+            "Server error occurred.";
     } finally {
         isLoading.value = false;
     }
 };
-
 
 // 🧩 Check Pincode Availability (Backend Message Only)
 const checkPincodeAvailability = async (autoCheck = false) => {

@@ -48,10 +48,10 @@ const fetchCertifications = async () => {
                     : `/files/${item.image}`,
             }));
         } else {
-            console.warn("⚠️ Unexpected API response:", data);
+            console.warn("Unexpected API response:", data);
         }
     } catch (err) {
-        console.error("❌ Error fetching certifications:", err);
+        console.error("Error fetching certifications:", err);
     } finally {
         loading.value = false;
     }
