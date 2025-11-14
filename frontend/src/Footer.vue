@@ -1,38 +1,29 @@
 <template>
-    <div>
-        <div class="global-bg-color px-4 py-4 mt-4">
-            <div class="container">
-                <!-- Social Media Logo -->
-                <div class="d-flex justify-content-start gap-4 mb-4">
-                    <!-- Facebook -->
-                    <a href="https://www.facebook.com" target="_blank" class="text-decoration-none text-white fs-6">
-                        <i class="bi bi-facebook"></i>
-                    </a>
+    <footer class="global-bg-color px-4 sm:px-5 py-6 mt-4 text-white">
+        <div class="container sm:px-5">
+            <!-- ✅ Social Media Icons -->
+            <nav class="flex justify-start gap-4 mb-4 flex-wrap ml-4 sm:ml-8">
+                <a v-for="(icon, index) in socialLinks" :key="index" :href="icon.url" target="_blank"
+                    rel="noopener noreferrer"
+                    class="text-white text-lg hover:text-gray-300 transition-transform transform hover:scale-110"
+                    :aria-label="icon.name">
+                    <i :class="icon.icon"></i>
+                </a>
+            </nav>
 
-                    <!-- X (Twitter) -->
-                    <a href="https://twitter.com" target="_blank" class="text-decoration-none text-white fs-6">
-                        <i class="bi bi-twitter"></i>
-                    </a>
-
-                    <!-- Instagram -->
-                    <a href="https://www.instagram.com" target="_blank" class="text-decoration-none text-white fs-6">
-                        <i class="bi bi-instagram"></i>
-                    </a>
-
-                    <!-- LinkedIn -->
-                    <a href="https://www.linkedin.com" target="_blank" class="text-decoration-none text-white fs-6">
-                        <i class="bi bi-linkedin"></i>
-                    </a>
-
-                    <!-- YouTube -->
-                    <a href="https://www.youtube.com" target="_blank" class="text-decoration-none text-white fs-6">
-                        <i class="bi bi-youtube"></i>
-                    </a>
-
-                    <!-- Medium -->
-                    <a href="https://medium.com" target="_blank" class="text-decoration-none text-white fs-6">
-                        <i class="bi bi-medium"></i>
-                    </a>
+            <!-- ✅ Footer Sections -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8 text-left">
+                <!-- Quick Links -->
+                <div>
+                    <h2 class="font-bold text-lg sm:text-xl mb-3 ml-8">Quick Links</h2>
+                    <ul class="space-y-2 text-sm">
+                        <li v-for="(link, index) in quickLinks" :key="'q' + index">
+                            <router-link :to="link.path"
+                                class="text-white no-underline hover:underline focus:outline-none focus:underline">
+                                {{ link.name }}
+                            </router-link>
+                        </li>
+                    </ul>
                 </div>
 
                 <!-- Most Popular Packages -->
