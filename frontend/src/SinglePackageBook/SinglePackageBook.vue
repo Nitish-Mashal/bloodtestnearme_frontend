@@ -501,9 +501,11 @@ const singleTestSubmit = async () => {
             "/api/method/bloodtestnearme.api.order_api.create_order",
             payload
         );
+        console.log("Payload", payload)
 
         // ✅ Frappe sometimes wraps response inside "message"
-        const data = res.data.message || res.data;
+        // const data = res.data.message || res.data;
+        const data = res.data?.message ?? res.data ?? {};
 
         // ✅ Handle backend success
         if (data.status === "success") {
