@@ -31,14 +31,16 @@
                                 <div v-for="pkg in group" :key="pkg.id"
                                     class="rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-shadow relative bg-white">
                                     <!-- Blue Gradient Top -->
-                                    <div class="px-3 py-3 text-white rounded-xl" :style="{
+                                    <router-link :to="`/${pkg.url}`" class="w-1/2 sm:w-auto no-underline">
+                                        <div class="px-3 py-3 text-white rounded-xl" :style="{
                                             background: 'linear-gradient(180deg, #2077BF 0%, #0040BB 100%)',
                                             height: '80px'
                                         }">
-                                        <h3 class="font-semibold text-[95%] leading-tight line-clamp-2">
-                                            {{ pkg.package_name || pkg.name }}
-                                        </h3>
-                                    </div>
+                                            <h3 class="font-semibold text-[95%] leading-tight line-clamp-2">
+                                                {{ pkg.package_name || pkg.name }}
+                                            </h3>
+                                        </div>
+                                    </router-link>
 
                                     <!-- White Bottom -->
                                     <div class="p-3 bg-white rounded-b-xl">

@@ -40,8 +40,7 @@
                     <div v-for="pkg in filteredPackages" :key="pkg.name1"
                         class="bg-white rounded-xl overflow-hidden border border-gray-200 shadow-sm hover:shadow-lg transition-shadow">
                         <!-- 🖼 Image -->
-                        <router-link :to="`/HealthCheckupDetails/${encodeURIComponent(pkg.name1)}`"
-                            class="no-underline text-inherit block">
+                        <router-link :to="`/${pkg.url}`" class="w-1/2 sm:w-auto no-underline">
                             <img :src="pkg.image || '/placeholder.png'" alt="Health Package" loading="lazy"
                                 class="w-full h-40 object-cover rounded-xl px-2 mt-2" />
                         </router-link>

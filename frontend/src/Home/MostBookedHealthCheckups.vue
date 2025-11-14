@@ -30,7 +30,9 @@
                 <div v-for="(pkg, i) in group" :key="i"
                   class="bg-white rounded-xl overflow-hidden border border-gray-200 shadow-sm hover:shadow-lg transition-shadow">
                   <!-- Image -->
-                  <img :src="pkg.image" alt="Health Package" class="w-full h-40 object-cover rounded-xl px-2 mt-2" />
+                  <router-link :to="`/${pkg.url}`" class="w-1/2 sm:w-auto no-underline">
+                    <img :src="pkg.image" alt="Health Package" class="w-full h-40 object-cover rounded-xl px-2 mt-2" />
+                  </router-link>
 
                   <!-- Content -->
                   <div class="p-3 pt-2 pb-4">

@@ -37,18 +37,22 @@
                 <div v-for="pkg in filteredPackages" :key="pkg.name1"
                     class="rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-shadow">
                     <!-- Top Blue Header -->
-                    <div class="px-3 py-3 text-white rounded-xl shadow-[0_4px_10px_rgba(0,0,0,0.25)]"
-                        :style="{ background: 'linear-gradient(180deg, #2077BF 0%, #0040BB 100%)', height: '80px' }">
-                        <h3 class="font-semibold text-[95%] leading-tight line-clamp-2">
-                            {{ pkg.name1 }}
-                        </h3>
-                    </div>
+                    <router-link :to="`/${pkg.url}`" class="w-1/2 sm:w-auto no-underline">
+                        <div class="px-3 py-3 text-white rounded-xl shadow-[0_4px_10px_rgba(0,0,0,0.25)]"
+                            :style="{ background: 'linear-gradient(180deg, #2077BF 0%, #0040BB 100%)', height: '80px' }">
+                            <h3 class="font-semibold text-[95%] leading-tight line-clamp-2">
+                                {{ pkg.name1 }}
+                            </h3>
+                        </div>
+                    </router-link>
 
                     <!-- Bottom White Section -->
                     <div class="p-3 bg-white rounded-b-xl">
                         <div class="flex justify-between items-center">
                             <div class="flex items-center gap-2">
-                                <p v-if="pkg.actual_price" class="text-gray-400 line-through">₹ {{ pkg.actual_price }}
+                                <p v-if="pkg.actual_price" class="text-gray-400 line-through">₹ {{
+                                    pkg.actual_price
+                                }}
                                 </p>
                                 <p class="font-semibold bold-test-color">₹ {{ pkg.discounted_price }}</p>
                             </div>

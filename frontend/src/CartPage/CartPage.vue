@@ -103,9 +103,10 @@
 
                                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
                                         <div>
-                                            <input v-model="person.age" @input="clearError(`age_${index}`)"
-                                                type="number" placeholder="Age *"
+                                            <input v-model="person.age" @input="validateAge(index)" type="number"
+                                                placeholder="Age *"
                                                 class="border rounded-md px-3 py-[1px] text-sm w-full" />
+
                                             <p v-if="errors[`age_${index}`]" class="text-xs text-red-500 mt-1">
                                                 {{ errors[`age_${index}`] }}
                                             </p>
@@ -405,6 +406,39 @@ const onAddressInput = (e) => {
         delete errors.value.address;
     }
 };
+
+const validateAge = (index) => {
+    let value = persons.value[index].age.toString();
+
+    // CASE 1: User typed "-" (negative sign)
+    if (value === "-") {
+        errors.value[`age_${index}`] = "Negative numbers are not allowed";
+        return;
+    }
+
+    // Convert to number for checks
+    const num = Number(value);
+
+    // CASE 2: Live validation
+    if (!value) {
+        errors.value[`age_${index}`] = "Age is required.";
+    }
+    else if (isNaN(num)) {
+        errors.value[`age_${index}`] = "Age must be a number.";
+    }
+    else if (num < 0) {
+        errors.value[`age_${index}`] = "Negative numbers are not allowed";
+        persons.value[index].age = ""; // Clear input
+    }
+    else if (num > 100) {
+        errors.value[`age_${index}`] =
+            "Age should be a number between 0 and 100";
+    }
+    else {
+        delete errors.value[`age_${index}`];
+    }
+};
+
 
 
 // ========================== LIVE FIELD VALIDATIONS ==========================

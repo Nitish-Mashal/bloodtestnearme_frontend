@@ -83,12 +83,14 @@
                                     <!-- Age & Gender -->
                                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
                                         <div>
-                                            <input v-model="person.age" @input="clearError(`age_${index}`)"
-                                                type="number" placeholder="Age *"
+                                            <input v-model="person.age" @input="validateAge(index)" type="number"
+                                                placeholder="Age *"
                                                 class="border rounded-md px-3 py-[1px] text-sm w-full" />
+
                                             <p v-if="errors[`age_${index}`]" class="text-xs text-red-500 mt-1">
                                                 {{ errors[`age_${index}`] }}
                                             </p>
+
                                         </div>
 
                                         <div>
@@ -677,6 +679,37 @@ const onAddressInput = (e) => {
     }
 };
 
+const validateAge = (index) => {
+    let value = persons.value[index].age.toString();
+
+    // CASE 1: User typed "-" (negative sign)
+    if (value === "-") {
+        errors.value[`age_${index}`] = "Negative numbers are not allowed";
+        return;
+    }
+
+    // Convert to number for checks
+    const num = Number(value);
+
+    // CASE 2: Live validation
+    if (!value) {
+        errors.value[`age_${index}`] = "Age is required.";
+    }
+    else if (isNaN(num)) {
+        errors.value[`age_${index}`] = "Age must be a number.";
+    }
+    else if (num < 0) {
+        errors.value[`age_${index}`] = "Negative numbers are not allowed";
+        persons.value[index].age = ""; // Clear input
+    }
+    else if (num > 100) {
+        errors.value[`age_${index}`] =
+            "Age should be a number between 0 and 100";
+    }
+    else {
+        delete errors.value[`age_${index}`];
+    }
+};
 
 // 🧩 Name Validation (only letters and spaces)
 watch(
@@ -710,7 +743,11 @@ const handleSubmit = () => {
         if (!p.name) errors.value[`name_${i}`] = "Name is required.";
         else if (!/^[A-Za-z\s]+$/.test(p.name))
             errors.value[`name_${i}`] = "Name must contain only letters.";
-        if (!p.age) errors.value[`age_${i}`] = "Age is required.";
+        if (!p.age) {
+            errors.value[`age_${i}`] = "Age is required.";
+        } else if (p.age < 0 || p.age > 100) {
+            errors.value[`age_${i}`] = "Age should be a number between 0 and 100";
+        }
         if (!p.gender) errors.value[`gender_${i}`] = "Gender is required.";
     });
 
