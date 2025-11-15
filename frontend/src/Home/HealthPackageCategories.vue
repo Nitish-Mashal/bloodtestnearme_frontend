@@ -1,5 +1,5 @@
 <template>
-    <div class="mt-4">
+    <div class="container mt-4">
         <div class="px-4 sm:px-16 mx-auto">
             <div class="bg-gray-100 sm:px-5 py-3 sm:py-5 rounded-xl shadow-sm">
                 <!-- Header -->
@@ -105,28 +105,26 @@ const fetchCategories = async () => {
 
 // ✅ Dynamically group cards based on screen size
 const groupedCategories = computed(() => {
-    const groups = [];
     const items = categories.value;
     const visibleCount = isMobile.value ? 1 : 5;
 
-    // ✅ Slide forward one card at a time
-    if (items.length > 0) {
-        for (let i = 0; i <= items.length - visibleCount; i++) {
-            groups.push(items.slice(i, i + visibleCount));
-        }
+    if (!items.length) return [];
 
-        // ✅ Optional: Loop seamlessly by adding wrap-around slides
-        for (let j = 0; j < visibleCount - 1; j++) {
-            const wrapGroup = [
-                ...items.slice(j * 1),
-                ...items.slice(0, (visibleCount - 1) - j),
-            ].slice(0, visibleCount);
-            groups.push(wrapGroup);
-        }
+    // If items are fewer or equal to visibleCount → show as ONE slide
+    if (items.length <= visibleCount) {
+        return [items];
+    }
+
+    const groups = [];
+
+    // Create groups with exact items — NO wrap, NO extra repeated slides
+    for (let i = 0; i < items.length; i += visibleCount) {
+        groups.push(items.slice(i, i + visibleCount));
     }
 
     return groups;
 });
+
 
 
 const getImage = (imagePath) => {
@@ -148,13 +146,3 @@ onMounted(() => {
     fetchCategories();
 });
 </script>
-
-<style scoped>
-.bold-test-color {
-    color: #001d55;
-}
-
-.el-carousel__container {
-    overflow: hidden;
-}
-</style>
