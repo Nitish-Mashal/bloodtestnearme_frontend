@@ -24,14 +24,15 @@
 
         <!-- ✅ Carousel Section -->
         <div class="sm:p-2 rounded-xl w-full">
-          <el-carousel :interval="4000" arrow="always" trigger="click" indicator-position="none">
+          <el-carousel :interval="3000" arrow="always" trigger="click" indicator-position="none">
             <el-carousel-item v-for="(group, index) in cardChunks" :key="index">
               <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 pt-2">
                 <div v-for="(pkg, i) in group" :key="i"
                   class="bg-white rounded-xl overflow-hidden border border-gray-200 shadow-sm hover:shadow-lg transition-shadow">
                   <!-- Image -->
                   <router-link :to="`/${pkg.url}`" class="w-1/2 sm:w-auto no-underline">
-                    <img :src="pkg.image" alt="Health Package" class="w-full h-40 object-cover rounded-xl px-2 mt-2" />
+                    <img :src="pkg.image || '/files/placeholder.jpg'" alt="Health Package"
+                      class="w-full h-40 object-cover rounded-xl px-2 mt-2" />
                   </router-link>
 
                   <!-- Content -->
@@ -91,13 +92,26 @@
 
                     <!-- Prices -->
                     <div class="flex items-center gap-2 flex-wrap pb-2">
-                      <div class="text-gray-500 line-through">
-                        ₹ {{ pkg.originalPrice }}
-                      </div>
-                      <div class="bold-test-color font-semibold">
-                        ₹ {{ pkg.discountedPrice }}
-                      </div>
+
+                      <!-- When prices are different → show both in same row -->
+                      <template v-if="pkg.actual_price != pkg.discounted_price">
+                        <div class="text-gray-500 line-through">
+                          ₹ {{ pkg.actual_price }}
+                        </div>
+                        <div class="bold-test-color font-semibold">
+                          ₹ {{ pkg.discounted_price }}
+                        </div>
+                      </template>
+
+                      <!-- When same price → show only one -->
+                      <template v-else>
+                        <div class="bold-test-color font-semibold">
+                          ₹ {{ pkg.discounted_price }}
+                        </div>
+                      </template>
+
                     </div>
+
 
                     <div class="flex flex-row sm:flex-row sm:justify-between items-center gap-2 sm:gap-0">
                       <router-link :to="{ name: 'SinglePackageBook', params: { slug: pkg.url } }"
@@ -153,8 +167,8 @@ const fetchMostBookedPackages = async () => {
     packages.value = data.map((pkg) => ({
       image: pkg.image,
       title: pkg.name,
-      originalPrice: pkg.actual_price,
-      discountedPrice: pkg.discounted_price,
+      actual_price: pkg.actual_price,
+      discounted_price: pkg.discounted_price,
       tests: pkg.tests || "",
       name1: pkg.name, // 🛒 for cart uniqueness
       discounted_price: pkg.discounted_price,

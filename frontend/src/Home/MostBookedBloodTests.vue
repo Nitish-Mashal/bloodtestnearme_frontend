@@ -46,13 +46,27 @@
                                     <div class="p-3 bg-white rounded-b-xl">
                                         <!-- Price + Cart -->
                                         <div class="flex justify-between items-center">
+
+                                            <!-- ✅ Price Section -->
                                             <div class="flex items-center gap-2">
-                                                <p class="text-gray-400 line-through">
-                                                    ₹ {{ pkg.actual_price }}
-                                                </p>
-                                                <p class="font-semibold bold-test-color">
-                                                    ₹ {{ pkg.discounted_price }}
-                                                </p>
+
+                                                <!-- Show both prices only when different -->
+                                                <template v-if="pkg.actual_price != pkg.discounted_price">
+                                                    <p class="text-gray-400 line-through">
+                                                        ₹ {{ pkg.actual_price }}
+                                                    </p>
+                                                    <p class="font-semibold bold-test-color">
+                                                        ₹ {{ pkg.discounted_price }}
+                                                    </p>
+                                                </template>
+
+                                                <!-- Show only discounted price when both are same -->
+                                                <template v-else>
+                                                    <p class="font-semibold bold-test-color">
+                                                        ₹ {{ pkg.discounted_price }}
+                                                    </p>
+                                                </template>
+
                                             </div>
 
                                             <!-- 🛒 Cart Icon -->
@@ -69,21 +83,23 @@
                                                         isInCart(pkg.name) ? 'text-gray-400' : 'text-indigo-900'
                                                     ]">
                                                     <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 
-                            14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218
-                            c1.121-2.3 2.1-4.684 
-                            2.924-7.138a60.114 
-                            60.114 0 0 0-16.536-1.84M7.5 
-                            14.25 5.106 5.272M6 20.25a.75.75 
-                            0 1 1-1.5 0 .75.75 0 0 1 
-                            1.5 0Zm12.75 0a.75.75 0 1 
-                            1-1.5 0 .75.75 0 0 1 1.5 0Z" />
+                14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218
+                c1.121-2.3 2.1-4.684 2.924-7.138a60.114 
+                60.114 0 0 0-16.536-1.84M7.5 14.25 
+                5.106 5.272M6 20.25a.75.75 
+                0 1 1-1.5 0 .75.75 0 0 1 
+                1.5 0Zm12.75 0a.75.75 0 1 
+                1-1.5 0 .75.75 0 0 1 1.5 0Z" />
                                                 </svg>
+
                                                 <span v-if="isInCart(pkg.name)"
                                                     class="absolute inset-0 flex items-center justify-center text-red-500 opacity-0 group-hover:opacity-100 transition-opacity duration-200 text-lg font-bold">
                                                     ×
                                                 </span>
                                             </button>
+
                                         </div>
+
 
                                         <!-- Buttons -->
 

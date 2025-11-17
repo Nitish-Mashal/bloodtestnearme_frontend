@@ -26,10 +26,12 @@
         </p>
 
         <!-- Request Callback Button -->
-        <button
-          class="border-1 border-[#001D55] bold-test-color bg-white text-sm font-medium px-6 sm:px-8 py-2 rounded-full transition ml-[4px] sm:ml-[2px]">
-          Request Callback
-        </button>
+        <router-link to="/contact-us">
+          <button
+            class="border-1 border-[#001D55] bold-test-color bg-white text-sm font-medium px-6 sm:px-8 py-2 rounded-full transition ml-[4px] sm:ml-[2px]">
+            Request Callback
+          </button>
+        </router-link>
       </div>
     </section>
 

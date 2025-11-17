@@ -109,22 +109,24 @@
         </div>
 
         <!-- WhatsApp Section -->
-        <div class="w-full flex justify-center items-center mt-4 px-3 sm:px-0">
-            <div
-                class="global-bg-color text-white p-6 rounded-3xl text-left flex flex-col sm:flex-row justify-between items-center gap-6 sm:gap-10 w-full sm:w-auto max-w-4xl">
-                <div class="text-center sm:text-left">
-                    <div class="text-[22px] sm:text-[30px] leading-tight">
-                        Can't find what you're looking for?
+        <a href="https://wa.me/919611011266" target="_blank" rel="noopener noreferrer" class="no-underline">
+            <div class="w-full flex justify-center items-center mt-4 px-3 sm:px-0">
+                <div
+                    class="global-bg-color text-white p-6 rounded-3xl text-left flex flex-col sm:flex-row justify-between items-center gap-6 sm:gap-10 w-full sm:w-auto max-w-4xl">
+                    <div class="text-center sm:text-left">
+                        <div class="text-[22px] sm:text-[30px] leading-tight">
+                            Can't find what you're looking for?
+                        </div>
+                        <div class="bold-test-color text-lg sm:text-2xl mt-2">
+                            We are here to help. Say 'Hi' on WhatsApp
+                        </div>
                     </div>
-                    <div class="bold-test-color text-lg sm:text-2xl mt-2">
-                        We are here to help. Say 'Hi' on WhatsApp
+                    <div class="sm:mt-0">
+                        <img src="/whatsapp.png" alt="whatsappLogo" class="h-16 sm:h-20 mx-auto sm:mx-0" />
                     </div>
-                </div>
-                <div class="sm:mt-0">
-                    <img src="/whatsapp.png" alt="whatsappLogo" class="h-16 sm:h-20 mx-auto sm:mx-0" />
                 </div>
             </div>
-        </div>
+        </a>
     </div>
 </template>
 

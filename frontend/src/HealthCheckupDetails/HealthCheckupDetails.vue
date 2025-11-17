@@ -2,57 +2,98 @@
     <div>
         <div class="container">
             <div v-if="!isLoading && packageData" class="py-4 row">
-                <!-- Accordion Section -->
-                <div class="col-12 col-md-8 mb-2">
-                    <h5 class="font-bold bold-test-color pb-2">List Of Tests Included:</h5>
 
-                    <div class="accordion" id="accordionExample">
-                        <div v-for="(item, index) in listInclude" :key="item.heading || index"
-                            class="accordion-item border border-gray-200 overflow-hidden">
-                            <h2 class="accordion-header" :id="`heading${index}`">
-                                <button class="accordion-button font-semibold bold-test-color text-sm" type="button"
-                                    data-bs-toggle="collapse" :data-bs-target="`#collapse${index}`"
-                                    :aria-expanded="index === 0" :aria-controls="`collapse${index}`"
-                                    :class="{ collapsed: index !== 0 }">
-                                    {{ item.heading }}
-                                </button>
-                            </h2>
+                <!-- Accordion OR Description Block -->
+                <div class="col-12 col-md-8 mb-2 bold-test-color">
 
-                            <div :id="`collapse${index}`" class="accordion-collapse collapse"
-                                :class="{ show: index === 0 }" :aria-labelledby="`heading${index}`"
-                                data-bs-parent="#accordionExample">
-                                <div class="accordion-body text-sm bold-test-color">
-                                    <ul v-if="item.values?.length" class="list-disc pl-5">
-                                        <li v-for="(test, i) in item.values" :key="`${index}-${i}`">
-                                            {{ test }}
-                                        </li>
-                                    </ul>
-                                    <p v-else class="text-gray-500 italic">
-                                        No tests available for this section.
-                                    </p>
+                    <!-- If list_include exists → show accordion -->
+                    <div v-if="hasListInclude">
+                        <h5 class="font-bold bold-test-color pb-2">List Of Tests Included:</h5>
+
+                        <div class="accordion" id="accordionExample">
+                            <div v-for="(item, index) in listInclude" :key="index"
+                                class="accordion-item border border-gray-200 overflow-hidden">
+
+                                <h2 class="accordion-header" :id="`heading${index}`">
+                                    <button class="accordion-button font-semibold bold-test-color text-sm" type="button"
+                                        data-bs-toggle="collapse" :data-bs-target="`#collapse${index}`"
+                                        :aria-expanded="index === 0" :aria-controls="`collapse${index}`"
+                                        :class="{ collapsed: index !== 0 }">
+                                        {{ item.heading }}
+                                    </button>
+                                </h2>
+
+                                <div :id="`collapse${index}`" class="accordion-collapse collapse"
+                                    :class="{ show: index === 0 }">
+                                    <div class="accordion-body text-sm bold-test-color">
+                                        <ul v-if="item.values?.length" class="list-disc pl-5">
+                                            <li v-for="(test, i) in item.values" :key="`${index}-${i}`">
+                                                {{ test }}
+                                            </li>
+                                        </ul>
+
+                                        <p v-else class="text-gray-500 italic">No tests available.</p>
+                                    </div>
                                 </div>
+
                             </div>
                         </div>
                     </div>
+
+                    <!-- If no list_include → show description instead -->
+                    <div v-else>
+                        <!-- Heading -->
+                        <h3>
+                            {{ packageData.name1 }}
+                            <span v-if="packageData.number_of_test > 0">
+                                ({{ packageData.number_of_test }} Tests)
+                            </span>
+                        </h3>
+
+                        <!-- Description -->
+                        <div class="pt-2" v-html="packageData.description"></div>
+
+                        <!-- Sample Type -->
+                        <div class="pt-2">
+                            <strong>Sample Type: </strong>
+                            <span class="text-red-600">{{ packageData.sample_type }}</span>
+                        </div>
+                    </div>
+
                 </div>
+
 
                 <!-- Price Card -->
                 <div class="col-12 col-md-4">
                     <div class="card p-3">
                         <div class="card-title bold-test-color font-semibold text-2xl pb-3">
-                            {{ packageData.name1 }} ({{ packageData.number_of_test }} Tests)
+                            {{ packageData.name1 }}
+                            <span v-if="packageData.number_of_test > 0">
+                                ({{ packageData.number_of_test }} Tests)
+                            </span>
                         </div>
 
-                        <div class="flex justify-between font-semibold pb-2 text-lg">
-                            <span>Package Price:</span>
-                            <span class="text-red-600 line-through">₹ {{ packageData.actual_price }}</span>
+                        <!-- Conditional Pricing -->
+                        <div v-if="packageData.actual_price != packageData.discounted_price">
+                            <div class="flex justify-between font-semibold pb-2 text-lg">
+                                <span>Package Price:</span>
+                                <span class="text-red-600 line-through">₹ {{ packageData.actual_price }}</span>
+                            </div>
+
+                            <div class="flex justify-between font-semibold pb-2 text-lg">
+                                <span>Offer Price:</span>
+                                <span>₹ {{ packageData.discounted_price }}</span>
+                            </div>
                         </div>
 
-                        <div class="flex justify-between font-semibold pb-2 text-lg">
-                            <span>Offer Price:</span>
-                            <span>₹ {{ packageData.discounted_price }}</span>
+                        <div v-else>
+                            <div class="flex justify-between font-semibold pb-2 text-lg">
+                                <span>Package Price:</span>
+                                <span>₹ {{ packageData.discounted_price }}</span>
+                            </div>
                         </div>
 
+                        <!-- Final Amount -->
                         <div class="flex justify-between font-bold pb-4 text-xl">
                             <span>Amount to be paid:</span>
                             <span class="text-green-600">₹ {{ packageData.discounted_price }}</span>
@@ -79,23 +120,69 @@
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                     stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 
-                    1.087.835l.383 1.437M7.5 
-                    14.25a3 3 0 0 0-3 
-                    3h15.75m-12.75-3h11.218
-                    c1.121-2.3 2.1-4.684 
-                    2.924-7.138a60.114 
-                    60.114 0 0 0-16.536-1.84M7.5 
-                    14.25 5.106 5.272M6 20.25a.75.75 
-                    0 1 1-1.5 0 .75.75 0 0 1 
-                    1.5 0Zm12.75 0a.75.75 0 1 
-                    1-1.5 0 .75.75 0 0 1 1.5 0Z" />
+                                1.087.835l.383 1.437M7.5 
+                                14.25a3 3 0 0 0-3 
+                                3h15.75m-12.75-3h11.218
+                                c1.121-2.3 2.1-4.684 
+                                2.924-7.138a60.114 
+                                60.114 0 0 0-16.536-1.84M7.5 
+                                14.25 5.106 5.272M6 20.25a.75.75 
+                                0 1 1-1.5 0 .75.75 0 0 1 
+                                1.5 0Zm12.75 0a.75.75 0 1 
+                                1-1.5 0 .75.75 0 0 1 1.5 0Z" />
                                 </svg>
                             </button>
                         </div>
                     </div>
                 </div>
 
-                <HealthCheckupDescription :packageData="packageData" />
+                <!-- 🔹 Everything from HealthCheckupDescription is merged below -->
+                <div v-if="packageData" class="bold-test-color pt-4">
+
+                    <!-- Show Name + Description + Sample Type ONLY IF list_include exists -->
+                    <template v-if="hasListInclude">
+                        <h3>
+                            {{ packageData.name1 }}
+                            <span v-if="packageData.number_of_test > 0">
+                                ({{ packageData.number_of_test }} Tests)
+                            </span>
+                        </h3>
+
+                        <div class="pt-2" v-html="packageData.description"></div>
+
+                        <div class="pt-2">
+                            <strong>Sample Type: </strong>
+                            <span class="text-red-600">{{ packageData.sample_type }}</span>
+                        </div>
+                    </template>
+
+                    <!-- Precautionary Measures ALWAYS SHOWN -->
+                    <section class="pt-4">
+                        <h5 class="font-semibold pb-4">Precautionary Measures:</h5>
+                        <div class="row">
+                            <div v-for="measure in precautionaryMeasures" :key="measure.alt"
+                                class="col-md-4 col-lg-3 col-sm-12 pb-3">
+                                <div
+                                    class="card shadow border-0 rounded-4 bold-test-color p-4 text-[90%] font-regular text-center flex flex-col items-center justify-center">
+                                    <img :src="measure.image" :alt="measure.alt" loading="lazy" decoding="async"
+                                        class="w-16 pb-2" />
+                                    <div>{{ measure.text }}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Booking Procedure ALWAYS SHOWN -->
+                    <section v-if="parsedBookingProcedure.length" class="pt-4">
+                        <h5 class="font-semibold pb-4">Booking Procedure:</h5>
+                        <ol class="list-decimal pl-6 space-y-1">
+                            <li v-for="(step, index) in parsedBookingProcedure" :key="index">
+                                {{ step }}
+                            </li>
+                        </ol>
+                    </section>
+
+                </div>
             </div>
 
             <!-- Loader -->
@@ -112,6 +199,7 @@
                     </p>
                 </div>
             </div>
+
         </div>
 
         <MostBookedHealthCheckups />
@@ -119,11 +207,10 @@
 </template>
 
 <script setup>
-import { ref, nextTick, onMounted, watch } from "vue";
+import { ref, nextTick, onMounted, watch, computed } from "vue";
 import axios from "axios";
 import { useRoute } from "vue-router";
 import { useCartStore } from "@/stores/cartStore";
-import HealthCheckupDescription from "../HealthCheckupDetails/HealthCheckupDescription.vue";
 import MostBookedHealthCheckups from "../Home/MostBookedHealthCheckups.vue";
 
 const route = useRoute();
@@ -132,11 +219,34 @@ const cartStore = useCartStore();
 const isLoading = ref(true);
 const packageData = ref(null);
 const listInclude = ref([]);
-const totalAmount = ref(0);
-const homeCollectionCharge = ref(0);
+
+const precautionaryMeasures = [
+    { image: "/files/watch.png", alt: "time", text: "10-12 hours fasting is required. Water is allowed." },
+    { image: "/files/glass.png", alt: "water", text: "Keep yourself well-hydrated. Water is important." },
+    { image: "/files/bed.png", alt: "rest", text: "Get enough rest for mind and body." },
+    { image: "/files/gym.png", alt: "exercise", text: "Avoid heavy exercise a day before the blood test." },
+];
+
+const hasListInclude = computed(() => {
+    return Array.isArray(listInclude.value) && listInclude.value.length > 0;
+});
+
+const parsedBookingProcedure = computed(() => {
+    const raw = packageData.value?.booking_procedure;
+    if (!raw) return [];
+    try {
+        const parsed = JSON.parse(raw);
+        return Array.isArray(parsed) ? parsed.map((s) => s.trim()).filter(Boolean) : [];
+    } catch {
+        return raw
+            .replace(/[\[\]"]/g, "")
+            .split(",")
+            .map((s) => s.replace(/^\d+\.\s*/, "").trim())
+            .filter(Boolean);
+    }
+});
 
 const isInCart = (pkg) => cartStore.cartItems.some((i) => i.name1 === pkg.name1);
-
 const toggleCart = (pkg) => {
     if (isInCart(pkg)) cartStore.removeFromCart(pkg.name1);
     else cartStore.addToCart(pkg);
@@ -146,90 +256,53 @@ const fetchPackageDetails = async () => {
     isLoading.value = true;
     try {
         const packageUrl = route.params.url || route.params.slug || route.params.id;
-        if (!packageUrl) {
-            console.warn("❗ Missing package URL in route.");
-            return;
-        }
 
         const { data } = await axios.get(
             "/api/method/bloodtestnearme.api.packages.get_packages",
             { params: { url: decodeURIComponent(packageUrl) } }
         );
 
-        const msg = data?.message;
-        const pkg = Array.isArray(msg?.data) ? msg.data[0] : msg?.data || msg;
+        const pkg = data?.message?.data?.[0] || data.message?.data || data.message;
 
         if (pkg) {
             packageData.value = pkg;
-            totalAmount.value =
-                parseFloat(pkg.discounted_price || 0) + homeCollectionCharge.value;
 
             try {
-                listInclude.value = pkg.list_include
-                    ? JSON.parse(pkg.list_include)
-                    : [];
+                listInclude.value = pkg.list_include ? JSON.parse(pkg.list_include) : [];
             } catch {
-                console.error("❌ Error parsing list_include.");
                 listInclude.value = [];
             }
 
             await nextTick();
             updatePageSEO(pkg);
-        } else {
-            console.warn("⚠️ No data found for:", packageUrl);
         }
     } catch (error) {
-        console.error("❌ Error fetching package details:", error);
+        console.error(error);
     } finally {
         isLoading.value = false;
     }
 };
 
 const updatePageSEO = (data) => {
-    // 🔹 Build title
     const title =
         data.meta_title ||
         data.title ||
         `${data.package_name || "Health Checkup"} | Blood Test Near Me`;
 
-    // ✅ Update browser tab title
     document.title = title;
 
-    // ✅ Basic Meta Tags
     updateMeta("description", data.meta_description || data.short_description);
     updateMeta("keywords", data.meta_keyword);
 
-    // ✅ Open Graph (for social sharing)
     updateMeta("og:title", title, "property");
-    updateMeta("og:description", data.meta_description || data.short_description, "property");
+    updateMeta("og:description", data.meta_description, "property");
     updateMeta("og:type", "website", "property");
 
-    // ✅ Twitter Cards (optional but good for SEO)
     updateMeta("twitter:card", "summary_large_image");
     updateMeta("twitter:title", title);
-    updateMeta("twitter:description", data.meta_description || data.short_description);
-
-    // ✅ Dynamically Insert Header Tag (if provided)
-    if (data.header_tag) {
-        let existingHeader = document.querySelector("h1[data-dynamic-header]");
-        if (existingHeader) {
-            existingHeader.textContent = data.header_tag;
-        } else {
-            const header = document.createElement("h1");
-            header.textContent = data.header_tag;
-            header.setAttribute("data-dynamic-header", "true");
-            header.style.display = "none"; // hidden from layout, used for SEO bots
-            document.body.prepend(header);
-        }
-    }
+    updateMeta("twitter:description", data.meta_description);
 };
 
-/**
- * ✅ Helper to Create or Update <meta> Tags
- * @param {string} key - meta name or property
- * @param {string} content - meta content value
- * @param {string} attr - 'name' or 'property'
- */
 const updateMeta = (key, content, attr = "name") => {
     if (!content) return;
     let meta = document.querySelector(`meta[${attr}='${key}']`);
@@ -240,7 +313,6 @@ const updateMeta = (key, content, attr = "name") => {
     }
     meta.setAttribute("content", content);
 };
-
 
 onMounted(fetchPackageDetails);
 watch(() => route.params.url, fetchPackageDetails);

@@ -41,16 +41,20 @@
                         class="bg-white rounded-xl overflow-hidden border border-gray-200 shadow-sm hover:shadow-lg transition-shadow">
                         <!-- 🖼 Image -->
                         <router-link :to="`/${pkg.url}`" class="w-1/2 sm:w-auto no-underline">
-                            <img :src="pkg.image || '/placeholder.png'" alt="Health Package" loading="lazy"
+                            <img :src="pkg.image || '/files/placeholder.jpg'" alt="Health Package" loading="lazy"
                                 class="w-full h-40 object-cover rounded-xl px-2 mt-2" />
                         </router-link>
 
                         <!-- 📋 Details -->
                         <div class="p-3 pt-2">
                             <div class="flex justify-between items-center mb-1">
-                                <h6 class="text-sm font-semibold bold-test-color leading-tight truncate">
-                                    {{ pkg.name1 }} ({{ pkg.number_of_test }} Tests)
+                                <h6 class="text-sm font-semibold bold-test-color pt-1">
+                                    {{ pkg.name1 }}
+                                    <span v-if="pkg.number_of_test > 0">
+                                        ({{ pkg.number_of_test }} Tests)
+                                    </span>
                                 </h6>
+
 
                                 <!-- 🛒 Cart Button -->
                                 <button @click="toggleCart(pkg)" :disabled="isInCart(pkg)"
@@ -91,9 +95,19 @@
 
                             <!-- 💰 Prices -->
                             <div class="flex items-center gap-2 flex-wrap mb-1">
-                                <p class="text-gray-400 line-through">₹ {{ pkg.actual_price }}</p>
-                                <p class="bold-test-color">₹ {{ pkg.discounted_price }}</p>
+
+                                <!-- Show actual price ONLY when different -->
+                                <p v-if="pkg.actual_price != pkg.discounted_price" class="text-gray-400 line-through">
+                                    ₹ {{ pkg.actual_price }}
+                                </p>
+
+                                <!-- Always show discounted price -->
+                                <p class="bold-test-color">
+                                    ₹ {{ pkg.discounted_price }}
+                                </p>
+
                             </div>
+
 
                             <!-- 🔘 Actions -->
                             <div class="flex flex-row sm:flex-row sm:justify-between items-center gap-2 sm:gap-0">

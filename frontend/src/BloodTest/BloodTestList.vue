@@ -50,12 +50,19 @@
                     <div class="p-3 bg-white rounded-b-xl">
                         <div class="flex justify-between items-center">
                             <div class="flex items-center gap-2">
-                                <p v-if="pkg.actual_price" class="text-gray-400 line-through">₹ {{
-                                    pkg.actual_price
-                                }}
+
+                                <!-- Show actual price only when it's different -->
+                                <p v-if="pkg.actual_price != pkg.discounted_price" class="text-gray-400 line-through">
+                                    ₹ {{ pkg.actual_price }}
                                 </p>
-                                <p class="font-semibold bold-test-color">₹ {{ pkg.discounted_price }}</p>
+
+                                <!-- Always show discounted price -->
+                                <p class="font-semibold bold-test-color">
+                                    ₹ {{ pkg.discounted_price }}
+                                </p>
+
                             </div>
+
 
                             <!-- Cart Icon -->
                             <button :disabled="isInCart(pkg)" @click="addToCart(pkg)"
