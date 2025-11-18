@@ -1,6 +1,10 @@
 <template>
     <div>
-        <Promotions />
+        <!-- Promotions only for DESKTOP -->
+        <div class="hidden sm:block">
+            <Promotions />
+        </div>
+
         <MostBookedHealthCheckups />
         <MostBookedBloodTests />
         <OurWorkFlow />
@@ -11,6 +15,7 @@
         <CitiesWeAreIn />
     </div>
 </template>
+
 
 <script>
 import { defineAsyncComponent } from "vue";

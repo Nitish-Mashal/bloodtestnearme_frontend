@@ -1,8 +1,8 @@
 <template>
   <div class="mt-4">
     <div class="container sm:px-16 mx-auto">
-      <!-- ✅ Increased vertical padding for mobile to prevent content cut-off -->
       <div class="bg-gray-100 px-3 sm:px-5 py-6 sm:py-5 rounded-xl">
+
         <!-- Header -->
         <div
           class="flex flex-col sm:flex-row items-center justify-between w-full px-2 sm:px-4 pt-2 sm:pt-5 gap-2 sm:gap-0">
@@ -22,112 +22,76 @@
           </div>
         </div>
 
-        <!-- ✅ Carousel Section -->
+        <!-- Carousel Section -->
         <div class="sm:p-2 rounded-xl w-full">
-          <el-carousel :interval="3000" arrow="always" trigger="click" indicator-position="none">
-            <el-carousel-item v-for="(group, index) in cardChunks" :key="index">
-              <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 pt-2">
-                <div v-for="(pkg, i) in group" :key="i"
+          <Carousel ref="carouselRef" :breakpoints="carouselBreakpoints" :wrapAround="true" snapAlign="start"
+            :transition="500" :itemsToScroll="1" @slide-change="onSlideChange" @slide-start="onSlideChange"
+            class="pkg-carousel">
+            <Slide v-for="(pkg, index) in packages" :key="pkg.name + index">
+              <div class="slide-inner mr-3">
+                <div
                   class="bg-white rounded-xl overflow-hidden border border-gray-200 shadow-sm hover:shadow-lg transition-shadow">
-                  <!-- Image -->
-                  <router-link :to="`/${pkg.url}`" class="w-1/2 sm:w-auto no-underline">
-                    <img :src="pkg.image || '/files/placeholder.jpg'" alt="Health Package"
-                      class="w-full h-40 object-cover rounded-xl px-2 mt-2" />
+                  <router-link :to="`/${pkg.url}`" class="no-underline">
+                    <img :src="pkg.image || '/files/placeholder.jpg'" class="w-full h-40 object-cover p-2" />
                   </router-link>
 
-                  <!-- Content -->
-                  <div class="p-3 pt-2 pb-4">
-                    <!-- Title + Cart -->
-                    <div class="flex justify-between items-center">
-                      <h3 class="text-sm font-semibold bold-test-color leading-tight truncate">
+                  <div class="p-2">
+                    <div class="flex justify-between items-start">
+                      <h3 class="text-sm font-semibold bold-test-color">
                         {{ pkg.title }} {{ pkg.tests }}
                       </h3>
 
-                      <!-- 🛒 Add to Cart Icon -->
-                      <button :disabled="isInCart(pkg)" @click="addToCart(pkg)" :title="isInCart(pkg)
-                        ? 'Item already in cart'
-                        : 'Add to cart'
-                        " class="relative group p-1 rounded-full transition" :class="[
-                          isInCart(pkg)
-                            ? 'bg-gray-200 cursor-not-allowed'
-                            : 'hover:bg-gray-100 text-indigo-900',
-                        ]">
-                        <!-- 🛒 Normal cart icon -->
-                        <svg v-if="!isInCart(pkg)" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                          stroke-width="1" stroke="currentColor" class="w-5 h-5">
-                          <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 
-                              1.087.835l.383 1.437M7.5 14.25a3 3 0 0 
-                              0-3 3h15.75m-12.75-3h11.218
-                              c1.121-2.3 2.1-4.684 
-                              2.924-7.138a60.114 
-                              60.114 0 0 0-16.536-1.84M7.5 
-                              14.25 5.106 5.272M6 20.25a.75.75 
-                              0 1 1-1.5 0 .75.75 0 0 1 
-                              1.5 0Zm12.75 0a.75.75 0 1 
-                              1-1.5 0 .75.75 0 0 1 1.5 0Z" />
-                        </svg>
+                      <!-- 🛒 Cart Icon -->
+                      <div class="relative group">
+                        <button :disabled="isInCart(pkg.name)" @click="addToCart(pkg)"
+                          :title="isInCart(pkg.name) ? 'Item already in cart' : 'Add to cart'"
+                          class="relative group p-1 rounded-full transition"
+                          :class="isInCart(pkg.name) ? 'bg-gray-200 cursor-not-allowed' : 'hover:bg-gray-100 text-indigo-900'">
+                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                            stroke="currentColor" :class="[
+                              'w-5 h-5 transition-colors duration-200',
+                              isInCart(pkg.name) ? 'text-gray-400' : 'text-indigo-900'
+                            ]">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 
+                                 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218
+                                 c1.121-2.3 2.1-4.684 2.924-7.138a60.114 
+                                 60.114 0 0 0-16.536-1.84M7.5 14.25 
+                                 5.106 5.272M6 20.25a.75.75 
+                                 0 1 1-1.5 0 .75.75 0 0 1 
+                                 1.5 0Zm12.75 0a.75.75 0 1 
+                                 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
+                          </svg>
 
-                        <!-- 🛒 Disabled cart icon -->
-                        <svg v-if="isInCart(pkg)" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                          stroke-width="1" stroke="currentColor" class="w-5 h-5 text-gray-400">
-                          <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 
-                              1.087.835l.383 1.437M7.5 14.25a3 3 0 0 
-                              0-3 3h15.75m-12.75-3h11.218
-                              c1.121-2.3 2.1-4.684 
-                              2.924-7.138a60.114 
-                              60.114 0 0 0-16.536-1.84M7.5 
-                              14.25 5.106 5.272M6 20.25a.75.75 
-                              0 1 1-1.5 0 .75.75 0 0 1 
-                              1.5 0Zm12.75 0a.75.75 0 1 
-                              1-1.5 0 .75.75 0 0 1 1.5 0Z" />
-                        </svg>
-
-                        <!-- ❌ Hover cross -->
-                        <span v-if="isInCart(pkg)"
-                          class="absolute inset-0 flex items-center justify-center text-red-500 opacity-0 group-hover:opacity-100 transition-opacity duration-200 text-lg font-bold">
-                          ×
-                        </span>
-                      </button>
+                          <span v-if="isInCart(pkg.name)"
+                            class="absolute inset-0 flex items-center justify-center text-red-500 opacity-0 group-hover:opacity-100 transition-opacity duration-200 text-lg font-bold">
+                            ×
+                          </span>
+                        </button>
+                      </div>
                     </div>
 
-                    <!-- Prices -->
-                    <div class="flex items-center gap-2 flex-wrap pb-2">
-
-                      <!-- When prices are different → show both in same row -->
-                      <template v-if="pkg.actual_price != pkg.discounted_price">
-                        <div class="text-gray-500 line-through">
-                          ₹ {{ pkg.actual_price }}
-                        </div>
-                        <div class="bold-test-color font-semibold">
-                          ₹ {{ pkg.discounted_price }}
-                        </div>
-                      </template>
-
-                      <!-- When same price → show only one -->
-                      <template v-else>
-                        <div class="bold-test-color font-semibold">
-                          ₹ {{ pkg.discounted_price }}
-                        </div>
-                      </template>
-
+                    <div class="flex items-center gap-2">
+                      <div v-if="pkg.actual_price !== pkg.discounted_price" class="text-gray-500 line-through text-sm">
+                        ₹ {{ pkg.actual_price }}
+                      </div>
+                      <div class="text-indigo-900 font-semibold text-sm">
+                        ₹ {{ pkg.discounted_price }}
+                      </div>
                     </div>
 
-
-                    <div class="flex flex-row sm:flex-row sm:justify-between items-center gap-2 sm:gap-0">
+                    <div class="flex flex-row sm:flex-row sm:justify-between items-center gap-2 sm:gap-0 mt-2">
                       <router-link :to="{ name: 'SinglePackageBook', params: { slug: pkg.url } }"
                         class="w-1/2 sm:w-auto no-underline">
                         <button
-                          class="bg-[#2077BF] text-white text-sm px-3 py-1.5 rounded-full hover:bg-blue-700 transition w-full">
-                          Book Now
-                        </button>
+                          class="bg-[#2077BF] text-white text-sm px-3 py-1.5 rounded-full hover:bg-blue-700 transition w-full">Book
+                          Now</button>
                       </router-link>
 
                       <router-link :to="`/${pkg.url}`" class="w-1/2 sm:w-auto no-underline">
                         <button
                           class="border-1 border-[#001D55] font-semibold text-xs bold-test-color px-2 py-1 rounded-full hover:bg-gray-100 transition flex items-center justify-center gap-1 w-full whitespace-nowrap">
-                          View Details
-                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
-                            stroke="currentColor" class="w-3 h-3 mt-[1px]">
+                          View Details <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                            stroke-width="2" stroke="currentColor" class="w-3 h-3 mt-[1px]">
                             <path stroke-linecap="round" stroke-linejoin="round"
                               d="m4.5 19.5 15-15m0 0H8.25m11.25 0v11.25" />
                           </svg>
@@ -135,87 +99,128 @@
                       </router-link>
                     </div>
 
-
                   </div>
                 </div>
               </div>
-            </el-carousel-item>
-          </el-carousel>
+            </Slide>
+
+            <template #addons>
+              <Navigation />
+            </template>
+          </Carousel>
+
+          <!-- Pagination (repeating) -->
+          <div v-if="packages.length" class="text-center mt-2 font-semibold text-gray-700 text-sm">
+            {{ currentIndexDisplay }} / {{ packages.length }}
+          </div>
+
         </div>
       </div>
     </div>
   </div>
 </template>
 
-
 <script setup>
-import { ref, computed, onMounted, onUnmounted } from "vue";
+import { ref, computed, onMounted } from "vue";
 import axios from "axios";
-import { useCartStore } from "@/stores/cartStore"; // 🛒 Import Pinia cart store
+import { useCartStore } from "@/stores/cartStore";
+import { Carousel, Slide, Navigation } from "vue3-carousel";
+import "vue3-carousel/dist/carousel.css";
 
 const packages = ref([]);
-const screenWidth = ref(window.innerWidth);
-const cartStore = useCartStore(); // 🛒 Initialize cart store
+const currentIndex = ref(0);
+const carouselRef = ref(null);
+const cartStore = useCartStore();
 
-// ✅ Fetch most booked packages
+const carouselBreakpoints = {
+  0: { itemsToShow: 1.20, snapAlign: "start" },
+  640: { itemsToShow: 2.20, snapAlign: "start" },
+  1024: { itemsToShow: 4.20, snapAlign: "start" }
+};
+
 const fetchMostBookedPackages = async () => {
   try {
-    const response = await axios.get(
-      "/api/method/bloodtestnearme.api.packages.get_most_booking_packages"
-    );
-    const data = response.data.message || response.data.data || [];
-    packages.value = data.map((pkg) => ({
-      image: pkg.image,
-      title: pkg.name,
-      actual_price: pkg.actual_price,
-      discounted_price: pkg.discounted_price,
-      tests: pkg.tests || "",
-      name1: pkg.name, // 🛒 for cart uniqueness
-      discounted_price: pkg.discounted_price,
-      url: pkg.url,
-    }));
-  } catch (error) {
-    console.error("❌ Error fetching most booked packages:", error);
+    const res = await axios.get("/api/method/bloodtestnearme.api.packages.get_most_booking_packages");
+    const data = res.data?.message ?? res.data?.data ?? [];
+    packages.value = Array.isArray(data)
+      ? data.map((pkg) => ({
+        image: pkg.image,
+        title: pkg.name,
+        name: pkg.name,
+        name1: pkg.name,
+        tests: pkg.tests || "",
+        url: pkg.url,
+        actual_price: pkg.actual_price,
+        discounted_price: pkg.discounted_price
+      }))
+      : [];
+
+    setTimeout(() => {
+      if (carouselRef.value?.currentSlide != null) {
+        currentIndex.value = Number(carouselRef.value.currentSlide) || 0;
+      } else {
+        currentIndex.value = 0;
+      }
+    }, 50);
+  } catch (err) {
+    console.error("Error fetching packages:", err);
   }
 };
 
-// ✅ Add to cart
+const onSlideChange = (payload) => {
+  let idx = null;
+
+  if (typeof payload === "number") {
+    idx = payload;
+  } else if (payload && typeof payload === "object") {
+    idx = payload.currentSlide ?? payload.slidingTo ?? payload.slide ?? payload.index ?? null;
+  }
+
+  if ((idx === null || idx === undefined) && carouselRef.value) {
+    idx = carouselRef.value.currentSlide ?? carouselRef.value.getCurrentSlide?.() ?? null;
+  }
+
+  currentIndex.value = Number.isFinite(Number(idx)) ? Number(idx) : 0;
+};
+
+const currentIndexDisplay = computed(() => {
+  const total = packages.value.length;
+  if (!total) return 0;
+  const logical = ((Number(currentIndex.value) % total) + total) % total;
+  return logical + 1;
+});
+
 const addToCart = (pkg) => {
-  cartStore.addToCart(pkg);
-};
-
-// ✅ Check if already in cart
-const isInCart = (pkg) => {
-  return cartStore.cartItems.some((item) => item.name1 === pkg.name1);
-};
-
-// ✅ Responsive width watcher
-const updateWidth = () => {
-  screenWidth.value = window.innerWidth;
-};
-
-// ✅ Group packages into carousel chunks
-const cardChunks = computed(() => {
-  const size = screenWidth.value < 640 ? 1 : screenWidth.value < 1024 ? 2 : 4;
-  const chunks = [];
-  for (let i = 0; i < packages.value.length; i += size) {
-    chunks.push(packages.value.slice(i, i + size));
+  if (!isInCart(pkg.name)) {
+    const cartItem = {
+      name1: pkg.name,
+      actual_price: pkg.actual_price,
+      discounted_price: pkg.discounted_price
+    };
+    cartStore.addToCart(cartItem);
   }
-  return chunks;
-});
+};
+const isInCart = (pkgName) => cartStore.cartItems.some((i) => i.name1 === pkgName);
 
-onMounted(() => {
-  fetchMostBookedPackages();
-  window.addEventListener("resize", updateWidth);
-});
-
-onUnmounted(() => {
-  window.removeEventListener("resize", updateWidth);
-});
+onMounted(fetchMostBookedPackages);
 </script>
 
 <style scoped>
-.bold-test-color {
-  color: #001d55;
+.pkg-carousel .carousel__prev,
+.pkg-carousel .carousel__next {
+  z-index: 30;
+  background: rgba(0, 0, 0, 0.45) !important;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+}
+
+.pkg-carousel .carousel__prev:hover,
+.pkg-carousel .carousel__next:hover {
+  background: rgba(0, 0, 0, 0.75) !important;
+}
+
+.pkg-carousel {
+  overflow: visible;
 }
 </style>

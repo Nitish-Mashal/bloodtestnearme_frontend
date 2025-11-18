@@ -57,7 +57,7 @@
       </div>
 
       <!-- 🔍 Search + Cart (Mobile) -->
-      <div class="flex items-center justify-between w-full md:hidden mt-2 px-2" ref="mobileSearchRef">
+      <div class="flex items-center justify-between w-full md:hidden mt-2" ref="mobileSearchRef">
         <div class="relative flex-1 mr-2">
           <input v-model="searchQuery" @input="handleSearch" type="text" placeholder="Search"
             class="w-full rounded-[5px] px-4 py-[2px] text-gray-700 text-sm focus:outline-none border border-gray-300" />

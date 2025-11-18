@@ -1,61 +1,95 @@
 <template>
   <section class="mt-6">
-    <div class="container px-2 sm:px-8">
-      <div class="bg-gray-100 py-4 px-4 rounded-xl shadow-sm relative">
-        <!-- ✅ Carousel -->
-        <el-carousel :loop="true" :autoplay="true" :interval="3000" height="200px" indicator-position="none"
-          trigger="click" arrow="always">
-          <el-carousel-item v-for="(group, index) in groupedOffers" :key="index">
-            <div class="flex justify-center gap-4 flex-wrap">
-              <div v-for="offer in group" :key="offer.id"
-                class="w-full sm:w-[48%] cursor-pointer transition-transform hover:scale-[1.02]"
-                @click="openLink(offer.link)">
-                <img :src="offer.image" :alt="offer.alt || 'Offer Image'" loading="lazy"
-                  class="w-full h-[180px] object-cover rounded-xl shadow-md hover:opacity-90 transition" />
-              </div>
-            </div>
-          </el-carousel-item>
-        </el-carousel>
+    <div class="container sm:px-8">
+
+      <!-- ⭐ Vue3 Carousel -->
+      <Carousel ref="carouselRef" :breakpoints="carouselBreakpoints" :wrapAround="true" :transition="500"
+        :snapAlign="'start'" :itemsToScroll="1" @slide-start="onSlideChange" @slide-change="onSlideChange"
+        class="offer-carousel">
+        <Slide v-for="(offer, i) in offers" :key="i">
+          <div class="cursor-pointer w-full hover:scale-[1.02] mr-3" @click="openLink(offer.link)">
+            <img :src="offer.image" class="w-full h-[180px] object-cover rounded-xl shadow-md " />
+          </div>
+        </Slide>
+
+        <template #addons>
+          <Navigation />
+        </template>
+      </Carousel>
+
+      <!-- show pagination only when offers loaded -->
+      <div v-if="offers.length" class="text-center mt-2 font-semibold text-gray-700 text-sm">
+        {{ currentIndex + 1 }} / {{ offers.length }}
       </div>
+
     </div>
   </section>
 </template>
 
 <script setup>
-import { ref, computed, onMounted, onBeforeUnmount } from "vue";
+import { ref, onMounted } from "vue";
 import axios from "axios";
 
+import "vue3-carousel/dist/carousel.css";
+import { Carousel, Slide, Navigation } from "vue3-carousel";
+
 const offers = ref([]);
-const windowWidth = ref(window.innerWidth);
+const currentIndex = ref(0);
+const carouselRef = ref(null);
 
-// ✅ Responsive grouping
-const isSmallScreen = computed(() => windowWidth.value < 640);
-const updateWidth = () => (windowWidth.value = window.innerWidth);
-onMounted(() => window.addEventListener("resize", updateWidth));
-onBeforeUnmount(() => window.removeEventListener("resize", updateWidth));
+// responsive breakpoints omitted for brevity (keep your previous object)
+const carouselBreakpoints = {
+  0: { itemsToShow: 1.1, snapAlign: "start" },
+  640: { itemsToShow: 2.1, snapAlign: "start" },
+  1024: { itemsToShow: 2.1, snapAlign: "start" }
+};
 
-// ✅ Fetch offers
+// fetch offers
 const fetchOffers = async () => {
   try {
     const res = await axios.get("/api/method/bloodtestnearme.api.offers.get_offers");
-    const data = res.data?.message || res.data?.data || [];
-    offers.value = Array.isArray(data) ? data : [];
+    offers.value = Array.isArray(res.data?.message) ? res.data.message : (Array.isArray(res.data?.data) ? res.data.data : []);
+    // ensure index reset if fewer offers after fetch
+    currentIndex.value = 0;
+    // if carousel exposes currentSlide we can sync
+    if (carouselRef.value?.currentSlide != null) {
+      currentIndex.value = Number(carouselRef.value.currentSlide) || 0;
+    }
   } catch (err) {
     console.error("❌ Error fetching offers:", err);
   }
 };
 
-// ✅ Group offers
-const groupedOffers = computed(() => {
-  const groups = [];
-  const groupSize = isSmallScreen.value ? 1 : 2;
-  for (let i = 0; i < offers.value.length; i += groupSize) {
-    groups.push(offers.value.slice(i, i + groupSize));
-  }
-  return groups;
-});
+// robust handler for different event shapes
+const onSlideChange = (payload) => {
+  // payload could be:
+  // - a number (index)
+  // - an object like { slidingTo: 2 }
+  // - an event wrapper (different libs) — try a few properties
+  let idx = null;
 
-// ✅ Open link
+  if (typeof payload === "number") {
+    idx = payload;
+  } else if (payload && typeof payload === "object") {
+    // common properties seen in different versions
+    idx = payload.slidingTo ?? payload.slide ?? payload.index ?? payload.current ?? payload.currentSlide ?? null;
+  }
+
+  // fallback to reading exposed carousel API
+  if (idx == null && carouselRef.value) {
+    // many carousel components expose `currentSlide`
+    idx = carouselRef.value.currentSlide ?? carouselRef.value.getCurrentSlide?.() ?? null;
+  }
+
+  // finally ensure numeric
+  if (Number.isFinite(idx)) {
+    currentIndex.value = Number(idx);
+  } else {
+    // safe fallback
+    currentIndex.value = 0;
+  }
+};
+
 const openLink = (url) => {
   if (url) window.open(url, "_blank", "noopener,noreferrer");
 };
@@ -63,27 +97,24 @@ const openLink = (url) => {
 onMounted(fetchOffers);
 </script>
 
+
 <style scoped>
-/* ✅ Customize left/right arrows */
-.el-carousel__arrow {
-  background-color: rgba(0, 0, 0, 0.5);
-  transition: background-color 0.3s ease;
+.offer-carousel {
+  padding-right: 0;
 }
 
-.el-carousel__arrow:hover {
-  background-color: rgba(0, 0, 0, 0.8);
+/* Arrows above image */
+.carousel__prev,
+.carousel__next {
+  z-index: 20;
+  background: rgba(0, 0, 0, 0.5) !important;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
 }
 
-.el-carousel__arrow i {
-  color: white;
-  font-size: 20px;
-}
-
-/* Optional: increase clickable area on small screens */
-@media (max-width: 640px) {
-  .el-carousel__arrow {
-    width: 32px;
-    height: 32px;
-  }
+.carousel__prev:hover,
+.carousel__next:hover {
+  background: rgba(0, 0, 0, 0.8) !important;
 }
 </style>

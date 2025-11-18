@@ -1,5 +1,5 @@
 <template>
-    <section class="mt-10 mb-14 px-4">
+    <section class="container">
         <h2 class="text-center text-2xl sm:text-3xl md:text-4xl font-bold text-[#001D55] mb-6">
             Cities We Are In
         </h2>
@@ -39,7 +39,6 @@ export default {
 </script>
 
 <style scoped>
-/* Optional soft fade animation */
 section {
     animation: fadeIn 0.8s ease-in-out;
 }
