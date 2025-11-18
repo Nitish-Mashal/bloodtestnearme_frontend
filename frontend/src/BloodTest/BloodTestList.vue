@@ -105,18 +105,18 @@
                             </button>
                         </div>
 
-                        <!-- Action Buttons -->
-                        <div class="flex flex-row sm:flex-row sm:justify-between items-center gap-2 sm:gap-0">
-                            <router-link :to="{ name: 'SinglePackageBook', params: { slug: pkg.url } }"
+                        <!-- Buttons -->
+                        <div class="flex flex-row sm:flex-row sm:justify-between items-center gap-2 sm:gap-0 mt-2">
+                            <router-link :to="pkg.url ? { name: 'SinglePackageBook', params: { slug: pkg.url } } : '#'"
                                 class="w-1/2 sm:w-auto no-underline">
-                                <button
+                                <button :disabled="!pkg.url"
                                     class="bg-[#2077BF] text-white text-sm px-3 py-1.5 rounded-full hover:bg-blue-700 transition w-full">
                                     Book Now
                                 </button>
                             </router-link>
 
-                            <router-link :to="`/${pkg.url}`" class="w-1/2 sm:w-auto no-underline">
-                                <button
+                            <router-link :to="pkg.url ? `/${pkg.url}` : '#'" class="w-1/2 sm:w-auto no-underline">
+                                <button :disabled="!pkg.url"
                                     class="border-1 border-[#001D55] font-semibold text-xs bold-test-color px-2 py-1 rounded-full hover:bg-gray-100 transition flex items-center justify-center gap-1 w-full whitespace-nowrap">
                                     View Details
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
