@@ -10,20 +10,23 @@
 
     <!-- Hero Section -->
     <section
-      class="relative bg-cover bg-center bg-no-repeat flex flex-col sm:flex-row items-center justify-center sm:justify-end py-10 sm:py-22 md:py-[100px] px-4 sm:px-6 md:pr-10"
+      class="relative bg-cover bg-center bg-no-repeat flex flex-col sm:flex-row items-center justify-center sm:justify-end py-10 sm:py-22 md:py-[100px] px-4 sm:px-6 md:pr-20"
       style="background-image: url('/files/Stickyimage.jpg')">
       <div class="absolute inset-0 bg-black/10"></div>
 
-      <div class="relative z-10 text-left max-w-3xl sm:mr-[150px]">
+      <div class="relative z-10 text-left max-w-3xl sm:mr-[60px]">
         <h1 class="text-xl sm:text-2xl md:text-[30px] font-medium bold-test-color mb-4 ml-[4px] sm:ml-[2px]">
           Lab Tests at the Comfort of Your Home
         </h1>
 
-        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 sm:gap-4 mb-4 justify-start">
-          <button v-for="pkg in packages" :key="pkg"
-            class="global-bg-color text-white font-medium px-4 sm:px-6 py-2 rounded-full transition text-xs sm:text-sm">
-            {{ pkg }}
-          </button>
+        <div class="grid grid-cols-4 gap-3 mb-4 justify-start">
+          <router-link v-for="pkg in packages" :key="pkg.id" :to="pkg.url ? `/${pkg.url}` : '#'">
+            <button
+              class="global-bg-color text-white font-medium px-2 sm:px-4 py-2 rounded-full transition text-xs sm:text-sm truncate w-full whitespace-nowrap"
+              :title="pkg.name">
+              {{ pkg.name }}
+            </button>
+          </router-link>
         </div>
 
         <p class="bold-test-color text-sm sm:text-base md:text-lg mb-4 ml-[4px] sm:ml-[2px] font-bold">
@@ -49,6 +52,7 @@
 <script>
 import LazySections from "./LazySections.vue";
 import { defineAsyncComponent } from "vue";
+import axios from "axios";
 
 export default {
   components: {
@@ -57,15 +61,29 @@ export default {
   },
   data() {
     return {
-      packages: [
-        "Full Body Checkup",
-        "Thyroid Test",
-        "Diabetes Test",
-        "Vitamin Test",
-        "Liver Test",
-        "Kidney Test",
-      ],
+      packages: [],
     };
-  }
+  },
+  mounted() {
+    this.fetchHeroPackages();
+  },
+  methods: {
+    async fetchHeroPackages() {
+      try {
+        const res = await axios.get("/api/method/bloodtestnearme.api.packages.get_packages_by_tags", {
+          params: { tag: "herosection" },
+        });
+        const data = res.data?.message || [];
+        // Map to keep only needed properties
+        this.packages = data.map(pkg => ({
+          id: pkg.id,
+          name: pkg.name,
+          url: pkg.url,
+        }));
+      } catch (err) {
+        console.error("Error fetching hero section packages:", err);
+      }
+    },
+  },
 };
 </script>

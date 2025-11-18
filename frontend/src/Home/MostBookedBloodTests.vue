@@ -155,9 +155,8 @@ import { useCartStore } from "@/stores/cartStore";
 import "vue3-carousel/dist/carousel.css";
 import { Carousel, Slide, Navigation } from "vue3-carousel";
 
-const carouselRef = ref(null);      
-const currentIndex = ref(0);        
-
+const carouselRef = ref(null);
+const currentIndex = ref(0);
 
 const packages = ref([]);
 const cartStore = useCartStore();
@@ -184,10 +183,12 @@ const currentIndexDisplay = computed(() => {
     return logical + 1;
 });
 
+// ⭐ Fetch only 'mostbooktests' packages
 const fetchMostBookedTests = async () => {
     try {
         const res = await axios.get(
-            "/api/method/bloodtestnearme.api.packages.get_most_booking_tests"
+            "/api/method/bloodtestnearme.api.packages.get_packages_by_tags",
+            { params: { tag: "mostbooktests" } }
         );
         packages.value = res.data?.message || [];
 

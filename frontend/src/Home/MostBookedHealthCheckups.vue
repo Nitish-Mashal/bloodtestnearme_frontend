@@ -138,10 +138,15 @@ const carouselBreakpoints = {
   1024: { itemsToShow: 4.20, snapAlign: "start" }
 };
 
+// ⭐ Fetch only 'mostbooked' packages
 const fetchMostBookedPackages = async () => {
   try {
-    const res = await axios.get("/api/method/bloodtestnearme.api.packages.get_most_booking_packages");
-    const data = res.data?.message ?? res.data?.data ?? [];
+    const res = await axios.get(
+      "/api/method/bloodtestnearme.api.packages.get_packages_by_tags",
+      { params: { tag: "mostbooked" } }
+    );
+
+    const data = res.data?.message || [];
     packages.value = Array.isArray(data)
       ? data.map((pkg) => ({
         image: pkg.image,
@@ -162,6 +167,7 @@ const fetchMostBookedPackages = async () => {
         currentIndex.value = 0;
       }
     }, 50);
+
   } catch (err) {
     console.error("Error fetching packages:", err);
   }
@@ -200,10 +206,12 @@ const addToCart = (pkg) => {
     cartStore.addToCart(cartItem);
   }
 };
+
 const isInCart = (pkgName) => cartStore.cartItems.some((i) => i.name1 === pkgName);
 
 onMounted(fetchMostBookedPackages);
 </script>
+
 
 <style scoped>
 .pkg-carousel .carousel__prev,
