@@ -32,7 +32,7 @@
                 <Carousel ref="carouselRef" :breakpoints="carouselBreakpoints" :wrapAround="true" snapAlign="start"
                     :transition="500" :itemsToScroll="1" @slide-start="onSlideChange" class="pkg-carousel">
                     <Slide v-for="(category, index) in categories" :key="category.name + index">
-                        <div class="slide-inner cursor-pointer" @click="goToCategory(category.url)">
+                        <div class="slide-inner cursor-pointer" @click="goToCategory(category.name)">
                             <div class="flex flex-col items-center text-center transition-transform hover:scale-105">
                                 <img :src="getImage(category.image)" :alt="category.name"
                                     class="object-cover shadow-md rounded-lg w-full h-[120px]" />
@@ -64,9 +64,12 @@
 
 <script setup>
 import { ref, computed, onMounted } from "vue";
+import { useRouter } from "vue-router";
 import axios from "axios";
 import { Carousel, Slide, Navigation } from "vue3-carousel";
 import "vue3-carousel/dist/carousel.css";
+
+const router = useRouter();
 
 const categories = ref([]);
 const currentIndex = ref(0);
@@ -104,7 +107,6 @@ const fetchCategories = async () => {
     }
 };
 
-// ⭐ FIXED — ALWAYS WORKS (all vue3-carousel versions)
 const onSlideChange = () => {
     if (!carouselRef.value) return;
     currentIndex.value = Number(carouselRef.value.currentSlide || 0);
@@ -120,8 +122,12 @@ const currentIndexDisplay = computed(() => {
 
 const getImage = (img) => img || "/placeholder.png";
 
-const goToCategory = (url) => {
-    window.location.href = url;
+// ⭐ THIS IS THE IMPORTANT PART — USE QUERY PARAM
+const goToCategory = (categoryName) => {
+    router.push({
+        path: "/health-checkup-packages-bangalore",
+        query: { category: categoryName }
+    });
 };
 
 onMounted(fetchCategories);
