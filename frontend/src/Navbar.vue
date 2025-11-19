@@ -2,9 +2,10 @@
   <header class="sticky top-0 z-50 w-full">
     <!-- ✅ Mobile: Only text slides, button stays fixed -->
     <div class="block md:hidden bg-white shadow-md py-2 px-7 flex items-center justify-between overflow-hidden">
-      <div class="overflow-hidden whitespace-nowrap flex items-center font-bold bold-test-color">
-        <div class="animate-marquee inline-block">
-          Book Full Body Health Checkup @ ₹1,499/- with Vitamins
+      <div class="relative overflow-hidden whitespace-nowrap flex-1 font-bold bold-test-color">
+        <div class="marquee-content flex">
+          <span class="mr-10">Book Full Body Health Checkup @ ₹1,499/- with Vitamins</span>
+          <span class="mr-10">Book Full Body Health Checkup @ ₹1,499/- with Vitamins</span>
         </div>
       </div>
 
@@ -15,6 +16,7 @@
         </button>
       </router-link>
     </div>
+
 
 
     <!-- ✅ Desktop (Static Banner) -->
@@ -286,23 +288,19 @@ watch(() => route.fullPath, () => {
   text-decoration: underline;
 }
 
+.marquee-content {
+  display: inline-flex;
+  white-space: nowrap;
+  animation: marquee 10s linear infinite;
+}
+
 @keyframes marquee {
   0% {
     transform: translateX(0);
   }
 
-  80% {
-    transform: translateX(-100%);
-  }
-
   100% {
-    transform: translateX(-100%);
+    transform: translateX(-50%);
   }
-}
-
-.animate-marquee {
-  animation: marquee 15s linear infinite;
-  display: inline-block;
-  white-space: nowrap;
 }
 </style>

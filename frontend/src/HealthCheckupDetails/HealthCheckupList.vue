@@ -38,7 +38,8 @@
                 <transition-group name="fade" tag="div"
                     class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
                     <div v-for="pkg in filteredPackages" :key="pkg.name1"
-                        class="bg-white rounded-xl overflow-hidden border border-gray-200 shadow-sm hover:shadow-lg transition-shadow">
+                        class="bg-white rounded-xl overflow-hidden border border-gray-200 shadow-sm hover:shadow-lg transition-shadow flex flex-col h-[290px]">
+
                         <!-- 🖼 Image -->
                         <router-link :to="`/${pkg.url}`" class="w-1/2 sm:w-auto no-underline">
                             <img :src="pkg.image || '/files/placeholder.jpg'" alt="Health Package" loading="lazy"
@@ -46,19 +47,19 @@
                         </router-link>
 
                         <!-- 📋 Details -->
-                        <div class="p-3 pt-2">
-                            <div class="flex justify-between items-center mb-1">
-                                <h6 class="text-sm font-semibold bold-test-color pt-1">
+                        <div class="p-3 pt-2 flex flex-col flex-1">
+                            <div class="flex justify-between items-center">
+                                <h3 class="text-[82%] font-semibold bold-test-color pt-1">
                                     {{ pkg.name1 }}
                                     <span v-if="pkg.number_of_test > 0">
                                         ({{ pkg.number_of_test }} Tests)
                                     </span>
-                                </h6>
+                                </h3>
 
 
                                 <!-- 🛒 Cart Button -->
                                 <button @click="toggleCart(pkg)" :disabled="isInCart(pkg)"
-                                    class="relative group p-2 rounded-full transition" :class="[
+                                    class="relative group p-1 rounded-full transition" :class="[
                                         isInCart(pkg)
                                             ? 'bg-gray-200 cursor-not-allowed'
                                             : 'hover:bg-gray-100 text-indigo-900'
@@ -97,20 +98,21 @@
                             <div class="flex items-center gap-2 flex-wrap mb-1">
 
                                 <!-- Show actual price ONLY when different -->
-                                <p v-if="pkg.actual_price != pkg.discounted_price" class="text-gray-400 line-through">
+                                <div v-if="pkg.actual_price != pkg.discounted_price" class="text-gray-400 line-through">
                                     ₹ {{ pkg.actual_price }}
-                                </p>
+                                </div>
 
                                 <!-- Always show discounted price -->
-                                <p class="bold-test-color">
+                                <div class="bold-test-color">
                                     ₹ {{ pkg.discounted_price }}
-                                </p>
+                                </div>
 
                             </div>
 
 
                             <!-- 🔘 Actions -->
-                            <div class="flex flex-row sm:flex-row sm:justify-between items-center gap-2 sm:gap-0">
+                            <div
+                                class="mt-auto flex flex-row sm:flex-row sm:justify-between items-center gap-2 sm:gap-0">
                                 <router-link :to="{ name: 'SinglePackageBook', params: { slug: pkg.url } }"
                                     class="w-1/2 sm:w-auto no-underline">
                                     <button

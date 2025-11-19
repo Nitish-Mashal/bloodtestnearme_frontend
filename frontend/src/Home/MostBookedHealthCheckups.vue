@@ -27,32 +27,38 @@
           <Carousel ref="carouselRef" :breakpoints="carouselBreakpoints" :wrapAround="true" snapAlign="start"
             :transition="500" :itemsToScroll="1" @slide-change="onSlideChange" @slide-start="onSlideChange"
             class="pkg-carousel">
+
             <Slide v-for="(pkg, index) in packages" :key="pkg.name + index">
               <div class="slide-inner mr-3">
+
+                <!-- FIXED CARD HEIGHT -->
                 <div
-                  class="bg-white rounded-xl overflow-hidden border border-gray-200 shadow-sm hover:shadow-lg transition-shadow">
-                  <router-link :to="`/${pkg.url}`" class="no-underline">
-                    <img :src="pkg.image || '/files/placeholder.jpg'" class="w-full h-40 object-cover p-2" />
+                  class="bg-white rounded-xl overflow-hidden border border-gray-200 shadow-sm hover:shadow-lg transition-shadow h-[260px] flex flex-col">
+
+                  <!-- Image -->
+                  <router-link :to="`/${pkg.url}`" class="no-underline rounded-2">
+                    <img :src="pkg.image || '/files/placeholder.jpg'" class="w-full h-36 object-cover p-2" />
                   </router-link>
 
-                  <div class="p-2">
-                    <div class="flex justify-between items-start">
-                      <h3 class="text-sm font-semibold bold-test-color">
-                        {{ pkg.title }} {{ pkg.tests }}
-                      </h3>
+                  <!-- Content -->
+                  <div class="p-2 flex flex-col justify-between h-full">
 
-                      <!-- 🛒 Cart Icon -->
-                      <div class="relative group">
-                        <button :disabled="isInCart(pkg.name)" @click="addToCart(pkg)"
-                          :title="isInCart(pkg.name) ? 'Item already in cart' : 'Add to cart'"
-                          class="relative group p-1 rounded-full transition"
-                          :class="isInCart(pkg.name) ? 'bg-gray-200 cursor-not-allowed' : 'hover:bg-gray-100 text-indigo-900'">
-                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                            stroke="currentColor" :class="[
-                              'w-5 h-5 transition-colors duration-200',
-                              isInCart(pkg.name) ? 'text-gray-400' : 'text-indigo-900'
-                            ]">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 
+                    <!-- Title + Price + Cart -->
+                    <div>
+                      <div class="flex justify-between items-start">
+                        <h3 class="text-[82%] font-semibold bold-test-color line-clamp-2 leading-tight">
+                          {{ pkg.title }} {{ pkg.tests }}
+                        </h3>
+
+                        <div class="relative group">
+                          <button :disabled="isInCart(pkg.name)" @click="addToCart(pkg)"
+                            :title="isInCart(pkg.name) ? 'Item already in cart' : 'Add to cart'"
+                            class="relative group p-1 rounded-full transition"
+                            :class="isInCart(pkg.name) ? 'bg-gray-200 cursor-not-allowed' : 'hover:bg-gray-100 text-indigo-900'">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                              stroke="currentColor" :class="['w-5 h-5 transition-colors duration-200',
+                                isInCart(pkg.name) ? 'text-gray-400' : 'text-indigo-900']">
+                              <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 
                                  14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218
                                  c1.121-2.3 2.1-4.684 2.924-7.138a60.114 
                                  60.114 0 0 0-16.536-1.84M7.5 14.25 
@@ -60,41 +66,38 @@
                                  0 1 1-1.5 0 .75.75 0 0 1 
                                  1.5 0Zm12.75 0a.75.75 0 1 
                                  1-1.5 0 .75.75 0 0 1 1.5 0Z" />
-                          </svg>
+                            </svg>
+                          </button>
+                        </div>
+                      </div>
 
-                          <span v-if="isInCart(pkg.name)"
-                            class="absolute inset-0 flex items-center justify-center text-red-500 opacity-0 group-hover:opacity-100 transition-opacity duration-200 text-lg font-bold">
-                            ×
-                          </span>
-                        </button>
+                      <!-- Price -->
+                      <div class="flex items-center gap-2">
+                        <div v-if="pkg.actual_price !== pkg.discounted_price"
+                          class="text-gray-500 line-through text-sm">
+                          ₹ {{ pkg.actual_price }}
+                        </div>
+                        <div class="text-indigo-900 font-semibold text-sm">
+                          ₹ {{ pkg.discounted_price }}
+                        </div>
                       </div>
                     </div>
 
-                    <div class="flex items-center gap-2">
-                      <div v-if="pkg.actual_price !== pkg.discounted_price" class="text-gray-500 line-through text-sm">
-                        ₹ {{ pkg.actual_price }}
-                      </div>
-                      <div class="text-indigo-900 font-semibold text-sm">
-                        ₹ {{ pkg.discounted_price }}
-                      </div>
-                    </div>
+                    <!-- Bottom Buttons -->
+                    <div class="flex flex-row justify-between items-center gap-2 mt-2">
 
-                    <div class="flex flex-row sm:flex-row sm:justify-between items-center gap-2 sm:gap-0 mt-2">
                       <router-link :to="{ name: 'SinglePackageBook', params: { slug: pkg.url } }"
-                        class="w-1/2 sm:w-auto no-underline">
+                        class="w-1/2 no-underline">
                         <button
-                          class="bg-[#2077BF] text-white text-sm px-3 py-1.5 rounded-full hover:bg-blue-700 transition w-full">Book
-                          Now</button>
+                          class="bg-[#2077BF] text-white text-sm px-3 py-1.5 rounded-full hover:bg-blue-700 transition w-full">
+                          Book Now
+                        </button>
                       </router-link>
 
-                      <router-link :to="`/${pkg.url}`" class="w-1/2 sm:w-auto no-underline">
+                      <router-link :to="`/${pkg.url}`" class="w-1/2 no-underline">
                         <button
-                          class="border-1 border-[#001D55] font-semibold text-xs bold-test-color px-2 py-1 rounded-full hover:bg-gray-100 transition flex items-center justify-center gap-1 w-full whitespace-nowrap">
-                          View Details <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                            stroke-width="2" stroke="currentColor" class="w-3 h-3 mt-[1px]">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                              d="m4.5 19.5 15-15m0 0H8.25m11.25 0v11.25" />
-                          </svg>
+                          class="border border-[#001D55] font-semibold text-xs bold-test-color px-2 py-1 rounded-full hover:bg-gray-100 transition w-full">
+                          View Details
                         </button>
                       </router-link>
                     </div>
@@ -109,7 +112,6 @@
             </template>
           </Carousel>
 
-          <!-- Pagination (repeating) -->
           <div v-if="packages.length" class="text-center mt-2 font-semibold text-gray-700 text-sm">
             {{ currentIndexDisplay }} / {{ packages.length }}
           </div>
@@ -119,6 +121,7 @@
     </div>
   </div>
 </template>
+
 
 <script setup>
 import { ref, computed, onMounted } from "vue";

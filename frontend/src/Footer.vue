@@ -47,7 +47,7 @@
 
                 <!-- Other Packages -->
                 <div v-if="otherPackages.length > 0">
-                    <h2 class="font-bold text-lg sm:text-xl mb-2 sm:mb-3 ml-4 sm:ml-8">
+                    <h2 class="font-bold text-lg sm:text-xl mb-2 sm:mb-3 ml-8">
                         Other Packages
                     </h2>
                     <ul class="space-y-2 text-sm ml-4 sm:ml-8">

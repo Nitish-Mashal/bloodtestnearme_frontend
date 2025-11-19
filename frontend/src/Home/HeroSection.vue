@@ -15,21 +15,22 @@
       <div class="absolute inset-0 bg-black/10"></div>
 
       <div class="relative z-10 text-left max-w-3xl sm:mr-[60px]">
-        <h1 class="text-xl sm:text-2xl md:text-[30px] font-medium bold-test-color mb-4 ml-[4px] sm:ml-[2px]">
+        <h1 class="text-xl sm:text-2xl md:text-[30px] font-medium bold-test-color mb-2 ml-[4px] sm:ml-[2px]">
           Lab Tests at the Comfort of Your Home
         </h1>
 
-        <div class="grid grid-cols-4 gap-3 mb-4 justify-start">
+        <div class="flex flex-wrap gap-3 mb-4">
           <router-link v-for="pkg in packages" :key="pkg.id" :to="pkg.url ? `/${pkg.url}` : '#'">
-            <button
-              class="global-bg-color text-white font-medium px-2 sm:px-4 py-2 rounded-full transition text-xs sm:text-sm truncate w-full whitespace-nowrap"
-              :title="pkg.name">
+            <button class="global-bg-color text-white font-medium px-4 py-2 
+             rounded-full transition text-xs sm:text-sm 
+             whitespace-normal break-words text-center" :title="pkg.name">
               {{ pkg.name }}
             </button>
           </router-link>
         </div>
 
-        <p class="bold-test-color text-sm sm:text-base md:text-lg mb-4 ml-[4px] sm:ml-[2px] font-bold">
+
+        <p class="bold-test-color text-sm sm:text-base md:text-lg mb-2 ml-[4px] sm:ml-[2px] font-bold">
           We Bring Healthcare to Your Doorstep
         </p>
 
