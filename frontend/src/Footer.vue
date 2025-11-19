@@ -110,15 +110,15 @@ const popularPackages = ref([]);
 const otherPackages = ref([]);
 const isSmallScreen = ref(false);
 
-/* ✅ Fetch Data from API */
+/* ✅ Fetch Data from NEW API */
 const fetchPackages = async () => {
     try {
-        const response = await axios.get(
-            "/api/method/bloodtestnearme.api.packages.get_most_booking_packages"
-        );
-        const data = response.data?.message || [];
+        const res = await axios.get("/api/method/bloodtestnearme.api.packages.get_packages_by_tags", {
+            params: { tag: "mostbooked" },
+        });
+        const data = res.data?.message || [];
 
-        // include both name and url for routing
+        // Map packages to include name and url for routing
         const packages = data.map((pkg) => ({
             name: pkg.name,
             url: pkg.url || pkg.name.toLowerCase().replace(/\s+/g, "-"),
@@ -126,8 +126,8 @@ const fetchPackages = async () => {
 
         popularPackages.value = packages.slice(0, 10);
         otherPackages.value = packages.slice(10, 20);
-    } catch (error) {
-        console.error("❌ Error fetching packages:", error);
+    } catch (err) {
+        console.error("❌ Error fetching packages:", err);
     }
 };
 
@@ -138,9 +138,11 @@ onMounted(() => {
     };
     handleResize();
     window.addEventListener("resize", handleResize);
+
     fetchPackages();
 });
 </script>
+
 
 <style scoped>
 a:hover i {

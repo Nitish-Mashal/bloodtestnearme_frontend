@@ -1,6 +1,7 @@
 <template>
     <div class="container mt-4">
         <div class="bg-gray-100 sm:px-5 py-3 sm:py-5 rounded-xl shadow-sm">
+
             <!-- Header -->
             <div
                 class="flex flex-col sm:flex-row items-center justify-between w-full px-2 sm:px-4 pt-3 sm:pt-5 gap-2 sm:gap-0">
@@ -21,23 +22,18 @@
                 </div>
             </div>
 
-            <!-- Loading State -->
+            <!-- Loading -->
             <div v-if="isLoading" class="text-center py-10 text-gray-600">
                 Loading categories...
             </div>
 
-            <!-- Carousel Section -->
-            <div v-else-if="categories.length" class="my-3">
-                <el-carousel :interval="3000" :autoplay="true" arrow="always" height="160px" indicator-position="none"
-                    trigger="click" :pause-on-hover="true">
-                    <el-carousel-item v-for="(group, groupIndex) in groupedCategories" :key="groupIndex">
-                        <div class="flex justify-center gap-4">
-                            <div v-for="(category, index) in group" :key="index"
-                                class="flex flex-col items-center justify-center text-center cursor-pointer transition-transform hover:scale-105"
-                                :class="{
-                                    'w-[120px]': !isMobile,
-                                    'w-[200px]': isMobile,
-                                }" @click="goToCategory(category.url, category.name)">
+            <!-- Carousel -->
+            <div v-else-if="categories.length" class="sm:p-2 rounded-xl w-full">
+                <Carousel ref="carouselRef" :breakpoints="carouselBreakpoints" :wrapAround="true" snapAlign="start"
+                    :transition="500" :itemsToScroll="1" @slide-start="onSlideChange" class="pkg-carousel">
+                    <Slide v-for="(category, index) in categories" :key="category.name + index">
+                        <div class="slide-inner cursor-pointer" @click="goToCategory(category.url)">
+                            <div class="flex flex-col items-center text-center transition-transform hover:scale-105">
                                 <img :src="getImage(category.image)" :alt="category.name"
                                     class="object-cover shadow-md rounded-lg w-full h-[120px]" />
                                 <p class="mt-3 bold-test-color text-base sm:text-lg font-semibold">
@@ -45,8 +41,17 @@
                                 </p>
                             </div>
                         </div>
-                    </el-carousel-item>
-                </el-carousel>
+                    </Slide>
+
+                    <template #addons>
+                        <Navigation />
+                    </template>
+                </Carousel>
+
+                <!-- Pagination -->
+                <div class="text-center mt-2 font-semibold text-gray-700 text-sm">
+                    {{ currentIndexDisplay }}
+                </div>
             </div>
 
             <!-- No Data -->
@@ -58,30 +63,26 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, onBeforeUnmount } from "vue";
+import { ref, computed, onMounted } from "vue";
 import axios from "axios";
-import { useRouter } from "vue-router";
-import "element-plus/es/components/carousel/style/css";
-import "element-plus/es/components/carousel-item/style/css";
+import { Carousel, Slide, Navigation } from "vue3-carousel";
+import "vue3-carousel/dist/carousel.css";
 
 const categories = ref([]);
+const currentIndex = ref(0);
+const carouselRef = ref(null);
 const isLoading = ref(true);
-const isMobile = ref(window.innerWidth < 640);
-const router = useRouter();
 
-const handleResize = () => {
-    isMobile.value = window.innerWidth < 640; // sm breakpoint
+const carouselBreakpoints = {
+    0: { itemsToShow: 1.5, snapAlign: "start" },
+    640: { itemsToShow: 2.5, snapAlign: "start" },
+    1024: { itemsToShow: 4.5, snapAlign: "start" }
 };
-
-window.addEventListener("resize", handleResize);
-
-onBeforeUnmount(() => {
-    window.removeEventListener("resize", handleResize);
-});
 
 const fetchCategories = async () => {
     try {
         const cached = sessionStorage.getItem("packageCategories");
+
         if (cached) {
             categories.value = JSON.parse(cached);
             isLoading.value = false;
@@ -91,56 +92,57 @@ const fetchCategories = async () => {
         const response = await axios.get(
             "/api/method/bloodtestnearme.api.package_category.get_active_package_categories"
         );
+
         const data = response.data?.message?.data || response.data?.data || [];
-        categories.value = data;
-        sessionStorage.setItem("packageCategories", JSON.stringify(data));
+        categories.value = Array.isArray(data) ? data : [];
+        sessionStorage.setItem("packageCategories", JSON.stringify(categories.value));
+
     } catch (error) {
-        console.error("Error fetching package categories:", error);
+        console.error("Error fetching categories:", error);
     } finally {
         isLoading.value = false;
     }
 };
 
-// ✅ Dynamically group cards based on screen size
-const groupedCategories = computed(() => {
-    const items = categories.value;
-    const visibleCount = isMobile.value ? 1 : 5;
-
-    if (!items.length) return [];
-
-    // If items are fewer or equal to visibleCount → show as ONE slide
-    if (items.length <= visibleCount) {
-        return [items];
-    }
-
-    const groups = [];
-
-    // Create groups with exact items — NO wrap, NO extra repeated slides
-    for (let i = 0; i < items.length; i += visibleCount) {
-        groups.push(items.slice(i, i + visibleCount));
-    }
-
-    return groups;
-});
-
-
-
-const getImage = (imagePath) => {
-    if (!imagePath) return "/default-image.png";
-    return imagePath.startsWith("/files") ? imagePath : `/files/${imagePath}`;
+// ⭐ FIXED — ALWAYS WORKS (all vue3-carousel versions)
+const onSlideChange = () => {
+    if (!carouselRef.value) return;
+    currentIndex.value = Number(carouselRef.value.currentSlide || 0);
 };
 
-const goToCategory = (url, name) => {
-    if (name) {
-        const slug = name.toLowerCase().replace(/\s+/g, "-");
-        router.push({
-            path: "/health-checkup-packages-bangalore",
-            query: { category: slug },
-        });
-    }
+const currentIndexDisplay = computed(() => {
+    const total = categories.value.length;
+    if (!total) return "0 / 0";
+
+    const logical = ((currentIndex.value % total) + total) % total;
+    return `${logical + 1} / ${total}`;
+});
+
+const getImage = (img) => img || "/placeholder.png";
+
+const goToCategory = (url) => {
+    window.location.href = url;
 };
 
-onMounted(() => {
-    fetchCategories();
-});
+onMounted(fetchCategories);
 </script>
+
+<style scoped>
+.pkg-carousel .carousel__prev,
+.pkg-carousel .carousel__next {
+    z-index: 30;
+    background: rgba(0, 0, 0, 0.45) !important;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+}
+
+.pkg-carousel .carousel__prev:hover,
+.pkg-carousel .carousel__next:hover {
+    background: rgba(0, 0, 0, 0.75) !important;
+}
+
+.pkg-carousel {
+    overflow: visible;
+}
+</style>
