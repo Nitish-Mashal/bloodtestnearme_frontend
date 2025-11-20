@@ -1,6 +1,5 @@
 <template>
   <div>
-
     <!-- Promotions for MOBILE ONLY -->
     <div class="block sm:hidden">
       <Suspense>
@@ -12,23 +11,35 @@
     <section
       class="relative bg-cover bg-center bg-no-repeat flex flex-col sm:flex-row items-center justify-center sm:justify-end py-10 sm:py-22 md:py-[100px] px-4 sm:px-6 md:pr-20"
       style="background-image: url('/files/Stickyimage.jpg')">
+
       <div class="absolute inset-0 bg-black/10"></div>
 
-      <div class="relative z-10 text-left max-w-3xl sm:mr-[60px]">
+      <div class="relative z-10 text-left max-w-3xl sm:mr-[30px]">
+
+        <!-- Heading -->
         <h1 class="text-xl sm:text-2xl md:text-[30px] font-medium bold-test-color mb-2 ml-[4px] sm:ml-[2px]">
           Lab Tests at the Comfort of Your Home
         </h1>
 
-        <div class="flex flex-wrap gap-3 mb-4">
+        <!-- Loader -->
+        <div v-if="isLoading" class="flex justify-center items-center my-4">
+          <svg class="animate-spin h-7 w-7 text-white" xmlns="http://www.w3.org/2000/svg" fill="none"
+            viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" />
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z" />
+          </svg>
+        </div>
+
+        <!-- Show packages only after loading finishes -->
+        <div v-else class="flex flex-wrap gap-3 mb-4">
           <router-link v-for="pkg in packages" :key="pkg.id" :to="pkg.url ? `/${pkg.url}` : '#'">
-            <button class="global-bg-color text-white font-medium px-4 py-2 
-             rounded-full transition text-xs sm:text-sm 
-             whitespace-normal break-words text-center" :title="pkg.name">
+            <button
+              class="global-bg-color text-white font-medium px-4 py-2 rounded-full transition text-xs sm:text-sm whitespace-normal break-words text-center"
+              :title="pkg.name">
               {{ pkg.name }}
             </button>
           </router-link>
         </div>
-
 
         <p class="bold-test-color text-sm sm:text-base md:text-lg mb-2 ml-[4px] sm:ml-[2px] font-bold">
           We Bring Healthcare to Your Doorstep
@@ -47,6 +58,7 @@
     <Suspense>
       <LazySections />
     </Suspense>
+
   </div>
 </template>
 
@@ -60,29 +72,42 @@ export default {
     LazySections,
     PromoMobile: defineAsyncComponent(() => import("./Promotions.vue")),
   },
+
   data() {
     return {
       packages: [],
+      isLoading: true,
     };
   },
+
   mounted() {
     this.fetchHeroPackages();
   },
+
   methods: {
     async fetchHeroPackages() {
       try {
-        const res = await axios.get("/api/method/bloodtestnearme.api.packages.get_packages_by_tags", {
-          params: { tag: "herosection" },
-        });
+        this.isLoading = true; // start loader
+
+        const res = await axios.get(
+          "/api/method/bloodtestnearme.api.packages.get_packages_by_tags",
+          { params: { tag: "herosection" } }
+        );
+
         const data = res.data?.message || [];
-        // Map to keep only needed properties
+
+        // Only store needed data
         this.packages = data.map(pkg => ({
           id: pkg.id,
           name: pkg.name,
           url: pkg.url,
         }));
+
       } catch (err) {
         console.error("Error fetching hero section packages:", err);
+
+      } finally {
+        this.isLoading = false; // stop loader
       }
     },
   },
