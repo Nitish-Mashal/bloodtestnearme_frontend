@@ -106,7 +106,7 @@ const quickLinks = [
     { name: "Blogs", path: "/blogspreview" },
     { name: "Privacy Policy", path: "/privacy-policy" },
     { name: "Terms & Conditions", path: "/terms-Conditions" },
-    { name: "Careers", path: "#" },
+    { name: "Careers", path: "/Careers" },
     { name: "Upcoming Services", path: "#" },
     { name: "Add Diagnostic Center", path: "/add-diagnostic-center" },
     { name: "Labs Near Me", path: "/labs-near-me" },

@@ -54,14 +54,34 @@ const routes = [
     },
   },
   {
-    path:'/qrcodedata',
-    name:'QRcodeData',
+    path: "/Careers",
+    name: "JobListing",
+    component: () => import("@/Careers/JobListing.vue"),
+    meta: {
+      title: "Join Blood Test Near Me | Careers & Job Opportunities in Healthcare",
+      description:
+        "Explore exciting career opportunities at Blood Test Near Me. Join our team of healthcare and technology professionals dedicated to delivering reliable diagnostic services and exceptional patient care. Apply now to grow your career with us.",
+    },
+  },
+  {
+    path: "/ApplyJob",
+    name: "JobApply",
+    component: () => import("@/Careers/JobApply.vue"),
+    meta: {
+      title: "Join Blood Test Near Me | Careers & Job Opportunities in Healthcare",
+      description:
+        "Explore exciting career opportunities at Blood Test Near Me. Join our team of healthcare and technology professionals dedicated to delivering reliable diagnostic services and exceptional patient care. Apply now to grow your career with us.",
+    },
+  },
+  {
+    path: '/qrcodedata',
+    name: 'QRcodeData',
     component: () => import('@/QRscan/QRcodeData.vue'),
   },
-  
+
   {
-    path:'/blogspreview',
-    name:'BlogsPreview',
+    path: '/blogspreview',
+    name: 'BlogsPreview',
     component: () => import('@/Blogs/BlogsPreview.vue'),
     meta: {
       title: "Blood Test Near Me - Health Blog",
@@ -70,8 +90,8 @@ const routes = [
     },
   },
   {
-    path:'/blogdetails',
-    name:'BlogDetails',
+    path: '/blogdetails',
+    name: 'BlogDetails',
     component: () => import('@/Blogs/BlogDetails.vue'),
     meta: {
       title: "Blood Test Near Me - Health Blog",
@@ -82,7 +102,7 @@ const routes = [
   {
     path: '/add-diagnostic-center',
     name: 'AddDiagnosticCenter',
-    component: () => import('@/Address/AddDiagnosticCenter.vue'), 
+    component: () => import('@/Address/AddDiagnosticCenter.vue'),
     meta: {
       title: "Book Blood Tests in Bangalore | Thyrocare Lab",
       description:
@@ -90,8 +110,8 @@ const routes = [
     },
   },
   {
-    path:'/labs-near-me',
-    name:'LabsNearMe',
+    path: '/labs-near-me',
+    name: 'LabsNearMe',
     component: () => import('@/Address/LabsNearMe.vue'),
     meta: {
       title: "Book Blood Tests in Bangalore | Thyrocare Lab",
@@ -100,45 +120,45 @@ const routes = [
     },
   },
   {
-     path:'/terms-Conditions',
-      name:'TermsAndCondition',
-      component: () => import('@/Pages/TermsAndCondition.vue'),
-      meta: {
+    path: '/terms-Conditions',
+    name: 'TermsAndCondition',
+    component: () => import('@/Pages/TermsAndCondition.vue'),
+    meta: {
       title: "Book Blood Tests in Bangalore | Terms and Conditions",
       description:
         "Book blood tests online in Bangalore with Thyrocare. Get free home sample collection and quick digital reports.",
     },
-    },
-    {
-      path:'/contact-us',
-      name:'ContactUs',
-      component: () => import('@/Pages/ContactUs.vue'),
-      meta: {
+  },
+  {
+    path: '/contact-us',
+    name: 'ContactUs',
+    component: () => import('@/Pages/ContactUs.vue'),
+    meta: {
       title: "Contact Us | Thyrocare Health Checkups and Blood Tests",
       description:
         "Contact Thyrocare Bangalore for home blood sample collection. Call us or book online for reliable diagnostics at your convenience.",
     },
-    },
-    {
-      path:'/about-us',
-      name:'AboutUs',
-      component: () => import('@/Pages/AboutUs.vue'),
-      meta: {
+  },
+  {
+    path: '/about-us',
+    name: 'AboutUs',
+    component: () => import('@/Pages/AboutUs.vue'),
+    meta: {
       title: "About Blood Test Near Me – Thyrocare Bangalore",
       description:
         "Explore lab tests in Bangalore. Home sample collection, health packages, and online booking. Your health journey starts here",
     },
-    },
-    {
-      path:'/privacy-policy',
-      name:'PrivavyAndPolicy',
-      component: () => import('@/Pages/PrivavyAndPolicy.vue'),
-      meta: {
+  },
+  {
+    path: '/privacy-policy',
+    name: 'PrivavyAndPolicy',
+    component: () => import('@/Pages/PrivavyAndPolicy.vue'),
+    meta: {
       title: "Book Blood Tests in Bangalore | Privacy and policy",
       description:
         "Book blood tests online in Bangalore with Thyrocare. Get free home sample collection and quick digital reports.",
     },
-    }
+  }
 
 ]
 
