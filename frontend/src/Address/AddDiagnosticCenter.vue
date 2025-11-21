@@ -1,19 +1,17 @@
 <template>
   <div>
-    <!-- Main Section -->
-    <div class="container mx-auto px-6 py-8">
-      <h2 class="text-3xl font-semibold mb-6 text-gray-800">
+    <div class="container mx-auto px-4 py-6">
+      <h2 class="text-3xl font-semibold mb-4 bold-test-color">
         Diagnostic Center Contact Information
       </h2>
 
-      <!-- ✅ Element Plus Form -->
       <el-form
         ref="formRef"
         :model="form"
         :rules="rules"
         label-position="top"
         @submit.prevent="handleSubmit"
-        class="grid grid-cols-2 gap-x-4 gap-y-3 bg-white p-6 rounded-lg shadow-sm border border-gray-200"
+        class="grid grid-cols-2 gap-x-4 gap-y-3 bg-white p-3 rounded-lg shadow-sm border border-gray-200"
       >
         <!-- Lab Name -->
         <el-form-item label="Lab Name" prop="labName">
@@ -21,7 +19,7 @@
             v-model="form.labName"
             type="text"
             placeholder="Enter Lab Name"
-            class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:border-purple-600"
+            class="w-full border border-gray-300 rounded-md px-3 py-2"
           />
         </el-form-item>
 
@@ -31,7 +29,7 @@
             v-model="form.address"
             placeholder="Enter Address"
             rows="1"
-            class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:border-purple-600"
+            class="w-full border border-gray-300 rounded-md px-3 py-2"
           ></textarea>
         </el-form-item>
 
@@ -41,7 +39,7 @@
             v-model="form.phone"
             type="text"
             placeholder="Enter Phone Number"
-            class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:border-purple-600"
+            class="w-full border border-gray-300 rounded-md px-3 py-2"
           />
         </el-form-item>
 
@@ -51,7 +49,7 @@
             v-model="form.city"
             type="text"
             placeholder="Enter City"
-            class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:border-purple-600"
+            class="w-full border border-gray-300 rounded-md px-3 py-2"
           />
         </el-form-item>
 
@@ -61,7 +59,7 @@
             v-model="form.state"
             type="text"
             placeholder="Enter State"
-            class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:border-purple-600"
+            class="w-full border border-gray-300 rounded-md px-3 py-1"
           />
         </el-form-item>
 
@@ -71,35 +69,48 @@
             v-model="form.pincode"
             type="text"
             placeholder="Enter Pincode"
-            class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:border-purple-600"
+            class="w-full border border-gray-300 rounded-md px-3 py-1"
           />
         </el-form-item>
 
         <!-- Location Link -->
-        <el-form-item label="Location Link" prop="locationLink" class="col-span-2">
+        <el-form-item label="Location Link" prop="locationLink">
           <input
             v-model="form.locationLink"
             type="text"
-            placeholder="Paste map or location link here"
-            class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:border-purple-600"
+            placeholder="Paste location link"
+            class="w-full border border-gray-300 rounded-md px-3 py-2"
+          />
+        </el-form-item>
+
+        <!-- Website -->
+        <el-form-item label="Website" prop="website">
+          <input
+            v-model="form.website"
+            type="text"
+            placeholder="Enter Website URL"
+            class="w-full border border-gray-300 rounded-md px-3 py-2"
           />
         </el-form-item>
 
         <!-- Buttons -->
-        <div class="col-span-2 flex justify-end mt-4 space-x-3">
+        <div class="col-span-2 flex justify-end mt-2 space-x-3">
           <el-button type="default" @click="resetForm">Cancel</el-button>
           <el-button type="primary" @click="handleSubmit">Submit</el-button>
         </div>
       </el-form>
+
+      <!-- Success / Error message -->
+      <p v-if="successMsg" class="text-green-600 mt-1">{{ successMsg }}</p>
     </div>
   </div>
 </template>
-
 <script setup>
 import { ref, reactive } from "vue";
 import { ElMessage } from "element-plus";
 
 const formRef = ref();
+const successMsg = ref("");
 
 const form = reactive({
   labName: "",
@@ -109,48 +120,91 @@ const form = reactive({
   state: "",
   pincode: "",
   locationLink: "",
+  website: "",
 });
 
-// ✅ Validation Rules
 const rules = {
   labName: [{ required: true, message: "Please enter Lab Name", trigger: "blur" }],
-  address: [{ required: true, message: "Please enter Address", trigger: "blur" }],
-  phone: [
-    { required: true, message: "Please enter Phone Number", trigger: "blur" },
-    { pattern: /^[0-9]{10}$/, message: "Phone must be 10 digits", trigger: "blur" },
+
+  // Address must be minimum 25 characters
+  address: [
+    { required: true, message: "Please enter Address", trigger: "blur" },
+    {
+      min: 25,
+      message: "Address must be at least 25 characters",
+      trigger: "blur",
+    },
   ],
+
+  // Phone validation
+phone: [
+  { required: true, message: "Please enter Phone Number", trigger: "blur" },
+
+  {
+    validator: (rule, value, callback) => {
+      const digitsOnly = value.replace(/\D/g, ""); // remove non-digits
+
+      if (!digitsOnly) {
+        callback(new Error("Please enter your mobile number."));
+      } 
+      else if (!/^[6-9]\d{0,9}$/.test(digitsOnly)) {
+        callback(new Error("Please enter a valid Indian mobile number."));
+      } 
+      else if (digitsOnly.length > 10) {
+        callback(new Error("Mobile number cannot exceed 10 digits."));
+      } 
+      else if (digitsOnly.length < 10) {
+        callback(new Error("Mobile number must be 10 digits."));
+      } 
+      else {
+        callback(); // valid
+      }
+    },
+    trigger: "blur",
+  },
+],
+
+
   city: [{ required: true, message: "Please enter City", trigger: "blur" }],
   state: [{ required: true, message: "Please enter State", trigger: "blur" }],
+
+  // Pincode validation
   pincode: [
     { required: true, message: "Please enter Pincode", trigger: "blur" },
-    { pattern: /^[0-9]{6}$/, message: "Pincode must be 6 digits", trigger: "blur" },
+    { pattern: /^[1-9][0-9]{5}$/, message: "Enter valid 6-digit pincode", trigger: "blur" },
   ],
+
+  // Location link URL validation
   locationLink: [
-    { required: true, message: "Please paste location link", trigger: "blur" },
+    { required: true, message: "Please enter location link", trigger: "blur" },
     {
       validator: (rule, value, callback) => {
         try {
           new URL(value);
           callback();
         } catch {
-          callback(new Error("Enter a valid URL"));
+          callback(new Error("Enter valid URL"));
         }
       },
       trigger: "blur",
     },
   ],
+
+  // Website validation (must be a real website)
+website: [],
+
 };
 
-// ✅ Reset Form
 const resetForm = () => {
   formRef.value.resetFields();
+  // ❌ Do not clear successMsg here
 };
 
-// ✅ Submit Handler (Relative URL)
 const handleSubmit = () => {
   formRef.value.validate(async (valid) => {
     if (!valid) {
-      ElMessage.error("Please fill all required fields correctly.");
+      successMsg.value = "Please fill all required fields correctly.";
+      console.log("Form validation failed");
       return;
     }
 
@@ -163,45 +217,45 @@ const handleSubmit = () => {
         state: form.state,
         pincode: form.pincode,
         map_embed_link: form.locationLink,
+        website: form.website,
         workflow_state: "Created",
       };
 
-      // ✅ Relative path (no localhost:8000)
-      const response = await fetch(
+      const res = await fetch(
         "/api/method/bloodtestnearme.api.diagnostic_center.create_diagnostic_center",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(payload),
         }
-      );
+      ).then((r) => r.json());
 
-      const data = await response.json();
+      // 🔥 Show entire response in console
+      console.log("API Response:", res);
 
-      if (
-        data.message?.status === "success" ||
-        data.message?.message?.includes("Diagnostic Center created successfully")
-      ) {
-        ElMessage.success("Diagnostic Center data submitted successfully!");
+      if (res.message?.message === "Diagnostic Center created successfully") {
+        successMsg.value = res.message.message;
         resetForm();
       } else {
-        ElMessage.error("Failed to submit data. Please try again.");
+        successMsg.value =
+          res.message?.message || "Something went wrong. Please try again.";
       }
     } catch (err) {
       console.error("Error:", err);
-      ElMessage.error("Something went wrong. Please try again.");
+      successMsg.value = "Something went wrong. Please try again.";
     }
   });
 };
+
 </script>
 
 <style scoped>
-.el-form-item__label {
-  font-weight: 500;
-  color: #374151;
+.el-form-item {
+  margin-bottom: 8px !important;
 }
 
-.el-form-item {
-  margin-bottom: 12px !important;
+:deep(.el-form-item__label) {
+  color: #001D55 !important;
 }
 </style>
+

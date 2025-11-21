@@ -1,7 +1,7 @@
 <template>
   <div class="container mx-auto p-6">
     <h1 class="text-5xl font-bold mb-6 bold-test-color">Privacy Policy</h1>
-    <p class="mb-4 text-gray-600">
+    <p class="mb-4">
       This Privacy Policy explains how we collect, use, and protect your information when you use our services.
     </p>
 
@@ -185,5 +185,8 @@
 <style scoped>
 .container {
   line-height: 1.7;
+}
+p{
+color: #001D55;
 }
 </style>

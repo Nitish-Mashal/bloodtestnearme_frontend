@@ -1,7 +1,7 @@
 <template>
   <div class="container mx-auto p-6">
     <h1 class="text-5xl font-bold mb-6 text-gray-800">Terms &amp; Conditions</h1>
-    <p class="mb-4 text-gray-600">
+    <p class="mb-4">
       Please read these Terms and Conditions carefully before using our platform. By accessing or using our services, you agree to be bound by these terms.
     </p>
 
@@ -160,5 +160,7 @@
 </template>
 
 <style scoped>
-
+p{
+color: #001D55;
+}
 </style>

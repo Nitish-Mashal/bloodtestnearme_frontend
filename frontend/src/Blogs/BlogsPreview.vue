@@ -47,7 +47,8 @@
         </div>
 
         <!-- 🔸 Footer with line -->
-        <div class="border-t border-[#2077BF] px-3 p-2">
+        <div class="border-t border-[#2077BF] px-3 p-2"   style="height: 35px;"
+>
           <div class="text-gray-500 text-xs">
               {{ formatDate(card.blog_date) }}
           </div>

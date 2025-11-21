@@ -80,15 +80,34 @@
           {{ center.address }}, {{ center.city }}, {{ center.state }} - {{ center.pincode }}
         </p>
 
+        <!-- Website (show only when is_website == Yes) -->
+        <div v-if="center.is_website === 'Yes' && center.website" class="mb-3">
+          <a
+            :href="center.website.startsWith('http') ? center.website : 'https://' + center.website"
+            target="_blank"
+            class="text-[#001D55] underline flex items-center gap-2 text-sm font-semibold"
+          >
+            <!-- Globe Icon -->
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+              stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-[#001D55]">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18Zm0 0c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m-9 9h18" />
+            </svg>
+            {{ center.website }}
+          </a>
+        </div>
+
         <!-- Buttons -->
         <div class="flex flex-col sm:flex-row gap-3 mt-auto">
+
+          <!-- Phone Button (Show only when is_phone == Yes) -->
           <a
+            v-if="center.is_phone === 'Yes' && center.phone_number"
             :href="'tel:' + center.phone_number"
             class="global-bg-color text-white text-sm px-2 py-2 rounded-full hover:bg-blue-700 flex items-center justify-center gap-2 transition w-full sm:w-auto"
           >
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-              stroke-width="1.5" stroke="currentColor"
-              class="w-4 h-4 text-white">
+              stroke-width="1.5" stroke="currentColor" class="w-4 h-4 text-white">
               <path stroke-linecap="round" stroke-linejoin="round"
                 d="M2.25 6.75c0 8.284 6.716 15 
                 15 15h2.25a2.25 2.25 0 0 0 
@@ -101,6 +120,7 @@
             {{ center.phone_number }}
           </a>
 
+          <!-- Google Map -->
           <a
             v-if="center.map_embed_link"
             :href="center.map_embed_link"
@@ -121,6 +141,7 @@
             </svg>
             Open in Google Maps
           </a>
+
         </div>
       </div>
     </div>
@@ -140,7 +161,7 @@ const cityQuery = ref("");
 const apiUrl =
   "/api/method/bloodtestnearme.api.diagnostic_center.get_accepted_diagnostic_centers";
 
-// ✅ Fetch centers from backend
+// Fetch centers
 onMounted(async () => {
   try {
     const response = await axios.get(apiUrl);
@@ -159,7 +180,7 @@ onMounted(async () => {
   }
 });
 
-// ✅ Computed property for filtered results
+// Filter centers
 const filteredCenters = computed(() => {
   const pin = pincodeQuery.value.trim().toLowerCase();
   const city = cityQuery.value.trim().toLowerCase();

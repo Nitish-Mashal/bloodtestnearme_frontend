@@ -80,7 +80,7 @@
 
         <!-- Right Column -->
         <div class="md:w-2/5">
-          <img src="/bloodtest.png" alt="Doctor" class="w-full h-[400px] rounded-xl shadow-md" />
+          <img src="/files/bloodtest.png" alt="Doctor" class="w-full h-[400px] rounded-xl shadow-md" />
         </div>
       </div>
     </section>
@@ -99,7 +99,7 @@
         <!-- Card 1 -->
         <div class="transform -translate-y-4">
           <div class="rounded-2xl overflow-hidden shadow-md">
-            <img src="/Trained-Phlebotomists.jpg" alt="Trained Phlebotomists" class="w-full h-80 object-cover" />
+            <img src="/files/Trained-Phlebotomists.jpg" alt="Trained Phlebotomists" class="w-full h-80 object-cover" />
           </div>
           <h3 class="font-semibold text-lg bold-test-color mt-3">Trained Phlebotomists</h3>
         </div>
@@ -107,7 +107,7 @@
         <!-- Card 2 -->
         <div class="transform translate-y-4">
           <div class="rounded-2xl overflow-hidden shadow-md">
-            <img src="/Advanced-Diagnostic-Equipment.jpg" alt="Advanced Diagnostic Equipment"
+            <img src="/files/Advanced-Diagnostic-Equipment.jpg" alt="Advanced Diagnostic Equipment"
               class="w-full h-80 object-cover" />
           </div>
           <h3 class="font-semibold text-lg bold-test-color mt-3">Advanced Diagnostic Equipment</h3>
@@ -116,7 +116,7 @@
         <!-- Card 3 -->
         <div class="transform -translate-y-4">
           <div class="rounded-2xl overflow-hidden shadow-md">
-            <img src="/Advanced-manufacture-machine.jpg" alt="Sterile and Hygienic Process"
+            <img src="/files/Advanced-manufacture-machine.jpg" alt="Sterile and Hygienic Process"
               class="w-full h-80 object-cover" />
           </div>
           <h3 class="font-semibold text-lg bold-test-color mt-3">Sterile and Hygienic Process</h3>
@@ -125,7 +125,7 @@
         <!-- Card 4 -->
         <div class="transform translate-y-4">
           <div class="rounded-2xl overflow-hidden shadow-md">
-            <img src="/Enjoy-your-treatment.png" alt="Enjoy Your Treatment" class="w-full h-80 object-cover" />
+            <img src="/files/Enjoy-your-treatment.png" alt="Enjoy Your Treatment" class="w-full h-80 object-cover" />
           </div>
           <h3 class="font-semibold text-lg bold-test-color mt-3">Enjoy Your Treatment</h3>
         </div>
@@ -245,4 +245,8 @@ import Testimonial from '@/Home/Testimonial.vue';
 </script>
 
 
-<style scoped></style>
+<style scoped>
+p{
+color: #001D55;
+}
+</style>

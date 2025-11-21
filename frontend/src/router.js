@@ -63,41 +63,81 @@ const routes = [
     path:'/blogspreview',
     name:'BlogsPreview',
     component: () => import('@/Blogs/BlogsPreview.vue'),
+    meta: {
+      title: "Blood Test Near Me - Health Blog",
+      description:
+        "Explore informative health articles on Blood Test Near Me blog. Stay updated on lab tests, wellness, and healthcare insights.",
+    },
   },
   {
     path:'/blogdetails',
     name:'BlogDetails',
     component: () => import('@/Blogs/BlogDetails.vue'),
+    meta: {
+      title: "Blood Test Near Me - Health Blog",
+      description:
+        "Explore informative health articles on Blood Test Near Me blog. Stay updated on lab tests, wellness, and healthcare insights.",
+    },
   },
   {
     path: '/add-diagnostic-center',
     name: 'AddDiagnosticCenter',
     component: () => import('@/Address/AddDiagnosticCenter.vue'), 
+    meta: {
+      title: "Book Blood Tests in Bangalore | Thyrocare Lab",
+      description:
+        "Book blood tests online in Bangalore with Thyrocare. Get free home sample collection and quick digital reports.",
+    },
   },
   {
     path:'/labs-near-me',
     name:'LabsNearMe',
     component: () => import('@/Address/LabsNearMe.vue'),
+    meta: {
+      title: "Book Blood Tests in Bangalore | Thyrocare Lab",
+      description:
+        "Book blood tests online in Bangalore with Thyrocare. Get free home sample collection and quick digital reports.",
+    },
   },
   {
      path:'/terms-Conditions',
       name:'TermsAndCondition',
       component: () => import('@/Pages/TermsAndCondition.vue'),
+      meta: {
+      title: "Book Blood Tests in Bangalore | Terms and Conditions",
+      description:
+        "Book blood tests online in Bangalore with Thyrocare. Get free home sample collection and quick digital reports.",
+    },
     },
     {
       path:'/contact-us',
       name:'ContactUs',
       component: () => import('@/Pages/ContactUs.vue'),
+      meta: {
+      title: "Contact Us | Thyrocare Health Checkups and Blood Tests",
+      description:
+        "Contact Thyrocare Bangalore for home blood sample collection. Call us or book online for reliable diagnostics at your convenience.",
+    },
     },
     {
       path:'/about-us',
       name:'AboutUs',
       component: () => import('@/Pages/AboutUs.vue'),
+      meta: {
+      title: "About Blood Test Near Me – Thyrocare Bangalore",
+      description:
+        "Explore lab tests in Bangalore. Home sample collection, health packages, and online booking. Your health journey starts here",
+    },
     },
     {
       path:'/privacy-policy',
       name:'PrivavyAndPolicy',
       component: () => import('@/Pages/PrivavyAndPolicy.vue'),
+      meta: {
+      title: "Book Blood Tests in Bangalore | Privacy and policy",
+      description:
+        "Book blood tests online in Bangalore with Thyrocare. Get free home sample collection and quick digital reports.",
+    },
     }
 
 ]
