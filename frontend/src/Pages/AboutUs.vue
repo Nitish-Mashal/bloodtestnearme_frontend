@@ -80,7 +80,11 @@
 
         <!-- Right Column -->
         <div class="md:w-2/5">
-          <img src="/files/bloodtest.png" alt="Doctor" class="w-full h-[400px] rounded-xl shadow-md" />
+          <div
+  class="w-full h-[400px] rounded-xl shadow-md bg-cover bg-center"
+  style="background-image: url('/files/bloodtest.png');"
+></div>
+
         </div>
       </div>
     </section>
@@ -99,7 +103,11 @@
         <!-- Card 1 -->
         <div class="transform -translate-y-4">
           <div class="rounded-2xl overflow-hidden shadow-md">
-            <img src="/files/Trained-Phlebotomists.jpg" alt="Trained Phlebotomists" class="w-full h-80 object-cover" />
+            <div
+  class="w-full h-80 object-cover bg-cover bg-center"
+  style="background-image: url('/files/Trained-Phlebotomists.jpg');"
+></div>
+
           </div>
           <h3 class="font-semibold text-lg bold-test-color mt-3">Trained Phlebotomists</h3>
         </div>
@@ -107,8 +115,11 @@
         <!-- Card 2 -->
         <div class="transform translate-y-4">
           <div class="rounded-2xl overflow-hidden shadow-md">
-            <img src="/files/Advanced-Diagnostic-Equipment.jpg" alt="Advanced Diagnostic Equipment"
-              class="w-full h-80 object-cover" />
+           <div
+  class="w-full h-80 object-cover bg-cover bg-center"
+  style="background-image: url('/files/Advanced-Diagnostic-Equipment.jpg');"
+></div>
+
           </div>
           <h3 class="font-semibold text-lg bold-test-color mt-3">Advanced Diagnostic Equipment</h3>
         </div>
@@ -116,8 +127,11 @@
         <!-- Card 3 -->
         <div class="transform -translate-y-4">
           <div class="rounded-2xl overflow-hidden shadow-md">
-            <img src="/files/Advanced-manufacture-machine.jpg" alt="Sterile and Hygienic Process"
-              class="w-full h-80 object-cover" />
+<div
+  class="w-full h-80 object-cover bg-cover bg-center"
+  style="background-image: url('/files/Advanced-manufacture-machine.jpg');"
+></div>
+
           </div>
           <h3 class="font-semibold text-lg bold-test-color mt-3">Sterile and Hygienic Process</h3>
         </div>
@@ -125,7 +139,11 @@
         <!-- Card 4 -->
         <div class="transform translate-y-4">
           <div class="rounded-2xl overflow-hidden shadow-md">
-            <img src="/files/Enjoy-your-treatment.png" alt="Enjoy Your Treatment" class="w-full h-80 object-cover" />
+            <div
+  class="w-full h-80 object-cover bg-cover bg-center"
+  style="background-image: url('/files/Enjoy-your-treatment.png');"
+></div>
+
           </div>
           <h3 class="font-semibold text-lg bold-test-color mt-3">Enjoy Your Treatment</h3>
         </div>

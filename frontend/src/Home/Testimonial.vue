@@ -122,7 +122,7 @@
                         </div>
                     </div>
                     <div class="sm:mt-0">
-                        <img src="/files/whatsapp.png" alt="whatsappLogo" class="h-16 sm:h-20 mx-auto sm:mx-0" />
+                        <img src="/whatsapp.png" alt="whatsappLogo" class="h-16 sm:h-20 mx-auto sm:mx-0" />
                     </div>
                 </div>
             </div>

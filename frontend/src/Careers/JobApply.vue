@@ -115,8 +115,7 @@
                 </div>
 
                 <!-- Submit Button (Right Side) -->
-                <button class="cursor-pointer bg-[#001D55] text-white px-5 py-1 rounded-full 
-               hover:bg-gray-100 hover:text-[#001D55] transition inline-flex items-center whitespace-nowrap"
+                <button class="cursor-pointer bg-[#2077BF] text-white px-5 py-1 rounded-full hover:text-[#001D55] transition inline-flex items-center whitespace-nowrap"
                     @click="submitForm">
                     Submit
                 </button>

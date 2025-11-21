@@ -2,7 +2,11 @@
   <div>
     <!-- Banner -->
     <div class="relative">
-      <img src="/files/contact-us.jpg" alt="Contact Us" class="w-full h-72 object-cover" />
+      <div
+  class="w-full h-72 bg-cover bg-center"
+  style="background-image: url('/files/contact-us.jpg');"
+>
+</div>
     </div>
 
     <!-- Main Section -->
@@ -94,11 +98,11 @@
           <!-- Right Blue Section -->
           <div class="relative global-bg-color flex items-center justify-center">
             <div class="absolute -left-56 hidden md:flex items-center justify-center bg-transparent">
-              <img
-                src="/files/contact-view.jpg"
-                alt="Contact Representative"
-                class="w-96 h-96 object-cover rounded-full shadow-lg"
-              />
+          <div
+            class="w-96 h-96 rounded-full shadow-lg bg-cover bg-center"
+            style="background-image: url('/files/contact-view.jpg');"
+          ></div>
+
             </div>
           </div>
 

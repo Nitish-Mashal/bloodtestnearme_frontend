@@ -39,7 +39,7 @@
       <div class="flex items-center justify-between w-full md:w-auto">
         <div class="flex items-center space-x-2 bg-white rounded-full px-20 py-1">
           <router-link to="/">
-            <img src="/files/bloodtestnearmelogo.png" alt="Blood Test Near Me Healthcare" class="h-6 w-70" />
+            <img src="/bloodtestnearmelogo.png" alt="Blood Test Near Me Healthcare" class="h-6 w-70" />
           </router-link>
         </div>
 
