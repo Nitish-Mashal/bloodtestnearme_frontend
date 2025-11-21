@@ -54,51 +54,71 @@ const routes = [
     },
   },
   {
-    path:'/qrcodedata',
-    name:'QRcodeData',
+    path: "/Careers",
+    name: "JobListing",
+    component: () => import("@/Careers/JobListing.vue"),
+    meta: {
+      title: "Join Blood Test Near Me | Careers & Job Opportunities in Healthcare",
+      description:
+        "Explore exciting career opportunities at Blood Test Near Me. Join our team of healthcare and technology professionals dedicated to delivering reliable diagnostic services and exceptional patient care. Apply now to grow your career with us.",
+    },
+  },
+  {
+    path: "/ApplyJob",
+    name: "JobApply",
+    component: () => import("@/Careers/JobApply.vue"),
+    meta: {
+      title: "Join Blood Test Near Me | Careers & Job Opportunities in Healthcare",
+      description:
+        "Explore exciting career opportunities at Blood Test Near Me. Join our team of healthcare and technology professionals dedicated to delivering reliable diagnostic services and exceptional patient care. Apply now to grow your career with us.",
+    },
+  },
+  {
+    path: '/qrcodedata',
+    name: 'QRcodeData',
     component: () => import('@/QRscan/QRcodeData.vue'),
   },
-  
+
   {
-    path:'/blogspreview',
-    name:'BlogsPreview',
+    path: '/blogspreview',
+    name: 'BlogsPreview',
     component: () => import('@/Blogs/BlogsPreview.vue'),
   },
   {
-    path:'/blogdetails',
-    name:'BlogDetails',
+    path: '/blogdetails',
+    name: 'BlogDetails',
     component: () => import('@/Blogs/BlogDetails.vue'),
   },
   {
     path: '/add-diagnostic-center',
     name: 'AddDiagnosticCenter',
-    component: () => import('@/Address/AddDiagnosticCenter.vue'), 
+    component: () => import('@/Address/AddDiagnosticCenter.vue'),
   },
   {
-    path:'/labs-near-me',
-    name:'LabsNearMe',
+    path: '/labs-near-me',
+    name: 'LabsNearMe',
     component: () => import('@/Address/LabsNearMe.vue'),
   },
   {
-     path:'/terms-Conditions',
-      name:'TermsAndCondition',
-      component: () => import('@/Pages/TermsAndCondition.vue'),
-    },
-    {
-      path:'/contact-us',
-      name:'ContactUs',
-      component: () => import('@/Pages/ContactUs.vue'),
-    },
-    {
-      path:'/about-us',
-      name:'AboutUs',
-      component: () => import('@/Pages/AboutUs.vue'),
-    },
-    {
-      path:'/privacy-policy',
-      name:'PrivavyAndPolicy',
-      component: () => import('@/Pages/PrivavyAndPolicy.vue'),
-    }
+    path: '/terms-Conditions',
+    name: 'TermsAndCondition',
+    component: () => import('@/Pages/TermsAndCondition.vue'),
+  },
+  {
+    path: '/contact-us',
+    name: 'ContactUs',
+    component: () => import('@/Pages/ContactUs.vue'),
+  },
+  {
+    path: '/about-us',
+    name: 'AboutUs',
+    component: () => import('@/Pages/AboutUs.vue'),
+  },
+  {
+    path: '/privacy-policy',
+    name: 'PrivavyAndPolicy',
+    component: () => import('@/Pages/PrivavyAndPolicy.vue'),
+  }
 
 ]
 
