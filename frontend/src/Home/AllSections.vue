@@ -1,7 +1,7 @@
 <template>
     <div>
         <!-- Promotions only for DESKTOP -->
-        <div class="hidden sm:block">
+        <div v-if="hasPromotions" class="hidden sm:block">
             <Promotions />
         </div>
 
@@ -16,8 +16,9 @@
     </div>
 </template>
 
-
 <script>
+import axios from "axios";
+import { ref, onMounted } from "vue";
 import { defineAsyncComponent } from "vue";
 
 export default {
@@ -40,5 +41,25 @@ export default {
             import("./CitiesWeAreIn.vue")
         ),
     },
+
+    setup() {
+        const hasPromotions = ref(false);
+
+        const checkPromotions = async () => {
+            try {
+                const res = await axios.get("/api/method/bloodtestnearme.api.offers.get_offers");
+                const list = res.data?.message || res.data?.data || [];
+
+                hasPromotions.value = Array.isArray(list) && list.length > 0;
+            } catch (err) {
+                console.error("Error fetching promotions:", err);
+                hasPromotions.value = false;
+            }
+        };
+
+        onMounted(checkPromotions);
+
+        return { hasPromotions };
+    }
 };
 </script>

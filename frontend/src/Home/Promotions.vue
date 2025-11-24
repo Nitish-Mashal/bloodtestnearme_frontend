@@ -62,10 +62,6 @@ const fetchOffers = async () => {
 
 // robust handler for different event shapes
 const onSlideChange = (payload) => {
-  // payload could be:
-  // - a number (index)
-  // - an object like { slidingTo: 2 }
-  // - an event wrapper (different libs) — try a few properties
   let idx = null;
 
   if (typeof payload === "number") {
