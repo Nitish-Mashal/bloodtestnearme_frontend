@@ -1,20 +1,20 @@
 <template>
     <div>
-        <div class="sm:h-[400px] sm:w-full bg-cover bg-center"
-            :style="{ backgroundImage: `url('/files/AddressDetails.jpg')` }">
+        <div class="h-[250px] sm:h-[400px] w-full bg-cover bg-center"
+            :style="{ backgroundImage: 'url(/files/AddressDetails.jpg)' }">
         </div>
         <div class="container">
             <div class="text-3xl font-semibold bold-test-color pt-3 pb-3">
                 Our Address
             </div>
             <div class="text-lg bold-test-color pb-3">
-                <div class="flex gap-10">
-                    <div class="pb-3">
+                <div class="row">
+                    <div class="col-md-6 pb-3">
                         Blood Test Near Me Pvt. Ltd.<br>
                         123 Health St., Wellness City, Fit State, 456789
                         Country
                     </div>
-                    <div class="pb-3">
+                    <div class="col-md-6 pb-3">
                         Phone: +1 (234) 567-8901<br>
                         Email: bloodtestnearme@bloodtestnearme.com
                     </div>
