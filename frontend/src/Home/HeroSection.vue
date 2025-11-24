@@ -9,7 +9,7 @@
 
     <!-- Hero Section -->
     <section
-      class="relative bg-cover bg-center bg-no-repeat flex flex-col sm:flex-row items-center justify-center sm:justify-end py-10 sm:py-22 md:py-[100px] px-4 sm:px-6 md:pr-20"
+      class="relative bg-cover bg-center bg-no-repeat flex flex-col sm:flex-row items-center justify-center sm:justify-end py-10 sm:py-22 md:py-[100px] px-4 m:px-6 md:pr-20"
       style="background-image: url('/files/Stickyimage.jpg')">
 
       <div class="absolute inset-0 bg-black/10"></div>

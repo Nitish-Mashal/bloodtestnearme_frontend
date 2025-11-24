@@ -37,7 +37,7 @@
 
                   <!-- Image -->
                   <router-link :to="`/${pkg.url}`" class="no-underline rounded-2">
-                    <img :src="pkg.image || '/files/placeholder.jpg'" class="w-full h-36 object-cover p-2" />
+                    <img :src="pkg.image || '/files/placeholder.jpg'" class="w-96 h-36 object-cover p-2 rounded-xl" />
                   </router-link>
 
                   <!-- Content -->
