@@ -76,8 +76,7 @@
                     <strong>Powered by</strong> Quantumberg Technologies Pvt. Ltd.
                 </a>
 
-                <a href="https://triguna.quantumberg.com/login#login" target="_blank" rel="noopener noreferrer"
-                    class="text-white no-underline hover:underline sm:ml-auto">
+                <a @click="handleLogin" class="cursor-pointer text-white no-underline hover:underline sm:ml-auto">
                     <strong>Login</strong>
                 </a>
             </div>
@@ -111,6 +110,16 @@ const quickLinks = [
     { name: "Add Diagnostic Center", path: "/add-diagnostic-center" },
     { name: "Labs Near Me", path: "/labs-near-me" },
 ];
+
+const handleLogin = () => {
+    const isLoggedIn = document.cookie.includes("sid=");
+
+    if (isLoggedIn) {
+        window.location.href = "/app/users";
+    } else {
+        window.location.href = "/login?redirect-to=/app/users";
+    }
+};
 
 /* ✅ Reactive Variables */
 const popularPackages = ref([]);

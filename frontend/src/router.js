@@ -140,6 +140,16 @@ const routes = [
     },
   },
   {
+    path: '/AddressDetails',
+    name: 'AddressDetails',
+    component: () => import('@/Pages/AddressDetails.vue'),
+    meta: {
+      title: "AddressDetails | Thyrocare Health Checkups and Blood Tests",
+      description:
+        "Contact Thyrocare Bangalore for home blood sample collection. Call us or book online for reliable diagnostics at your convenience.",
+    },
+  },
+  {
     path: '/about-us',
     name: 'AboutUs',
     component: () => import('@/Pages/AboutUs.vue'),
