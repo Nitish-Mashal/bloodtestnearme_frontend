@@ -94,7 +94,7 @@
                         </button>
                       </router-link>
 
-                      <router-link :to="`/${pkg.url}`" class="w-1/2 no-underline">
+                      <router-link :to="`/packages/${pkg.url}`" class="w-1/2 no-underline">
                         <button
                           class="border border-[#001D55] font-semibold text-xs bold-test-color px-2 py-1 rounded-full hover:bg-gray-100 transition w-full">
                           View Details

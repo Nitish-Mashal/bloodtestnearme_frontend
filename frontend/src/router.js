@@ -31,16 +31,16 @@ const routes = [
         "Book blood tests online in Bangalore with Thyrocare. Get free home sample collection and quick digital reports.",
     },
   },
+  // {
+  //   path: "/:url",
+  //   name: "HealthCheckupDetails",
+  //   component: () => import("@/HealthCheckupDetails/HealthCheckupDetails.vue"),
+  //   props: true,
+  // },
   {
-    path: "/insights",
-    name: "Insights",
-    component: () => window.location.href = "/insights",  // pass-through to Frappe
-  },
-  {
-    path: "/:url",
+    path: "/packages/:url",
     name: "HealthCheckupDetails",
     component: () => import("@/HealthCheckupDetails/HealthCheckupDetails.vue"),
-    props: true,
   },
   {
     path: "/book/:slug",
