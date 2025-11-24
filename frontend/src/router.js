@@ -32,6 +32,11 @@ const routes = [
     },
   },
   {
+    path: "/insights",
+    name: "Insights",
+    component: () => window.location.href = "/insights",  // pass-through to Frappe
+  },
+  {
     path: "/:url",
     name: "HealthCheckupDetails",
     component: () => import("@/HealthCheckupDetails/HealthCheckupDetails.vue"),
