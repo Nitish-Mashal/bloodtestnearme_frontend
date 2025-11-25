@@ -34,14 +34,14 @@
 
     <!-- Navbar -->
     <nav
-      class="flex flex-col md:flex-row items-center justify-between px-6 md:px-20 py-2 global-bg-color relative text-white z-40 shadow-md">
+      class="flex flex-col md:flex-row items-center justify-between px-6 md:px-20 py-1 global-bg-color relative text-white z-40 shadow-md">
       <!-- Logo + Hamburger -->
       <div class="flex items-center justify-between w-full md:w-auto">
-        <div class="flex items-center space-x-2 bg-white rounded-full px-20 py-1">
-          <router-link to="/">
-            <img src="/bloodtestnearmelogo.png" alt="Blood Test Near Me Healthcare" class="h-6 w-70" />
-          </router-link>
-        </div>
+        <!-- <div class="flex items-center space-x-2 bg-white rounded-full px-10 py-1"> -->
+        <router-link to="/">
+          <img src="/trigunalogo.png" alt="Blood Test Near Me Healthcare" class="h-14" />
+        </router-link>
+        <!-- </div> -->
 
         <!-- Mobile Hamburger -->
         <button @click.stop="toggleMenu" aria-expanded="isMenuOpen" aria-label="Toggle menu"
@@ -117,13 +117,12 @@
         <div v-show="isMenuOpen" ref="menuRef" class="md:hidden w-full overflow-hidden">
           <ul class="flex flex-col py-2 transition-all duration-300 ease-in-out">
             <li>
-              <router-link @click="onMobileLinkClick" to="/blood-test-online-bangalore" class="block py-2 text-white">
+              <router-link @click="onMobileLinkClick" to="/blood-test-online" class="block py-2 text-white">
                 Book a Test
               </router-link>
             </li>
             <li>
-              <router-link @click="onMobileLinkClick" to="/health-checkup-packages-bangalore"
-                class="block py-2 text-white">
+              <router-link @click="onMobileLinkClick" to="/health-checkup-packages" class="block py-2 text-white">
                 Health Checkups
               </router-link>
             </li>
@@ -161,13 +160,13 @@
 
       <!-- Desktop Links -->
       <div class="hidden md:flex items-center space-x-8 font-normal">
-        <router-link to="/blood-test-online-bangalore" class="nav-link"
-          :class="{ 'active-link': route.path === '/blood-test-online-bangalore' }">
+        <router-link to="/blood-test-online" class="nav-link"
+          :class="{ 'active-link': route.path === '/blood-test-online' }">
           Book a Test
         </router-link>
 
-        <router-link to="/health-checkup-packages-bangalore" class="nav-link"
-          :class="{ 'active-link': route.path === '/health-checkup-packages-bangalore' }">
+        <router-link to="/health-checkup-packages" class="nav-link"
+          :class="{ 'active-link': route.path === '/health-checkup-packages' }">
           Health Checkups
         </router-link>
 

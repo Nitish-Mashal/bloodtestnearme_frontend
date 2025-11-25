@@ -1,10 +1,12 @@
 <template>
     <div>
-        <!-- Promotions only for DESKTOP -->
+
+        <!-- ⭐ Promotions for DESKTOP (only if data exists) -->
         <div v-if="hasPromotions" class="hidden sm:block">
             <Promotions />
         </div>
 
+        <!-- Other Sections -->
         <MostBookedHealthCheckups />
         <MostBookedBloodTests />
         <OurWorkFlow />
@@ -23,7 +25,10 @@ import { defineAsyncComponent } from "vue";
 
 export default {
     components: {
+        // Promotions (desktop)
         Promotions: defineAsyncComponent(() => import("./Promotions.vue")),
+
+        // Other components
         MostBookedHealthCheckups: defineAsyncComponent(() =>
             import("./MostBookedHealthCheckups.vue")
         ),
@@ -47,10 +52,17 @@ export default {
 
         const checkPromotions = async () => {
             try {
-                const res = await axios.get("/api/method/bloodtestnearme.api.offers.get_offers");
-                const list = res.data?.message || res.data?.data || [];
+                const res = await axios.get(
+                    "/api/method/bloodtestnearme.api.offers.get_offers"
+                );
+
+                const list =
+                    res.data?.message ||
+                    res.data?.data ||
+                    [];
 
                 hasPromotions.value = Array.isArray(list) && list.length > 0;
+
             } catch (err) {
                 console.error("Error fetching promotions:", err);
                 hasPromotions.value = false;

@@ -12,7 +12,7 @@ const routes = [
     },
   },
   {
-    path: "/health-checkup-packages-bangalore",
+    path: "/health-checkup-packages",
     name: "HealthCheckupList",
     component: () => import("@/HealthCheckupDetails/HealthCheckupList.vue"),
     meta: {
@@ -22,7 +22,7 @@ const routes = [
     },
   },
   {
-    path: "/blood-test-online-bangalore",
+    path: "/blood-test-online",
     name: "BloodTestList",
     component: () => import("@/BloodTest/BloodTestList.vue"),
     meta: {
@@ -35,6 +35,12 @@ const routes = [
     path: "/:url",
     name: "HealthCheckupDetails",
     component: () => import("@/HealthCheckupDetails/HealthCheckupDetails.vue"),
+    props: true,
+  },
+  {
+    path: "/not-found",
+    name: "NotFound",
+    component: () => import("@/NotFound.vue"),
     props: true,
   },
   {
@@ -154,7 +160,7 @@ const routes = [
     name: 'AboutUs',
     component: () => import('@/Pages/AboutUs.vue'),
     meta: {
-      title: "About Blood Test Near Me – Thyrocare Bangalore",
+      title: "About Blood Test Near Me - Thyrocare Bangalore",
       description:
         "Explore lab tests in Bangalore. Home sample collection, health packages, and online booking. Your health journey starts here",
     },
@@ -168,7 +174,19 @@ const routes = [
       description:
         "Book blood tests online in Bangalore with Thyrocare. Get free home sample collection and quick digital reports.",
     },
-  }
+  },
+
+  {
+    path: '/faq-details',
+    name: 'FAQDetails',
+    component: () => import('@/Home/FAQDetails.vue'),
+  },
+
+  // Catch All 404 | This should be the last route always
+  {
+    path: "/:pathMatch(.*)*",
+    redirect: "/not-found"
+  },
 
 ]
 

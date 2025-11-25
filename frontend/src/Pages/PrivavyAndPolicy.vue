@@ -1,192 +1,188 @@
 <template>
   <div class="container mx-auto p-6">
     <h1 class="text-5xl font-bold mb-6 bold-test-color">Privacy Policy</h1>
-    <p class="mb-4">
-      This Privacy Policy explains how we collect, use, and protect your information when you use our services.
+
+    <p class="mb-4 text-color-bold">
+      This Privacy Policy explains how we collect, use, store, and protect your information when you use our website,
+      mobile application, or any diagnostic and home sample collection services. By using our Services, you agree to
+      this Privacy Policy and our Terms of Use.
     </p>
 
-    <div class="space-y-6 text-gray-700">
+    <p class="text-color-bold mb-6">
+      This policy complies with the Information Technology Act, 2000, and the SPDI (Sensitive Personal Data or
+      Information) Rules, 2011.
+    </p>
 
-      <!-- Personal Information -->
+    <div class="space-y-6">
+
+      <!-- Information We Collect -->
       <div>
-        <h2 class="font-semibold text-2xl bold-test-color mb-1">Personal Information</h2>
-        <p>We collect personal information such as your name, contact details, age, and gender to facilitate blood test bookings.</p>
+        <h2 class="font-semibold text-2xl bold-test-color mb-1">1. Information We Collect</h2>
+
+        <p class="text-color-bold font-semibold">• Personal Information</p>
+        <p class="text-color-bold">
+          We may collect your name, phone number, email address, age, gender, and home address for sample collection and
+          service delivery.
+        </p>
+
+        <p class="text-color-bold font-semibold mt-3">• Sensitive Personal Data</p>
+        <p class="text-color-bold">
+          We collect health-related information such as diagnostic test details, prescriptions, medical history, and
+          test results.
+        </p>
+
+        <p class="text-color-bold font-semibold mt-3">• Automatically Collected Data</p>
+        <p class="text-color-bold">
+          We collect IP address, device details, browser information, and cookies for security and analytics.
+        </p>
       </div>
 
-      <!-- Medical Data -->
+      <!-- How We Use Your Information -->
       <div>
-        <h2 class="font-semibold text-2xl bold-test-color mb-1">Medical Data</h2>
-        <p>Your health information, including test details and results, may be collected and shared only with the selected partner laboratory for diagnostic purposes.</p>
-      </div>
+        <h2 class="font-semibold text-2xl bold-test-color mb-1">2. How We Use Your Information</h2>
 
-      <!-- Data Usage -->
-      <div>
-        <h2 class="font-semibold text-2xl bold-test-color mb-1">Data Usage</h2>
-        <ul class="list-disc list-inside ml-6">
-          <li>To provide and manage diagnostic services.</li>
-          <li>To improve service quality and user experience.</li>
-          <li>To communicate updates related to bookings and results.</li>
+        <p class="text-color-bold">Your information is used to:</p>
+
+        <ul class="list-disc list-inside ml-6 text-color-bold">
+          <li>Process diagnostic test bookings</li>
+          <li>Arrange home sample collection</li>
+          <li>Generate and deliver test reports</li>
+          <li>Improve user experience and service quality</li>
+          <li>Provide customer support</li>
+          <li>Comply with legal and regulatory requirements</li>
+          <li>Prevent fraud and enhance security</li>
         </ul>
+
+        <p class="text-color-bold mt-3">
+          Anonymized data may be used for analytics and service improvement.
+        </p>
       </div>
 
-      <!-- Data Sharing -->
+      <!-- Sharing of Information -->
       <div>
-        <h2 class="font-semibold text-2xl bold-test-color mb-1">Data Sharing</h2>
-        <p>We do not sell or rent your personal data. Information may be shared only with:</p>
-        <ul class="list-disc list-inside ml-6">
-          <li>Partner laboratories for testing and reporting.</li>
-          <li>Payment gateways for secure transactions.</li>
-          <li>Regulatory authorities when legally required.</li>
+        <h2 class="font-semibold text-2xl bold-test-color mb-1">3. Sharing of Information</h2>
+
+        <p class="text-color-bold">We share information only with:</p>
+
+        <ul class="list-disc list-inside ml-6 text-color-bold">
+          <li>Authorized diagnostic laboratories</li>
+          <li>Phlebotomists and collection partners</li>
+          <li>Logistics partners</li>
+          <li>Payment gateway providers</li>
+          <li>Regulatory authorities when required by law</li>
         </ul>
+
+        <p class="text-color-bold mt-2">We do not sell or rent your personal data.</p>
       </div>
 
-      <!-- Consent -->
+      <!-- Data Security -->
       <div>
-        <h2 class="font-semibold text-2xl bold-test-color mb-1">Consent</h2>
-        <p>By using our service, you consent to the collection and processing of your personal and medical data as described in this policy.</p>
-      </div>
+        <h2 class="font-semibold text-2xl bold-test-color mb-1">4. Data Security</h2>
 
-      <!-- Data Storage & Security -->
-      <div>
-        <h2 class="font-semibold text-2xl bold-test-color mb-1">Data Storage & Security</h2>
-        <ul class="list-disc list-inside ml-6">
-          <li>Information is securely stored on encrypted servers.</li>
-          <li>Access to sensitive information is strictly restricted.</li>
-          <li>We conduct regular audits to ensure data safety.</li>
-        </ul>
-      </div>
-
-      <!-- Cookies -->
-      <div>
-        <h2 class="font-semibold text-2xl bold-test-color mb-1">Cookies</h2>
-        <p>Our website may use cookies to improve user experience and gather analytics about service usage.</p>
-      </div>
-
-      <!-- Third-party Services -->
-      <div>
-        <h2 class="font-semibold text-2xl bold-test-color mb-1">Third-party Services</h2>
-        <p>Some third-party integrations (like payment gateways) may collect their own data. We are not responsible for their privacy practices.</p>
+        <p class="text-color-bold">
+          We use industry-standard security measures such as SSL encryption, secure servers, limited access controls,
+          and regular internal audits. While we take strong precautions, no system is completely secure.
+        </p>
       </div>
 
       <!-- Data Retention -->
       <div>
-        <h2 class="font-semibold text-2xl bold-test-color mb-1">Data Retention</h2>
-        <p>Personal data is retained only as long as necessary to fulfill the purpose for which it was collected or as required by law.</p>
+        <h2 class="font-semibold text-2xl bold-test-color mb-1">5. Data Retention</h2>
+
+        <p class="text-color-bold">
+          We retain your information only as long as required for service delivery, legal compliance, record-keeping,
+          and dispute resolution. Data no longer required is securely deleted or anonymized.
+        </p>
       </div>
 
-      <!-- Access & Correction -->
+      <!-- Your Rights -->
       <div>
-        <h2 class="font-semibold text-2xl bold-test-color mb-1">Access & Correction</h2>
-        <p>You can request to access, correct, or delete your data by contacting our support team.</p>
-      </div>
+        <h2 class="font-semibold text-2xl bold-test-color mb-1">6. Your Rights</h2>
 
-      <!-- Security Measures -->
-      <div>
-        <h2 class="font-semibold text-2xl bold-test-color mb-1">Security Measures</h2>
-        <ul class="list-disc list-inside ml-6">
-          <li>Encryption and firewalls protect stored data.</li>
-          <li>Regular security audits are performed.</li>
-          <li>Unauthorized access or misuse is strictly prohibited.</li>
+        <p class="text-color-bold">You may request to:</p>
+
+        <ul class="list-disc list-inside ml-6 text-color-bold">
+          <li>Access your personal data</li>
+          <li>Correct inaccurate details</li>
+          <li>Delete your information (subject to legal requirements)</li>
+          <li>Withdraw consent for communication</li>
         </ul>
       </div>
 
       <!-- Children’s Privacy -->
       <div>
-        <h2 class="font-semibold text-2xl bold-test-color mb-1">Children’s Privacy</h2>
-        <p>Our services are intended for adults. Users under 18 should use the platform only under parental supervision.</p>
+        <h2 class="font-semibold text-2xl bold-test-color mb-1">7. Children’s Privacy</h2>
+
+        <p class="text-color-bold">
+          Services are intended for users aged 18 and above. Users under 18 should access the platform only under
+          parental supervision.
+        </p>
       </div>
 
-      <!-- Communication -->
+      <!-- Cookies -->
       <div>
-        <h2 class="font-semibold text-2xl bold-test-color mb-1">Communication</h2>
-        <p>We may send notifications or updates related to bookings, results, or offers. You may opt out of promotional messages anytime.</p>
+        <h2 class="font-semibold text-2xl bold-test-color mb-1">8. Cookies</h2>
+
+        <p class="text-color-bold">
+          Cookies help improve website performance and user experience. You may manage cookie settings through your
+          browser.
+        </p>
       </div>
 
-      <!-- Data Transfer -->
+      <!-- Third-Party Links -->
       <div>
-  <h2 class="font-semibold text-2xl bold-test-color mb-1">Data Transfer</h2>
-  <p>In case of business mergers or acquisitions, user data may be transferred under strict confidentiality obligations.</p>
-  <ul class="list-disc list-inside ml-6 text-gray-700">
-    <li>All data transfers follow encryption and secure handling protocols.</li>
-    <li>Transferred data will remain subject to the terms of this Privacy Policy.</li>
-    <li>We ensure that acquiring parties adhere to equivalent privacy standards.</li>
-  </ul>
-</div>
+        <h2 class="font-semibold text-2xl bold-test-color mb-1">9. Third-Party Links</h2>
 
-<!-- Data Breach Notification -->
-<div>
-  <h2 class="font-semibold text-2xl bold-test-color mb-1">Data Breach Notification</h2>
-  <p>In the event of a data breach, affected users will be informed promptly as required by applicable laws.</p>
-  <ul class="list-disc list-inside ml-6 text-gray-700">
-    <li>We will assess and contain the breach immediately upon detection.</li>
-    <li>Users will be notified with details about the breach and recommended actions.</li>
-    <li>Preventive measures will be implemented to avoid future occurrences.</li>
-  </ul>
-</div>
+        <p class="text-color-bold">
+          Our website may include links to external sites. We are not responsible for their privacy practices.
+        </p>
+      </div>
 
-<!-- Policy Updates -->
-<div>
-  <h2 class="font-semibold text-2xl bold-test-color mb-1">Policy Updates</h2>
-  <p>This privacy policy may be updated periodically. Any major changes will be notified on our website or through email.</p>
-  <ul class="list-disc list-inside ml-6 text-gray-700">
-    <li>Updated policies will reflect changes in legal or operational requirements.</li>
-    <li>Users are encouraged to review this page regularly for the latest version.</li>
-    <li>Continued use of our services implies acceptance of the updated policy.</li>
-  </ul>
-</div>
-
-<!-- User Responsibility -->
-<div>
-  <h2 class="font-semibold text-2xl bold-test-color mb-1">User Responsibility</h2>
-  <p>Users are responsible for maintaining the confidentiality of their login credentials and activity on the platform.</p>
-  <ul class="list-disc list-inside ml-6 text-gray-700">
-    <li>Always use strong passwords and avoid sharing login details with others.</li>
-    <li>Regularly update your account credentials to enhance security.</li>
-    <li>Report any unauthorized access or suspicious activity immediately.</li>
-  </ul>
-</div>
-
-<!-- Legal Compliance -->
-<div>
-  <h2 class="font-semibold text-2xl bold-test-color mb-1">Legal Compliance</h2>
-  <p>We comply with applicable data protection laws, including GDPR and local data privacy regulations.</p>
-  <ul class="list-disc list-inside ml-6 text-gray-700">
-    <li>Our policies are aligned with global and regional privacy standards.</li>
-    <li>We cooperate with regulatory authorities when required by law.</li>
-    <li>All data processing activities are monitored for legal compliance.</li>
-  </ul>
-</div>
-
-<!-- Grievance Redressal -->
-<div>
-  <h2 class="font-semibold text-2xl bold-test-color mb-1">Grievance Redressal</h2>
-  <p>For privacy-related concerns or complaints, please contact our Data Protection Officer at the provided email.</p>
-  <ul class="list-disc list-inside ml-6 text-gray-700">
-    <li>Our team will acknowledge and respond to your complaint within 7 working days.</li>
-    <li>All grievances are handled confidentially and resolved efficiently.</li>
-    <li>You may escalate unresolved issues to the relevant data protection authority.</li>
-  </ul>
-</div>
-
-
-      <!-- Contact Information -->
+      <!-- Policy Update -->
       <div>
-        <h2 class="font-semibold text-2xl bold-test-color mb-1">Contact Information</h2>
-        <p>For any questions about this policy, reach out to our support team:</p>
-        <ul class="list-disc list-inside ml-6">
-          <li>Email: <strong>shankar.a2381@thyrocare.com</strong></li>
+        <h2 class="font-semibold text-2xl bold-test-color mb-1">10. Policy Update</h2>
+
+        <p class="text-color-bold">
+          We may update this Privacy Policy from time to time. Continued use of our Services indicates acceptance of the
+          updated policy.
+        </p>
+      </div>
+
+      <!-- Grievance Officer -->
+      <div>
+        <h2 class="font-semibold text-2xl bold-test-color mb-1">11. Grievance Officer</h2>
+
+        <p class="text-color-bold">For any privacy-related issues, contact:</p>
+
+        <ul class="list-disc list-inside ml-6 text-color-bold">
+          <li>shankar.a2381@thyrocare.com</li>
+          <li>contact@trigunahealthcare.com</li>
         </ul>
+
+        <p class="text-color-bold mt-2">
+          We will respond to concerns within 30 days as per regulatory guidelines.
+        </p>
+      </div>
+
+      <!-- Disclaimer -->
+      <div>
+        <h2 class="font-semibold text-2xl bold-test-color mb-1">12. Disclaimer</h2>
+
+        <p class="text-color-bold">
+          We take reasonable measures to protect your information. However, we are not liable for unauthorized access
+          caused by factors beyond our control, including user negligence or third-party breaches.
+        </p>
       </div>
 
     </div>
   </div>
 </template>
-
 <style scoped>
-.container {
-  line-height: 1.7;
+p {
+  color: #001D55;
 }
-p{
-color: #001D55;
+
+li {
+  color: #001D55;
 }
 </style>

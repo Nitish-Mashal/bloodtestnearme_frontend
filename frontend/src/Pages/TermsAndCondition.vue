@@ -1,158 +1,142 @@
 <template>
   <div class="container mx-auto p-6">
     <h1 class="text-5xl font-bold mb-6 text-gray-800">Terms &amp; Conditions</h1>
-    <p class="mb-4">
-      Please read these Terms and Conditions carefully before using our platform. By accessing or using our services, you agree to be bound by these terms.
+    <p class="mb-4 text-color-bold">
+      Welcome to our diagnostic service platform. By accessing or using our services, you agree to the following Terms
+      and Conditions. Please read them carefully before proceeding.
     </p>
 
-    <div class="space-y-6 text-gray-700">
+    <div class="space-y-6 text-color-bold">
 
-      <!-- Services -->
+      <!-- Acceptance of Terms -->
       <div>
-        <h2 class="font-semibold text-2xl bold-test-color mb-1">Services</h2>
-        <p>The platform connects users with nearby partner laboratories and diagnostic centers for blood tests and related pathology services.</p>
+        <h2 class="font-semibold text-2xl bold-test-color mb-1">Acceptance of Terms</h2>
+        <p class="text-color-bold">By booking any test, using home sample collection, accessing our website, or
+          receiving reports, you acknowledge that you have read, understood, and agreed to these Terms & Conditions.</p>
       </div>
 
-      <!-- Appointment Confirmation -->
+      <!-- Services Provided -->
       <div>
-        <h2 class="font-semibold text-2xl bold-test-color mb-1">Appointment Confirmation</h2>
-        <p>Appointments are subject to confirmation by the selected laboratory. Times shown are requested slots; the lab may reschedule due to availability.</p>
+        <h2 class="font-semibold text-2xl bold-test-color mb-1">Services Provided</h2>
+        <ul class="list-disc list-inside ml-6 text-color-bold">
+          <li>Home Sample Collection across India.</li>
+          <li>Lab testing and report generation through partnered NABL-certified laboratories.</li>
+          <li>Online booking, payment, and report access.</li>
+          <li>All tests are processed by accredited laboratory partners following standard quality protocols.</li>
+        </ul>
       </div>
 
-      <!-- Identification -->
+      <!-- Booking & Payment -->
       <div>
-        <h2 class="font-semibold text-2xl bold-test-color mb-1">Identification</h2>
-        <p>You must present a valid government-issued ID at the laboratory when availing the service.</p>
+        <h2 class="font-semibold text-2xl bold-test-color mb-1">Booking &amp; Payment</h2>
+        <ul class="list-disc list-inside ml-6 text-color-bold">
+          <li>All bookings must include accurate personal details.</li>
+          <li>Payments can be made online or through accepted offline methods.</li>
+          <li>Prices may change without prior notice, but confirmed bookings will not be affected.</li>
+        </ul>
       </div>
 
       <!-- Sample Collection -->
       <div>
         <h2 class="font-semibold text-2xl bold-test-color mb-1">Sample Collection</h2>
-        <ul class="list-disc list-inside ml-6">
-          <li>Collection procedures follow standard lab protocols.</li>
-          <li>If a sample cannot be collected, the lab will inform you promptly.</li>
-          <li>Rescheduling is possible based on availability and lab policy.</li>
+        <ul class="list-disc list-inside ml-6 text-color-bold">
+          <li>Sample collection is subject to availability of phlebotomists in your area.</li>
+          <li>The customer must provide valid identification and accurate medical history relevant to the test.</li>
+          <li>Fasting or pre-test instructions must be followed if applicable.</li>
         </ul>
       </div>
 
-      <!-- Preparation Instructions -->
+      <!-- Test Reports -->
       <div>
-        <h2 class="font-semibold text-2xl bold-test-color mb-1">Preparation Instructions</h2>
-        <p>You are responsible for following any pre-test instructions (e.g., fasting or medication restrictions). Failure to follow instructions may invalidate test results.</p>
-      </div>
-
-      <!-- Pricing & Payment -->
-      <div>
-        <h2 class="font-semibold text-2xl bold-test-color mb-1">Pricing &amp; Payment</h2>
-        <ul class="list-disc list-inside ml-6">
-          <li>Prices are determined by partner laboratories and may vary.</li>
-          <li>Payment options such as prepaid or pay-at-lab are shown during booking.</li>
-          <li>All payments are processed through secure gateways.</li>
+        <h2 class="font-semibold text-2xl bold-test-color mb-1">Test Reports</h2>
+        <ul class="list-disc list-inside ml-6 text-color-bold">
+          <li>Reports are delivered digitally via email, WhatsApp, or website login.</li>
+          <li>Report timelines are indicative and may vary due to technical or operational reasons.</li>
+          <li>Reports are for informational and diagnostic purposes and should be interpreted by a qualified doctor.
+          </li>
+          <li>We are not responsible for self-diagnosis or self-medication based on the reports.</li>
         </ul>
       </div>
 
-      <!-- Refunds & Cancellations -->
+      <!-- Accuracy of Information -->
       <div>
-        <h2 class="font-semibold text-2xl bold-test-color mb-1">Refunds &amp; Cancellations</h2>
-        <ul class="list-disc list-inside ml-6">
-          <li>Refund and cancellation policies are governed by the partner lab.</li>
-          <li>Details will be provided at the time of booking.</li>
-          <li>Eligible refunds will be processed within the specified time frame.</li>
+        <h2 class="font-semibold text-2xl bold-test-color mb-1">Accuracy of Information</h2>
+        <p class="text-color-bold">While we ensure high accuracy through certified labs, certain tests may show
+          variations due to:</p>
+        <ul class="list-disc list-inside ml-6 text-color-bold">
+          <li>Biological factors</li>
+          <li>Pre-test preparation</li>
+          <li>Medication influence</li>
+          <li>Sample quality</li>
+        </ul>
+        <p class="text-color-bold">Re-tests may be recommended in specific scenarios.</p>
+      </div>
+
+      <!-- Cancellation & Refund Policy -->
+      <div>
+        <h2 class="font-semibold text-2xl bold-test-color mb-1">Cancellation &amp; Refund Policy</h2>
+        <ul class="list-disc list-inside ml-6 text-color-bold">
+          <li>Cancellations before sample collection are eligible for a full refund.</li>
+          <li>Cancellations after sample collection are not eligible for refund.</li>
+          <li>Failed collections due to operational issues will be rescheduled or refunded as applicable.</li>
         </ul>
       </div>
 
-      <!-- Results Delivery -->
+      <!-- User Responsibilities -->
       <div>
-        <h2 class="font-semibold text-2xl bold-test-color mb-1">Results Delivery</h2>
-        <p>Results are delivered as specified (email, SMS, or in-app). Delivery times vary by test type and laboratory schedule.</p>
+        <h2 class="font-semibold text-2xl bold-test-color mb-1">User Responsibilities</h2>
+        <p class="text-color-bold">You agree not to:</p>
+        <ul class="list-disc list-inside ml-6 text-color-bold">
+          <li>Provide false information.</li>
+          <li>Misuse or manipulate services.</li>
+          <li>Interfere with the platform or attempt unauthorized access.</li>
+        </ul>
       </div>
 
-      <!-- Accuracy & Liability -->
+      <!-- Limitation of Liability -->
       <div>
-        <h2 class="font-semibold text-2xl bold-test-color mb-1">Accuracy &amp; Liability</h2>
-        <p>The platform is not responsible for diagnostic accuracy. Tests are performed and results are issued solely by the partner laboratory.</p>
-      </div>
-
-      <!-- Medical Advice -->
-      <div>
-        <h2 class="font-semibold text-2xl bold-test-color mb-1">Medical Advice</h2>
-        <p>All results are for informational purposes only. Always consult a qualified healthcare professional for interpretation and treatment.</p>
+        <h2 class="font-semibold text-2xl bold-test-color mb-1">Limitation of Liability</h2>
+        <ul class="list-disc list-inside ml-6 text-color-bold">
+          <li>We are not liable for delays caused by external factors such as technical issues, traffic, or weather.
+          </li>
+          <li>We are not responsible for misinterpretation of reports.</li>
+          <li>Medical decisions should only be taken after consultation with a doctor.</li>
+          <li>Maximum liability is limited to the amount paid for the booked test.</li>
+        </ul>
       </div>
 
       <!-- Data Privacy -->
       <div>
         <h2 class="font-semibold text-2xl bold-test-color mb-1">Data Privacy</h2>
-        <ul class="list-disc list-inside ml-6">
-          <li>Your personal and medical data will be shared with the selected lab for processing.</li>
-          <li>Data handling complies with our Privacy Policy and applicable regulations.</li>
-          <li>We ensure secure storage and limited access to sensitive information.</li>
+        <ul class="list-disc list-inside ml-6 text-color-bold">
+          <li>Your personal information is handled as per our Privacy Policy.</li>
+          <li>We maintain strict confidentiality and use industry-standard data protection protocols.</li>
         </ul>
       </div>
 
-      <!-- Third-party Links -->
+      <!-- Third-Party Labs -->
       <div>
-        <h2 class="font-semibold text-2xl bold-test-color mb-1">Third-party Links</h2>
-        <p>The platform may link to external lab websites. We are not responsible for their content, security, or privacy practices.</p>
+        <h2 class="font-semibold text-2xl bold-test-color mb-1">Third-Party Labs</h2>
+        <p class="text-color-bold">Diagnostic testing is conducted through accredited laboratory partners (including
+          Thyrocare and others as applicable). By booking a test, you authorize us to share your information with the
+          lab for processing and report generation.</p>
       </div>
 
-      <!-- Consent for Tests -->
+      <!-- Modification of Terms -->
       <div>
-        <h2 class="font-semibold text-2xl bold-test-color mb-1">Consent for Tests</h2>
-        <p>By booking, you consent to the laboratory performing the specified tests and handling samples per industry standards.</p>
+        <h2 class="font-semibold text-2xl bold-test-color mb-1">Modification of Terms</h2>
+        <p class="text-color-bold">We reserve the right to update or modify these Terms at any time. Continued use of
+          our services indicates acceptance of the revised Terms.</p>
       </div>
 
-      <!-- Sample Retention & Disposal -->
+      <!-- Contact Information -->
       <div>
-        <h2 class="font-semibold text-2xl bold-test-color mb-1">Sample Retention &amp; Disposal</h2>
-        <ul class="list-disc list-inside ml-6">
-          <li>Labs may retain samples temporarily for quality assurance.</li>
-          <li>Samples are disposed of safely according to regulatory guidelines.</li>
-          <li>Retention duration depends on test type and lab policy.</li>
+        <h2 class="font-semibold text-2xl bold-test-color mb-1">Contact Information</h2>
+        <p class="text-color-bold">For support, queries, cancellations, or complaints, you may contact:</p>
+        <ul class="list-disc list-inside ml-6 text-color-bold">
+          <li>Email: Shankar.a2381@thyrocare.com</li>
+          <li>Email: contact@trigunahealthcare.com</li>
         </ul>
-      </div>
-
-      <!-- Special Requirements -->
-      <div>
-        <h2 class="font-semibold text-2xl bold-test-color mb-1">Special Requirements</h2>
-        <p>Please inform the lab of any allergies, special needs, pregnancy, or bleeding disorders before your appointment for safety.</p>
-      </div>
-
-      <!-- Insurance & Claims -->
-      <div>
-        <h2 class="font-semibold text-2xl bold-test-color mb-1">Insurance &amp; Claims</h2>
-        <ul class="list-disc list-inside ml-6">
-          <li>Insurance coverage is subject to individual policies and terms.</li>
-          <li>The platform does not guarantee or file insurance claims unless specified.</li>
-          <li>Please confirm with your insurer before booking.</li>
-        </ul>
-      </div>
-
-      <!-- Refund Disputes -->
-      <div>
-        <h2 class="font-semibold text-2xl bold-test-color mb-1">Refund Disputes</h2>
-        <p>In case of refund disputes, contact the partner lab first. If unresolved, reach out to our support team within 14 days with order details.</p>
-      </div>
-
-      <!-- Changes to Terms -->
-      <div>
-        <h2 class="font-semibold text-2xl bold-test-color mb-1">Changes to Terms</h2>
-        <ul class="list-disc list-inside ml-6">
-          <li>These terms may be updated periodically.</li>
-          <li>Users will be notified of material updates via email or app notification.</li>
-          <li>Continued use implies acceptance of the revised terms.</li>
-        </ul>
-      </div>
-
-      <!-- Service Availability -->
-      <div>
-        <h2 class="font-semibold text-2xl bold-test-color mb-1">Service Availability</h2>
-        <p>The platform or partner labs may temporarily suspend services for maintenance or emergencies. Affected users will be informed when possible.</p>
-      </div>
-
-      <!-- Governing Law & Jurisdiction -->
-      <div>
-        <h2 class="font-semibold text-2xl bold-test-color mb-1">Governing Law &amp; Jurisdiction</h2>
-        <p>These terms are governed by applicable laws. Any disputes will be resolved in the competent courts of the jurisdiction where the platform operates.</p>
       </div>
 
     </div>
@@ -160,7 +144,11 @@
 </template>
 
 <style scoped>
-p{
-color: #001D55;
+p {
+  color: #001D55;
+}
+
+li {
+  color: #001D55;
 }
 </style>
