@@ -344,7 +344,14 @@ const fetchPackageDetails = async () => {
         packageData.value = pkg;
 
         try {
-            listInclude.value = pkg.list_include ? JSON.parse(pkg.list_include) : [];
+            let parsed = pkg.list_include ? JSON.parse(pkg.list_include) : [];
+
+            // If backend sends a single object, convert to array
+            if (!Array.isArray(parsed)) {
+                parsed = [parsed];
+            }
+
+            listInclude.value = parsed;
         } catch {
             listInclude.value = [];
         }
