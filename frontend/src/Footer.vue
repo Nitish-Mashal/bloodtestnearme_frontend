@@ -112,12 +112,20 @@ const quickLinks = [
 ];
 
 const handleLogin = () => {
+    let backend = window.location.origin;
+
+    // If running locally on Vite (8080)
+    if (backend.includes("8080")) {
+        // Replace frontend port with backend port from common_site_config.json
+        backend = backend.replace("8080", "8000");
+    }
+
     const isLoggedIn = document.cookie.includes("sid=");
 
     if (isLoggedIn) {
-        window.location.href = "/app/users";
+        window.location.href = `${backend}/app/users`;
     } else {
-        window.location.href = "/login?redirect-to=/app/users";
+        window.location.href = `${backend}/login?redirect-to=/app / users`;
     }
 };
 
