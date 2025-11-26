@@ -116,9 +116,9 @@ const handleLogin = () => {
     const isLoggedIn = document.cookie.includes("sid=");
 
     if (isLoggedIn) {
-        window.location.href = `${backend}/app/users`;
+        window.location.href = `${backend}/app/triguna`;
     } else {
-        window.location.href = `${backend}/login?redirect-to=/app/users`;
+        window.location.href = `${backend}/login?redirect-to=/app/triguna`;
     }
 };
 

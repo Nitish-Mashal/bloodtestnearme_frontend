@@ -125,7 +125,7 @@ const getImage = (img) => img || "/placeholder.png";
 // ⭐ THIS IS THE IMPORTANT PART — USE QUERY PARAM
 const goToCategory = (categoryName) => {
     router.push({
-        path: "/health-checkup-packages-bangalore",
+        path: "/health-checkup-packages",
         query: { category: categoryName }
     });
 };

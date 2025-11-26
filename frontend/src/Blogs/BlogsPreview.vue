@@ -1,62 +1,53 @@
 <template>
-  <div class="container p-10  min-h-screen">
+  <div class="container p-10 min-h-screen">
     <!-- Grid layout: 3 cards per row -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-      <div
-        v-for="(card, index) in cards"
-        :key="index"
-        class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-transform hover:scale-105"
-      >
+      <div v-for="(card, index) in cards" :key="index"
+        class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-transform hover:scale-105 flex flex-col">
         <!-- 🔸 Top Orange Section -->
-        <div class="global-bg-color p-3 flex justify-between items-center">
+        <div class="global-bg-color p-3 flex justify-between items-center h-48">
           <!-- Left: Logo + Text -->
           <div class="text-white w-1/2">
             <h2 class="text-lg font-bold leading-snug">
               {{ card.description_heading_1 || 'Untitled' }}
             </h2>
-            <p class="text-yellow-100 text-sm font-medium">
+            <h3 class="text-yellow-100 text-sm font-medium">
               {{ card.sub_description_heading_1 || '' }}
-            </p>
+            </h3>
           </div>
 
           <!-- Right: Image -->
           <div class="w-1/2 flex justify-center">
-            <img
-              :src="card.thumbnail_image"
-              alt="Card Image"
-              class="w-32 h-32 object-cover rounded-full border-4 border-orange-300"
-            />
+            <img :src="card.thumbnail_image" alt="Card Image"
+              class="w-32 h-32 object-cover rounded-full border-4 border-orange-300" />
           </div>
         </div>
 
         <!-- 🔹 Bottom White Content -->
-        <div class="p-3">
+        <div class="p-3 flex-1">
           <h3 class="text-lg font-semibold bold-test-color mb-2">
             {{ card.description_heading_1 }}
           </h3>
           <p class="text-gray-600 text-sm mb-2 line-clamp-3">
-  {{ stripHtml(card.description_1) }}
+            {{ stripHtml(card.description_1) }}
           </p>
-         <router-link
-  :to="{ name: 'BlogDetails', query: { name: card.name } }"
-  class="bold-test-color font-semibold text-sm hover:underline"
->
-  Read More >>
-</router-link>
-
+          <router-link :to="{ name: 'BlogDetails', query: { name: card.name } }"
+            class="bold-test-color font-semibold text-sm hover:underline">
+            Read More >>
+          </router-link>
         </div>
 
         <!-- 🔸 Footer with line -->
-        <div class="border-t border-[#2077BF] px-3 p-2"   style="height: 35px;"
->
+        <div class="border-t border-[#2077BF] px-3 p-2 h-9">
           <div class="text-gray-500 text-xs">
-              {{ formatDate(card.blog_date) }}
+            {{ formatDate(card.blog_date) }}
           </div>
         </div>
       </div>
     </div>
   </div>
 </template>
+
 
 <script setup>
 import { ref, onMounted } from "vue";

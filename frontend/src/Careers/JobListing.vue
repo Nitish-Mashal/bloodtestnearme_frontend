@@ -20,35 +20,30 @@
             <!-- Resume Upload -->
             <div class="card shadow py-4 rounded-4 bold-test-color">
                 <div class="flex flex-col justify-center items-center">
+                    <router-link to="/ApplyJob" class="bold-test-color">
+                        <div
+                            class="cursor-pointer border-1 border-[#001D55] px-5 py-1 rounded-full hover:bg-gray-100 transition inline-flex items-center whitespace-nowrap">
+                            Apply For a Job
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                stroke="currentColor" class="h-4 w-4 ml-2">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+                            </svg>
+                        </div>
+                    </router-link>
 
-                    <!-- Upload Button -->
-                    <label for="resume-upload"
-                        class="cursor-pointer border-1 border-[#001D55] px-5 py-1 rounded-full hover:bg-gray-100 transition inline-flex items-center whitespace-nowrap">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                            stroke="currentColor" class="h-4 w-4 mr-2">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 4.5 4.5M12 3v13.5" />
-                        </svg>
-                        Upload Resume
-                    </label>
                     <input id="resume-upload" type="file" class="hidden" @change="handleResumeUpload" />
 
-                    <!-- Uploading Message -->
-                    <div v-if="uploading" class="text-sm text-gray-600 mt-2">
-                        Uploading file...
-                    </div>
-
-                    <!-- Uploaded File Name -->
+                    <div v-if="uploading" class="text-sm text-gray-600 mt-2">Uploading file...</div>
                     <div v-if="uploadedFileName && !uploading" class="text-sm text-green-700 mt-2">
                         {{ uploadedFileName }}
                     </div>
                 </div>
 
                 <div class="text-xl font-normal text-center pt-4">
-                    Interested candidates can contact ph: +91 9611011266 or share resumes to
+                    Interested candidates can contact or share resumes to
                     <span class="font-semibold">shankar.a2381@thyrocare.com</span>
                 </div>
-
             </div>
 
             <!-- Job Listings -->
@@ -58,7 +53,10 @@
                 <div class="flex justify-between items-center">
                     <h3 class="font-semibold text-2xl">{{ job.title }}</h3>
 
-                    <router-link to="/ApplyJob" class="no-underline text-inherit">
+                    <router-link :to="{
+                        name: 'JobApply',
+                        query: { title: job.title }
+                    }" class="no-underline text-inherit">
                         <button class="text-2xl flex items-center gap-1 hover:underline text-inherit">
                             Apply
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -69,16 +67,16 @@
                         </button>
                     </router-link>
 
+
                 </div>
 
-                <!-- Job Description -->
                 <div class="pt-2">
-                    {{ job.description }}
+                    {{ truncate(job.description, 100) }}
                 </div>
 
-                <!-- Job Type -->
-                <div
-                    class="border-1 border-[#001D55] text-sm px-3 py-1 rounded-full inline-flex items-center justify-center whitespace-nowrap mt-3">
+                <!-- Job Type — hide if empty -->
+                <div v-if="job.type"
+                    class="border-1 border-[#001D55] text-sm px-3 py-1 rounded-full inline-flex items-center whitespace-nowrap mt-3">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                         stroke="currentColor" class="w-4 h-4 mr-2">
                         <path stroke-linecap="round" stroke-linejoin="round"
@@ -93,50 +91,38 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 
-// Job Data
-const jobs = ref([
-    {
-        title: "Lab Supervisor",
-        description: "We're looking for a mid-level Lab Supervisor to join our team.",
-        type: "Full Time"
-    },
-    {
-        title: "Phlebotomist",
-        description: "We need skilled phlebotomists with experience in sample collection.",
-        type: "Full Time"
-    },
-    {
-        title: "Front Desk Executive",
-        description: "Join our team as a customer-facing executive for managing daily operations.",
-        type: "Full Time"
-    }
-]);
+const jobs = ref([]);
+const loading = ref(false);
 
-// Upload State
-const uploading = ref(false);
-const uploadedFileName = ref("");
+const fetchJobs = async () => {
+    loading.value = true;
+    try {
+        const res = await fetch("/api/method/bloodtestnearme.api.jobapp.get_job_openings");
+        const json = await res.json();
 
-// File Upload Handler
-const handleResumeUpload = (event) => {
-    const file = event.target.files[0];
+        const apiJobs = json?.message?.data ?? [];
 
-    if (file) {
-        uploading.value = true;
-        uploadedFileName.value = "";
+        jobs.value = apiJobs.map(j => ({
+            title: j.job_title,
+            description: j.description,
+            type: j.job_type || null
+        }));
 
-        // Simulate uploading delay
-        setTimeout(() => {
-            uploading.value = false;
-            uploadedFileName.value = `Uploaded: ${file.name}`;
-
-            // Hide message after 5 seconds
-            setTimeout(() => {
-                uploadedFileName.value = "";
-            }, 5000);
-
-        }, 1500);
+    } catch (error) {
+        console.error("Error fetching jobs:", error);
+    } finally {
+        loading.value = false;
     }
 };
+
+const truncate = (text, limit = 100) => {
+    if (!text) return "";
+    return text.length > limit ? text.substring(0, limit) + "..." : text;
+};
+
+onMounted(() => {
+    fetchJobs();
+});
 </script>

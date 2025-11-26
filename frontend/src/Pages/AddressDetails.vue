@@ -1,56 +1,36 @@
 <template>
     <div>
-        <div class="h-[250px] sm:h-[400px] w-full bg-cover bg-center"
-            :style="{ backgroundImage: 'url(/files/AddressDetails.jpg)' }">
+        <!-- 🔹 Dynamic Banner Image -->
+        <div class="h-[250px] sm:h-[400px] w-full bg-cover bg-center" :style="{
+            backgroundImage: testCenter?.image
+                ? `url(${testCenter.image})`
+                : 'url(/files/AddressDetails.jpg)'
+        }">
         </div>
+
         <div class="container">
             <div class="text-3xl font-semibold bold-test-color pt-3 pb-3">
                 Our Address
             </div>
+
             <div class="text-lg bold-test-color pb-3">
                 <div class="row">
                     <div class="col-md-6 pb-3">
-                        Blood Test Near Me Pvt. Ltd.<br>
-                        123 Health St., Wellness City, Fit State, 456789
-                        Country
+                        <!-- Test Center Name -->
+                        <div><strong>Test Center Name:</strong> {{ testCenter?.test_center_name }}</div>
+
+                        <!-- Address Line -->
+                        <div><strong>Test Center Address:</strong> {{ testCenter?.address_line }}</div>
                     </div>
+
                     <div class="col-md-6 pb-3">
-                        Phone: +1 (234) 567-8901<br>
-                        Email: bloodtestnearme@bloodtestnearme.com
+                        <strong>Phone:</strong> {{ testCenter?.contact_number || "-" }} <br>
+                        <strong>Email:</strong> {{ testCenter?.email_id || "-" }}
                     </div>
                 </div>
-                <div class="pb-3">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Beatae animi, repellendus iste culpa id nam
-                    dolorem at laborum a ad placeat eveniet consequatur quam hic quaerat expedita ut molestiae officiis
-                    doloremque fuga ipsum corporis nulla provident fugit. Asperiores ducimus libero fugiat sit esse
-                    obcaecati laboriosam et, unde vero reiciendis iste sunt. Eligendi necessitatibus adipisci vitae enim
-                    fugiat suscipit voluptatum commodi excepturi molestias vel atque, incidunt animi dolorem corrupti.
-                    Dicta
-                    nisi, nesciunt incidunt tenetur, tempora obcaecati sint odio, aliquam voluptates ullam quas?
-                    Temporibus
-                    aperiam quisquam alias consequatur, ducimus dolor tenetur ipsam natus autem harum soluta, ipsa totam
-                    vero. Fugit reprehenderit debitis repellendus ratione eligendi ex quia incidunt aliquam minima
-                    assumenda
-                    illo, dignissimos rerum aliquid dolorem sint laboriosam, maxime magnam corporis quas sed velit
-                    omnis. At
-                    unde quo saepe voluptate eaque ut aspernatur aliquid libero repudiandae labore corrupti praesentium
-                    odio
-                    excepturi doloremque commodi eius adipisci, id culpa eum quibusdam velit iusto molestias. Natus
-                    accusamus minima maxime commodi modi explicabo! Rem eius quis aliquam, dolorum nemo hic mollitia ex
-                    expedita impedit consequuntur reiciendis eum quas quae maxime enim eaque excepturi velit a.
-                    Provident
-                    sapiente, inventore qui assumenda fuga aut neque voluptas nisi reprehenderit deserunt sint debitis,
-                    voluptatem, nam dolores vero aliquid explicabo eos esse! Corporis perspiciatis beatae pariatur.
-                    Asperiores perspiciatis voluptatum hic iure dignissimos neque facilis quaerat quo enim modi, aliquid
-                    voluptatibus qui rem velit tenetur. Quam iste quo sint nemo numquam aliquid repellat officia magni
-                    quasi
-                    consectetur quae distinctio unde suscipit placeat minima dolorem tempore, aspernatur alias odio in.
-                    Libero reiciendis beatae voluptatum eaque inventore id sapiente odio necessitatibus a quos laborum,
-                    voluptatem voluptate suscipit doloremque laboriosam debitis ex. Magnam, numquam harum quis iusto id
-                    voluptatibus explicabo impedit, est magni sequi corporis voluptas qui consequatur animi laudantium,
-                    voluptatum neque aspernatur expedita in molestias sint similique! Ab quibusdam autem nisi
-                    voluptatibus
-                    eius molestiae?
+
+                <!-- Description -->
+                <div class="pb-3" v-html="testCenter?.description">
                 </div>
             </div>
         </div>
@@ -58,5 +38,42 @@
 </template>
 
 <script>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
+import { useRoute } from "vue-router";
+
+export default {
+    setup() {
+        const route = useRoute();
+        const centerId = route.query.id;   // get selected center name
+        const testCenter = ref(null);
+
+        const fetchTestCenter = async () => {
+            try {
+                const res = await fetch(
+                    "/api/method/bloodtestnearme.api.testcenter_address.get_test_centers"
+                );
+                const data = await res.json();
+                const centers = data.message || [];
+
+                // Find the exact center user clicked
+                testCenter.value =
+                    centers.find(c =>
+                        c.test_center_name === centerId ||
+                        c.branch_name === centerId
+                    ) || null;
+
+                console.log("Selected Center:", testCenter.value);
+
+            } catch (error) {
+                console.error("Error fetching test center:", error);
+            }
+        };
+
+        onMounted(() => {
+            fetchTestCenter();
+        });
+
+        return { testCenter };
+    }
+};
 </script>

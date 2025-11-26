@@ -87,50 +87,46 @@
       </div>
 
       <!-- Contact Info Cards -->
-      <router-link to="/AddressDetails" class="no-underline">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-10">
-          <div v-for="(loc, i) in locations" :key="i"
-            class="bg-white rounded-2xl shadow-md border border-gray-200 p-4 hover:shadow-lg transition-all">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-10">
+        <div v-for="(loc, i) in locations" :key="i">
+          <div
+            class="cursor-pointer bg-white rounded-2xl shadow-md border border-gray-200 p-4 hover:shadow-lg transition-all">
+            <router-link :to="{ name: 'AddressDetails', query: { id: loc.name } }" class="no-underline">
+              <!-- Location Name -->
+              <div class="bold-test-color text-lg font-semibold leading-relaxed mb-2">
+                {{ loc.name }}
+              </div>
 
-            <!-- Location Name -->
-            <div class="bold-test-color text-lg font-semibold leading-relaxed mb-2">
-              {{ loc.name }}
-            </div>
+              <!-- Address -->
+              <p class="bold-test-color text-sm leading-relaxed mb-2">
+                {{ loc.address }}
+              </p>
 
-            <!-- Address -->
-            <p class="bold-test-color text-sm leading-relaxed mb-2">
-              {{ loc.address }}
-            </p>
+              <!-- Email -->
+              <div class="flex items-center gap-3 mb-3">
+                <span class="text-[#001D55] text-sm font-medium">
+                  {{ loc.email }}
+                </span>
+              </div>
+            </router-link>
 
-            <!-- Email -->
-            <div class="flex items-center gap-3 mb-3">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                stroke="#001D55" class="w-5 h-5">
-                <path stroke-linecap="round" stroke-linejoin="round"
-                  d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25H4.5a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5H4.5a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.036 1.888l-7.5 4.687a2.25 2.25 0 01-2.428 0l-7.5-4.687A2.25 2.25 0 013 6.993V6.75" />
-              </svg>
 
-              <span class="text-[#001D55] text-sm font-medium">
-                {{ loc.email }}
-              </span>
-            </div>
-
-            <!-- Phone + Google Map -->
+            <!-- Phone + Google Map Buttons -->
             <div class="grid grid-cols-2 gap-2">
 
-              <!-- Phone -->
-              <a :href="'tel:' + loc.phone"
+              <!-- Phone Button -->
+              <a :href="'tel:' + loc.contact_number"
                 class="flex items-center justify-center gap-2 global-bg-color text-white px-3 py-2 rounded-full text-sm font-medium hover:bg-[#003d80] transition-all whitespace-nowrap">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                   stroke="currentColor" class="w-5 h-5">
                   <path stroke-linecap="round" stroke-linejoin="round"
                     d="M2.25 3.75l2.69-.67a1.125 1.125 0 011.11.29l2.1 2.1a1.125 1.125 0 01.24 1.21l-1.26 2.52a12.042 12.042 0 005.64 5.64l2.52-1.26a1.125 1.125 0 011.21.24l2.1 2.1a1.125 1.125 0 01.29 1.11l-.67 2.69a1.125 1.125 0 01-1.09.84c-9.11 0-16.5-7.39-16.5-16.5 0-.51.33-.96.84-1.09z" />
                 </svg>
-                {{ loc.phone }}
+                {{ loc.contact_number }}
               </a>
 
-              <!-- Google Map -->
-              <a :href="loc.map" target="_blank"
+              <!-- Google Map Button -->
+              <a :href="loc.map_embed_link" target="_blank"
                 class="flex items-center justify-center gap-2 border border-gray-300 bold-test-color px-1 py-2 rounded-full text-sm font-medium hover:bg-gray-100 transition-all">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                   stroke="#001D55" class="w-5 h-5">
@@ -140,10 +136,14 @@
                 </svg>
                 Google Map
               </a>
+
             </div>
+
           </div>
+
         </div>
-      </router-link>
+      </div>
+
 
       <!-- Office Timings -->
       <div class="bg-white text-center rounded-2xl shadow-md mt-10 py-4 max-w-md mx-auto">
@@ -217,17 +217,23 @@ const fetchLocations = async () => {
     const res = await axios.get(
       "/api/method/bloodtestnearme.api.testcenter_address.get_test_centers"
     );
+
     console.log("API Response:", res.data);
 
-    // message itself is an array
     const centers = res.data.message || [];
 
     locations.value = centers.map(center => ({
       name: center.test_center_name || center.branch_name || "Unnamed Center",
-      address: `${center.address_line.trim()}, ${center.city} - ${center.pincode}`,
-      phone: center.contact_number || "",
-      email: center.email_id || "",
-      map: center.map_embed_link || "#",
+
+      address: `${center.address_line?.trim() || ""}, ${center.city || ""} - ${center.pincode || ""}`,
+
+      contact_number: center.contact_number || "",   //  ✅ used for phone button
+      email: center.email_id || "",                 //  used if needed
+      map_embed_link: center.map_embed_link || "#", //  ✅ used for Google Map button
+
+      // optional fields if you want later
+      description: center.description || "",
+      image: center.image || null,
     }));
 
   } catch (error) {
