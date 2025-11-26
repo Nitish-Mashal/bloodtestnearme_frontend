@@ -112,20 +112,13 @@ const quickLinks = [
 ];
 
 const handleLogin = () => {
-    let backend = window.location.origin;
-
-    // If running locally on Vite (8080)
-    if (backend.includes("8080")) {
-        // Replace frontend port with backend port from common_site_config.json
-        backend = backend.replace("8080", "8000");
-    }
-
+    const backend = window.location.origin;
     const isLoggedIn = document.cookie.includes("sid=");
 
     if (isLoggedIn) {
         window.location.href = `${backend}/app/users`;
     } else {
-        window.location.href = `${backend}/login?redirect-to=/app / users`;
+        window.location.href = `${backend}/login?redirect-to=/app/users`;
     }
 };
 
@@ -138,7 +131,7 @@ const isSmallScreen = ref(false);
 const fetchPackages = async () => {
     try {
         const res = await axios.get("/api/method/bloodtestnearme.api.packages.get_packages_by_tags", {
-            params: { tag: "mostbooked" },
+            params: { tag: "footer" },
         });
         const data = res.data?.message || [];
 

@@ -1,35 +1,36 @@
 <template>
   <header class="sticky top-0 z-50 w-full">
     <!-- ✅ Mobile: Only text slides, button stays fixed -->
-    <div class="block md:hidden bg-white shadow-md py-2 px-7 flex items-center justify-between overflow-hidden">
+    <div v-if="slider"
+      class="block md:hidden bg-white shadow-md py-2 px-7 flex items-center justify-between overflow-hidden">
       <div class="relative overflow-hidden whitespace-nowrap flex-1 font-bold bold-test-color">
         <div class="marquee-content flex">
-          <span class="mr-10">Book Full Body Health Checkup @ ₹1,499/- with Vitamins</span>
-          <span class="mr-10">Book Full Body Health Checkup @ ₹1,499/- with Vitamins</span>
+          <span class="mr-10">{{ slider.slider_text }}</span>
+          <span class="mr-10">{{ slider.slider_text }}</span>
         </div>
       </div>
 
-      <router-link to="/health-checkup-packages-bangalore" class="flex-shrink-0">
-        <button
-          class="ml-3 global-bg-color text-white px-3 py-1 rounded-full text-sm hover:bg-[#005fa3] transition whitespace-nowrap">
-          Book Now
+      <a v-if="slider?.href" :href="slider.href" class="flex-shrink-0">
+        <button class="ml-3 global-bg-color text-white px-3 py-1 rounded-full text-sm whitespace-nowrap">
+          {{ slider.button_text || "Book Now" }}
         </button>
-      </router-link>
+      </a>
     </div>
-
 
 
     <!-- ✅ Desktop (Static Banner) -->
-    <div class="hidden md:flex justify-center items-center bg-white shadow-md py-2 px-20">
+    <div v-if="slider" class="hidden md:flex justify-center items-center bg-white shadow-md py-2 px-20">
       <span class="bold-test-color font-semibold text-[14px]">
-        Book Full Body Health Checkup @ ₹1,499/- with Vitamins
+        {{ slider.slider_text }}
       </span>
-      <router-link to="/health-checkup-packages-bangalore">
-        <button class="ml-3 global-bg-color text-white px-3 py-1 rounded-full text-sm hover:bg-[#005fa3] transition">
-          Book Now
+
+      <a v-if="slider?.href" :href="slider.href" class="flex-shrink-0">
+        <button class="ml-3 global-bg-color text-white px-3 py-1 rounded-full text-sm whitespace-nowrap">
+          {{ slider.button_text || "Book Now" }}
         </button>
-      </router-link>
+      </a>
     </div>
+
 
 
     <!-- Navbar -->
@@ -195,7 +196,7 @@
 </template>
 
 <script setup>
-import { ref, onBeforeUnmount, watch } from 'vue'
+import { ref, onBeforeUnmount, watch, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { useCartStore } from '@/stores/cartStore'
 import { storeToRefs } from 'pinia'
@@ -209,6 +210,7 @@ const loading = ref(false)
 const showResults = ref(false)
 const desktopSearchRef = ref(null)
 const mobileSearchRef = ref(null)
+const slider = ref(null);
 
 const isMenuOpen = ref(false)
 const menuRef = ref(null)
@@ -246,6 +248,32 @@ const handleSearch = async () => {
   }
 }
 
+const fetchHeaderSlider = async () => {
+  try {
+    const res = await fetch(
+      "/api/method/bloodtestnearme.api.header_slider.get_header_sliders"
+    );
+    const data = await res.json();
+
+    // Validate structure
+    if (data?.message?.data && Array.isArray(data.message.data) && data.message.data.length > 0) {
+
+      const slide = data.message.data[0];
+
+      slider.value = {
+        slider_text: slide.slider_text,
+        href: slide.link,           // your backend field
+        button_text: "Book Now"     // backend does not provide button text → set manually
+      };
+
+    }
+  } catch (err) {
+    console.error("Failed to load header slider:", err);
+  }
+};
+
+
+
 const clearSearch = () => {
   searchQuery.value = ''
   searchResults.value = []
@@ -268,6 +296,10 @@ const handleClickOutside = (e) => {
 
 document.addEventListener('click', handleClickOutside)
 onBeforeUnmount(() => document.removeEventListener('click', handleClickOutside))
+
+onMounted(() => {
+  fetchHeaderSlider();
+});
 
 watch(() => route.fullPath, () => {
   clearSearch()
