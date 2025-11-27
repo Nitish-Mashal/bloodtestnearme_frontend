@@ -181,7 +181,8 @@ const filteredPackages = computed(() => {
 const fetchPackages = async () => {
     try {
         isLoading.value = true;
-        const category = route.query.category || "";
+        const category = route.params.category || "";
+
         const apiUrl = category
             ? `/api/method/bloodtestnearme.api.packages.get_packages?category=${category}`
             : "/api/method/bloodtestnearme.api.packages.get_package_based_tests";
@@ -196,8 +197,9 @@ const fetchPackages = async () => {
     }
 };
 
+
 // 🔄 React to category change
-watch(() => route.query.category, fetchPackages);
+watch(() => route.params.category, fetchPackages);
 
 onMounted(fetchPackages);
 </script>

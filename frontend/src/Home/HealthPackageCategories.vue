@@ -10,7 +10,7 @@
                 </h2>
 
                 <div class="text-sm font-medium sm:mt-0 whitespace-nowrap">
-                    <router-link to="/health-checkup-packages-bangalore"
+                    <router-link to="/health-checkup-packages"
                         class="flex items-center gap-1 no-underline bold-test-color hover:underline">
                         <span>View All</span>
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
@@ -32,8 +32,8 @@
                 <Carousel ref="carouselRef" :breakpoints="carouselBreakpoints" :wrapAround="true" snapAlign="start"
                     :transition="500" :itemsToScroll="1" @slide-start="onSlideChange" class="pkg-carousel">
                     <Slide v-for="(category, index) in categories" :key="category.name + index">
-                        <div class="slide-inner cursor-pointer" @click="goToCategory(category.name)">
-                            <div class="flex flex-col items-center text-center transition-transform hover:scale-105">
+                        <div class="slide-inner cursor-pointer" @click="goToCategory(category.url)">
+                            <div class=" flex flex-col items-center text-center transition-transform hover:scale-105">
                                 <img :src="getImage(category.image)" :alt="category.name"
                                     class="object-cover shadow-md rounded-lg w-full h-[120px]" />
                                 <p class="mt-3 bold-test-color text-base sm:text-lg font-semibold">
@@ -123,11 +123,8 @@ const currentIndexDisplay = computed(() => {
 const getImage = (img) => img || "/placeholder.png";
 
 // ⭐ THIS IS THE IMPORTANT PART — USE QUERY PARAM
-const goToCategory = (categoryName) => {
-    router.push({
-        path: "/health-checkup-packages",
-        query: { category: categoryName }
-    });
+const goToCategory = (categoryUrl) => {
+    router.push(`/health-checkup-packages/${categoryUrl}`);
 };
 
 onMounted(fetchCategories);

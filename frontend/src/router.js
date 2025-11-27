@@ -12,9 +12,10 @@ const routes = [
     },
   },
   {
-    path: "/health-checkup-packages",
+    path: "/health-checkup-packages/:category?",
     name: "HealthCheckupList",
     component: () => import("@/HealthCheckupDetails/HealthCheckupList.vue"),
+    props: true,
     meta: {
       title: "Thyrocare Full Body Health Checkup Packages in Bangalore",
       description:
