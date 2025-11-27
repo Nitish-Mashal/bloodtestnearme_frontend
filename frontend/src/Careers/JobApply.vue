@@ -93,17 +93,22 @@
 
                 <!-- Upload Resume -->
                 <div class="flex flex-col">
-                    <label class="cursor-pointer border-1 border-[#001D55] px-5 py-1 rounded-full 
-           hover:bg-gray-100 transition inline-flex items-center 
-           whitespace-nowrap w-full justify-center text-center">
+                    <label class="cursor-pointer border-1 border-[#001D55] px-5 py-1 rounded-full
+        hover:bg-gray-100 transition inline-flex items-center
+        w-full justify-center text-center overflow-hidden text-ellipsis whitespace-normal">
+
                         <input type="file" class="hidden" @change="handleResumeUpload" />
-                        {{ resumeName || "Upload Resume" }}
+
+                        <span class="truncate w-full text-center">
+                            {{ resumeName || "Upload Resume" }}
+                        </span>
                     </label>
 
                     <p v-if="errors.resume" class="text-red-600 text-sm mt-1">
                         Resume is required.
                     </p>
                 </div>
+
 
                 <!-- Submit Button -->
                 <button :disabled="isLoading" @click="submitForm"
@@ -241,21 +246,22 @@ const validatePhone = (e) => {
 
 const submitForm = async () => {
     // VALIDATIONS
-    errors.value.firstName = !form.value.firstName;
-    errors.value.lastName = !form.value.lastName;
-    errors.value.email = !form.value.email;
-    errors.value.experience = !form.value.experience;
+    errors.value.firstName = !form.value.firstName
+    errors.value.lastName = !form.value.lastName
+    errors.value.email = !form.value.email
+    errors.value.experience = !form.value.experience
 
     if (!form.value.contact) {
-        errors.value.contact = "Contact Number is required.";
+        errors.value.contact = 'Contact Number is required.'
     } else if (!/^[6-9]/.test(form.value.contact)) {
-        errors.value.contact = "Indian numbers must start with 6, 7, 8 or 9.";
+        errors.value.contact = 'Indian numbers must start with 6, 7, 8 or 9.'
     } else if (form.value.contact.length !== 10) {
-        errors.value.contact = "Contact Number must be exactly 10 digits.";
+        errors.value.contact = 'Contact Number must be exactly 10 digits.'
     } else {
-        errors.value.contact = false;
+        errors.value.contact = false
     }
-    errors.value.resume = !resumeFile.value;
+
+    errors.value.resume = !resumeFile.value
 
     if (
         errors.value.firstName ||
@@ -264,44 +270,58 @@ const submitForm = async () => {
         errors.value.experience ||
         errors.value.contact ||
         errors.value.resume
-    ) return;
-
-    isLoading.value = true;
-
-    const formData = new FormData();
-    formData.append("cmd", "bloodtestnearme.api.jobapp.submit_job_application");
-
-    formData.append("first_name", form.value.firstName);
-    formData.append("middle_name", form.value.middleName || "");
-    formData.append("last_name", form.value.lastName);
-    formData.append("email", form.value.email);
-    formData.append("resume", resumeFile.value);
-    formData.append("job_opening", jobName.value);
-    formData.append("experience", form.value.experience);
-    formData.append("contact_number", form.value.contact);
-    formData.append("description", jobDescription.value || "");
-
-    try {
-        const response = await fetch("/api/method/bloodtestnearme.api.jobapp.submit_job_application", {
-            method: "POST",
-            body: formData
-        });
-
-        const res = await response.json();
-        if (res.message?.message) successMsg.value = res.message.message;
-
-        if (res.message?.status === "success") {
-            form.value = { firstName: "", middleName: "", lastName: "", experience: "", email: "", contact: "" };
-            resumeFile.value = null;
-            resumeName.value = "";
-        }
-    } catch (error) {
-        console.error("POST API Error:", error);
-        successMsg.value = "Something went wrong, please try again.";
+    ) {
+        return
     }
 
-    isLoading.value = false;
+    isLoading.value = true
 
-    setTimeout(() => { successMsg.value = ""; }, 3000);
-};
+    const formData = new FormData()
+    formData.append('cmd', 'bloodtestnearme.api.jobapp.submit_job_application')
+    formData.append('first_name', form.value.firstName)
+    formData.append('middle_name', form.value.middleName || '')
+    formData.append('last_name', form.value.lastName)
+    formData.append('email', form.value.email)
+    formData.append('resume', resumeFile.value)
+    formData.append('job_opening', jobName.value)
+    formData.append('experience', form.value.experience)
+    formData.append('contact_number', form.value.contact)
+    formData.append('description', jobDescription.value || '')
+
+    try {
+        const response = await fetch('/api/method/bloodtestnearme.api.jobapp.submit_job_application', {
+            method: 'POST',
+            body: formData
+        })
+
+        const res = await response.json()
+
+        if (res.message && res.message.message) {
+            successMsg.value = res.message.message
+        }
+
+        if (res.message && res.message.status === 'success') {
+            form.value = {
+                firstName: '',
+                middleName: '',
+                lastName: '',
+                experience: '',
+                email: '',
+                contact: ''
+            }
+            resumeFile.value = null
+            resumeName.value = ''
+        }
+    } catch (error) {
+        console.error('POST API Error:', error)
+        successMsg.value = 'Something went wrong, please try again.'
+    }
+
+    isLoading.value = false
+
+    setTimeout(() => {
+        successMsg.value = ''
+    }, 3000)
+}
+
 </script>
