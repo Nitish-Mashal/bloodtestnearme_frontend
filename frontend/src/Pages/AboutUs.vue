@@ -5,9 +5,9 @@
     style="background-image: url('/files/about-us-banner.png');">
     <div class="container text-white max-w-lg px-4">
       <h2 class="text-3xl md:text-6xl font-bold mb-2">About us</h2>
-      <p class="text-lg md:text-2xl font-medium">
+      <div class="text-lg md:text-2xl font-medium">
         Trusted Partner in Diagnostic and health care
-      </p>
+      </div>
     </div>
   </section>
   <div class="container mx-auto">
@@ -80,15 +80,14 @@
 
         <!-- Right Column -->
         <div class="md:w-2/5">
-          <div
-  class="w-full h-[400px] rounded-xl shadow-md bg-cover bg-center"
-  style="background-image: url('/files/bloodtest.png');"
-></div>
+          <div class="w-full h-[400px] rounded-xl shadow-md bg-cover bg-center"
+            style="background-image: url('/files/bloodtest.png');"></div>
 
         </div>
       </div>
     </section>
     <section class="px-8 py-2">
+
       <!-- Heading -->
       <div class="text-center mb-10">
         <h2 class="text-2xl sm:text-3xl font-bold bold-test-color">Expert Healthcare For All</h2>
@@ -99,56 +98,48 @@
       </div>
 
       <!-- Cards Grid -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 justify-center items-start text-center">
-        <!-- Card 1 -->
-        <div class="transform -translate-y-4">
-          <div class="rounded-2xl overflow-hidden shadow-md">
-            <div
-  class="w-full h-80 object-cover bg-cover bg-center"
-  style="background-image: url('/files/Trained-Phlebotomists.jpg');"
-></div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 text-center">
 
+        <!-- Card 1 -->
+        <div class="md:-translate-y-4">
+          <div class="rounded-2xl overflow-hidden shadow-md">
+            <div class="w-full h-80 bg-cover bg-center"
+              style="background-image: url('/files/Trained-Phlebotomists.jpg');"></div>
           </div>
           <h3 class="font-semibold text-lg bold-test-color mt-3">Trained Phlebotomists</h3>
         </div>
 
         <!-- Card 2 -->
-        <div class="transform translate-y-4">
+        <div class="md:translate-y-4">
           <div class="rounded-2xl overflow-hidden shadow-md">
-           <div
-  class="w-full h-80 object-cover bg-cover bg-center"
-  style="background-image: url('/files/Advanced-Diagnostic-Equipment.jpg');"
-></div>
-
+            <div class="w-full h-80 bg-cover bg-center"
+              style="background-image: url('/files/Advanced-Diagnostic-Equipment.jpg');"></div>
           </div>
           <h3 class="font-semibold text-lg bold-test-color mt-3">Advanced Diagnostic Equipment</h3>
         </div>
 
         <!-- Card 3 -->
-        <div class="transform -translate-y-4">
+        <div class="md:-translate-y-4">
           <div class="rounded-2xl overflow-hidden shadow-md">
-<div
-  class="w-full h-80 object-cover bg-cover bg-center"
-  style="background-image: url('/files/Advanced-manufacture-machine.jpg');"
-></div>
-
+            <div class="w-full h-80 bg-cover bg-center"
+              style="background-image: url('/files/Advanced-manufacture-machine.jpg');"></div>
           </div>
           <h3 class="font-semibold text-lg bold-test-color mt-3">Sterile and Hygienic Process</h3>
         </div>
 
         <!-- Card 4 -->
-        <div class="transform translate-y-4">
+        <div class="md:translate-y-4">
           <div class="rounded-2xl overflow-hidden shadow-md">
-            <div
-  class="w-full h-80 object-cover bg-cover bg-center"
-  style="background-image: url('/files/Enjoy-your-treatment.png');"
-></div>
-
+            <div class="w-full h-80 bg-cover bg-center"
+              style="background-image: url('/files/Enjoy-your-treatment.png');"></div>
           </div>
           <h3 class="font-semibold text-lg bold-test-color mt-3">Enjoy Your Treatment</h3>
         </div>
+
       </div>
+
     </section>
+
     <section class="px-8 py-12">
       <!-- Heading -->
       <div class="text-left mb-8">
@@ -243,11 +234,11 @@
       <h2 class="text-3xl sm:text-4xl font-bold mb-4">
         Keeping you Confident and Healthy until the Big Day
       </h2>
-      <p class="text-gray-200 text-sm sm:text-base mb-8 leading-relaxed">
+      <div class="text-gray-200 text-sm sm:text-base mb-8 leading-relaxed">
         Our blood test services help you understand your health better with quick, accurate, and affordable testing —
         all from trusted labs near you. Whether it’s a routine health check, a pre-employment test, or pregnancy-related
         screening, we ensure a smooth and safe experience every time.
-      </p>
+      </div>
       <RouterLink to="/health-checkup-packages-bangalore"
         class="global-bg-color hover:bg-[#005fa3] text-white font-semibold px-6 py-2 rounded-full shadow-md transition inline-block">
         Book Your Test Now
@@ -264,7 +255,7 @@ import Testimonial from '@/Home/Testimonial.vue';
 
 
 <style scoped>
-p{
-color: #001D55;
+p {
+  color: #001D55;
 }
 </style>

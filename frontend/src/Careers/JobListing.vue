@@ -9,8 +9,8 @@
             </div>
 
             <!-- Intro -->
-            <div class="text-[220%] font-semibold pt-3 pb-4">
-                Be a part of our Team
+            <div class="font-semibold pt-3 pb-4">
+                <div class="text-7xl">Be a part of our Team</div>
                 <div class="text-xl font-normal pt-2">
                     We're looking for passionate people to join us on our mission. We value flat hierarchies, <br>
                     clear communication, and full ownership and responsibility.

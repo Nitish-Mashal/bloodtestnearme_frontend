@@ -15,8 +15,8 @@ app_license = "mit"
 
 #     # ✅ Vue SPA routes (redirect all frontend routes to index.html)
 #     {"from_route": "/", "to_route": "/"},
-#     {"from_route": "/health-checkup-packages-bangalore", "to_route": "/"},
-#     {"from_route": "/blood-test-online-bangalore", "to_route": "/"},
+#     {"from_route": "/health-checkup-packages", "to_route": "/"},
+#     {"from_route": "/blood-test-online", "to_route": "/"},
 #     {"from_route": "/CartPage", "to_route": "/"},
 #     {"from_route": "/qrcodedata", "to_route": "/"},
 #     {"from_route": "/blogspreview", "to_route": "/"},
@@ -37,8 +37,8 @@ website_route_rules = [
 
     # ✅ Vue SPA base and static routes
     {"from_route": "/", "to_route": "/"},
-    {"from_route": "/health-checkup-packages-bangalore", "to_route": "/"},
-    {"from_route": "/blood-test-online-bangalore", "to_route": "/"},
+    {"from_route": "/health-checkup-packages", "to_route": "/"},
+    {"from_route": "/blood-test-online", "to_route": "/"},
     {"from_route": "/CartPage", "to_route": "/"},
     {"from_route": "/qrcodedata", "to_route": "/"},
     {"from_route": "/blogspreview", "to_route": "/"},
