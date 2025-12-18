@@ -6,29 +6,33 @@ app_email = "nitishmashal0@gmail.com"
 app_license = "mit"
 
 
-# website_route_rules = [
-#     # ✅ Allow Frappe system routes
-#     {"from_route": "/app/<path:path>", "to_route": "/app/<path:path>"},
-#     {"from_route": "/login", "to_route": "/login"},
-#     {"from_route": "/api/<path:path>", "to_route": "/api/<path:path>"},
-#     {"from_route": "/assets/<path:path>", "to_route": "/assets/<path:path>"},
-
-#     # ✅ Vue SPA routes (redirect all frontend routes to index.html)
-#     {"from_route": "/", "to_route": "/"},
-#     {"from_route": "/health-checkup-packages", "to_route": "/"},
-#     {"from_route": "/blood-test-online", "to_route": "/"},
-#     {"from_route": "/CartPage", "to_route": "/"},
-#     {"from_route": "/qrcodedata", "to_route": "/"},
-#     {"from_route": "/blogspreview", "to_route": "/"},
-#     {"from_route": "/blogdetails", "to_route": "/"},
-#     {"from_route": "/address", "to_route": "/"},
-
-#     # ✅ Dynamic Vue routes (use path wildcard to handle any dynamic URLs)
-#     {"from_route": "/book/<path:path>", "to_route": "/"},
-#     {"from_route": "/<path:path>", "to_route": "/"},
-# ]
-
 website_route_rules = [
+
+    # ✅ Block Frappe system & backend routes
+    {"from_route": "/printview", "to_route": "/printview"},
+    {"from_route": "/print", "to_route": "/print"},
+    {"from_route": "/apps", "to_route": "/apps"},
+    {"from_route": "/desk", "to_route": "/desk"},
+    {"from_route": "/form/<path:path>", "to_route": "/form/<path:path>"},
+    {"from_route": "/view/<path:path>", "to_route": "/view/<path:path>"},
+    {"from_route": "/query-report/<path:path>", "to_route": "/query-report/<path:path>"},
+    {"from_route": "/module/<path:path>", "to_route": "/module/<path:path>"},
+    {"from_route": "/setup-wizard", "to_route": "/setup-wizard"},
+    {"from_route": "/email-view", "to_route": "/email-view"},
+    {"from_route": "/downloads", "to_route": "/downloads"},
+    {"from_route": "/sitemap.xml", "to_route": "/sitemap.xml"},
+    {"from_route": "/robots.txt", "to_route": "/robots.txt"},
+    {"from_route": "/files/<path:path>", "to_route": "/files/<path:path>"},
+    {"from_route": "/backups", "to_route": "/backups"},
+    {"from_route": "/version-info", "to_route": "/version-info"},
+    {"from_route": "/event-stream", "to_route": "/event-stream"},
+    {"from_route": "/webhook/<path:path>", "to_route": "/webhook/<path:path>"},
+    {"from_route": "/login", "to_route": "/login"},
+    {"from_route": "/logout", "to_route": "/logout"},
+    {"from_route": "/change-password", "to_route": "/change-password"},
+    {"from_route": "/reset-password", "to_route": "/reset-password"},
+    {"from_route": "/update-password", "to_route": "/update-password"},
+
     # ✅ Allow Frappe system & backend routes
     {"from_route": "/app/<path:path>", "to_route": "/app/<path:path>"},
     {"from_route": "/login", "to_route": "/login"},

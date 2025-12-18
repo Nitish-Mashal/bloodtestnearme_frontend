@@ -8,6 +8,9 @@ import App from './App.vue'
 // Frappe UI imports
 import { Button, setConfig, frappeRequest, resourcesPlugin } from 'frappe-ui'
 
+// Vue G-Tag (fixed for Vue 3)
+import { createGtag } from 'vue-gtag'
+
 // Element Plus imports
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
@@ -44,6 +47,11 @@ app.use(router)
 
 // ✅ Element Plus
 app.use(ElementPlus)
+
+// ✅ Vue G-Tag
+app.use(createGtag, {
+  config: { id: "AW-17112290457" }
+})
 
 // ✅ Global Components
 app.component('Button', Button)
