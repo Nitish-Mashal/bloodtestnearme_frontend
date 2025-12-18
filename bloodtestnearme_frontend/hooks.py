@@ -32,6 +32,8 @@ website_route_rules = [
     {"from_route": "/change-password", "to_route": "/change-password"},
     {"from_route": "/reset-password", "to_route": "/reset-password"},
     {"from_route": "/update-password", "to_route": "/update-password"},
+    {"from_route": "/insights", "to_route": "/insights"},
+    {"from_route": "/insights/<path:path>", "to_route": "/insights/<path:path>"},
 
     # ✅ Allow Frappe system & backend routes
     {"from_route": "/app/<path:path>", "to_route": "/app/<path:path>"},
