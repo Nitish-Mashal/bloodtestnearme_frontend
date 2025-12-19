@@ -8,7 +8,8 @@
         class="offer-carousel">
         <Slide v-for="(offer, i) in offers" :key="i">
           <div class="cursor-pointer w-full hover:scale-[1.02] mr-3" @click="openLink(offer.link)">
-            <img :src="offer.image" class="w-full h-[180px] object-cover rounded-xl shadow-md " />
+            <img :src="offer.image" :alt="offer.name1 ? `Offer: ${offer.name1}` : 'Promotional offer image'"
+              class="w-full h-[180px] object-cover rounded-xl shadow-md" />
           </div>
         </Slide>
 

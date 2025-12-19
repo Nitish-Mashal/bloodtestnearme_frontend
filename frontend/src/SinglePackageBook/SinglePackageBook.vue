@@ -14,17 +14,22 @@
         <div class="container">
             <div class="py-4 row">
                 <div class="col-12 col-md-6 mb-2">
-                    <h4 class="bold-test-color pb-2">{{ packageData.name1 }} ({{ packageData.number_of_test }} Tests)
+                    <!-- Always visible -->
+                    <h4 class="bold-test-color pb-2">
+                        {{ packageData.name1 }} ({{ packageData.number_of_test }} Tests)
                     </h4>
 
-                    <div class="bold-test-color">
+                    <!-- Visible only on md and above -->
+                    <div class="bold-test-color d-none d-md-block">
                         <div class="pt-2" v-html="packageData.description"></div>
+
                         <div class="pt-4">
                             <strong>Sample Type: </strong>
                             <span class="text-red-600">{{ packageData.sample_type }}</span>
                         </div>
                     </div>
                 </div>
+
 
                 <!-- Form -->
                 <div class="col-12 col-md-6">

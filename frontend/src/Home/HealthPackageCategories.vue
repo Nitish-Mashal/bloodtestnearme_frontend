@@ -32,7 +32,10 @@
                 <Carousel ref="carouselRef" :breakpoints="carouselBreakpoints" :wrapAround="true" snapAlign="start"
                     :transition="500" :itemsToScroll="1" @slide-start="onSlideChange" class="pkg-carousel">
                     <Slide v-for="(category, index) in categories" :key="category.name + index">
-                        <div class="slide-inner cursor-pointer" @click="goToCategory(category.url)">
+      <div
+  class="slide-inner cursor-pointer"
+  @click="goToCategory(category)"
+>
                             <div class=" flex flex-col items-center text-center transition-transform hover:scale-105">
                                 <img :src="getImage(category.image)" :alt="category.name"
                                     class="object-cover shadow-md rounded-lg w-full h-[120px]" />
@@ -122,9 +125,24 @@ const currentIndexDisplay = computed(() => {
 
 const getImage = (img) => img || "/placeholder.png";
 
+const generateCategorySlug = (category) => {
+    if (category.url && category.url !== "null") {
+        return category.url.toLowerCase();
+    }
+
+    // fallback → generate from name
+    return category.name
+        ?.toLowerCase()
+        .trim()
+        .replace(/\s+/g, "-")
+        .replace(/[^a-z0-9-]/g, "");
+};
+
+
 // ⭐ THIS IS THE IMPORTANT PART — USE QUERY PARAM
-const goToCategory = (categoryUrl) => {
-    router.push(`/health-checkup-packages/${categoryUrl}`);
+const goToCategory = (category) => {
+    const slug = generateCategorySlug(category);
+    router.push(`/health-checkup-packages/${slug}`);
 };
 
 onMounted(fetchCategories);

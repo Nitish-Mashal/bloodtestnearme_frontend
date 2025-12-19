@@ -181,10 +181,18 @@ const filteredPackages = computed(() => {
 const fetchPackages = async () => {
     try {
         isLoading.value = true;
-        const category = route.params.category || "";
+
+        const rawCategory = route.params.category;
+
+        const category =
+            rawCategory &&
+                rawCategory !== "null" &&
+                rawCategory !== "undefined"
+                ? rawCategory
+                : "";
 
         const apiUrl = category
-            ? `/api/method/bloodtestnearme.api.packages.get_packages?category=${category}`
+            ? `/api/method/bloodtestnearme.api.packages.get_packages?category=${encodeURIComponent(category)}`
             : "/api/method/bloodtestnearme.api.packages.get_package_based_tests";
 
         const { data } = await axios.get(apiUrl);
@@ -196,6 +204,7 @@ const fetchPackages = async () => {
         isLoading.value = false;
     }
 };
+
 
 
 // 🔄 React to category change

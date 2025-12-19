@@ -115,12 +115,12 @@
 
                     <!-- If no list_include → show description instead -->
                     <div v-else>
-                        <h3>
+                        <!-- <h3>
                             {{ packageData.name1 }}
                             <span v-if="packageData.number_of_test > 0">
                                 ({{ packageData.number_of_test }} Tests)
                             </span>
-                        </h3>
+                        </h3> -->
 
                         <div class="pt-2" v-html="packageData.description"></div>
 
@@ -210,12 +210,12 @@
                 <div v-if="packageData" class="bold-test-color pt-4">
 
                     <template v-if="hasListInclude">
-                        <h3>
+                        <!-- <h3>
                             {{ packageData.name1 }}
                             <span v-if="packageData.number_of_test > 0">
                                 ({{ packageData.number_of_test }} Tests)
                             </span>
-                        </h3>
+                        </h3> -->
 
                         <div class="pt-2" v-html="packageData.description"></div>
 
